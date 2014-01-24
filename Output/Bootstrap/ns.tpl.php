@@ -38,6 +38,7 @@ $cname = array_pop($name);
                  * @var Array $content
                  */
                 if (!empty($content)) {
+                    sort($content);
                     foreach ($content as $elment) {
                         $href = $classname . '/' . $elment;
                         $icon = '<i class="fa fa-folder-open"></i>';
