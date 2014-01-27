@@ -2,7 +2,6 @@
     "require": {
         "hoa/file": "dev-master",
         "hoa/console": "dev-master",
-        "hoa/xyl": "dev-master",
         "sohoa/framework": "dev-master"
     },
     "autoload": {
