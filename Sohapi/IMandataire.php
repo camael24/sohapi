@@ -20,4 +20,6 @@ interface IMandataire {
 
     public function getIgnoreClasses();
 
+    public function getClasses();
+
 }

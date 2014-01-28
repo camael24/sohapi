@@ -38,6 +38,50 @@ class Classes implements IMandataire
             $this->exportClass($class);
     }
 
+    public function isRegister($classname)
+    {
+
+        $classname = $this->formatClassName($classname);
+
+        return array_key_exists($classname, $this->_register);
+    }
+
+    public function getIgnoreClasses()
+    {
+        $valid = array();
+        foreach ($this->_register as $classname => $array)
+            if ($array['status'] !== 'success')
+                $valid[$classname] = $array;
+
+        return $valid;
+    }
+
+    public function getValidClasses()
+    {
+        $valid = array();
+        foreach ($this->_register as $classname => $array)
+            if ($array['status'] === 'success')
+                $valid[$classname] = $array;
+
+        return $valid;
+    }
+
+    public function getClasses()
+    {
+        return $this->getValidClasses();
+    }
+
+    public function getAllClasses()
+    {
+        return $this->_register;
+    }
+
+    public function getAllClassname()
+    {
+        return array_keys($this->_register);
+    }
+
+
     protected function allow($classname)
     {
 
@@ -56,36 +100,156 @@ class Classes implements IMandataire
         return false;
     }
 
+    protected function formatClassName($classname)
+    {
+
+        $classname = str_replace('\\', '/', $classname);
+        if ($classname[0] === '/')
+            $classname = substr($classname, 1);
+
+        return $classname;
+    }
 
     protected function exportClass($classname)
     {
+
+        $classname_formatted = $this->formatClassName($classname);
+
+        if ($this->isRegister($classname) === true)
+            return;
+
         if (!class_exists($classname, true))
-            return array(
+            $this->_register[$classname_formatted] = array(
                 'status' => 'not_exists',
-                'class' => $classname
+                'class'  => $classname_formatted
             );
 
 
         if ($this->allow($classname) === false)
-            return array(
+            $this->_register[$classname_formatted] = array(
                 'status' => 'ignored',
-                'class' => $classname
+                'class'  => $classname_formatted
             );
 
 
-        return $this->export($classname);
+        $this->_register[$classname_formatted] = $this->export($classname);
     }
 
-    private function export($class){
+    private function export($class)
+    {
 
+        $reflection = new \ReflectionClass($class);
+        $properties = array();
+        $extends    = $reflection->getParentClass()->getName();
+        $implements = array();
+        $methods    = array();
+
+        $this->exportClass($extends);
+
+        foreach ($reflection->getInterfaces() as $interface)
+            if ($interface instanceof \ReflectionClass) {
+                $implements[] = $interface->getName();
+
+                $this->exportClass($interface->getName());
+            }
+
+        foreach ($reflection->getProperties() as $property)
+            if ($property instanceof \ReflectionProperty) {
+
+                $visibility = 'public';
+                if ($property->isProtected())
+                    $visibility = 'protected';
+                elseif ($property->isPrivate())
+                    $visibility = 'private';
+
+                $properties[] = array(
+                    'class'      => $property->class,
+                    'name'       => $property->getName(),
+                    'visibility' => $visibility,
+                    'isStatic'   => $property->isStatic(),
+                    'doc'        => $property->getDocComment()
+                );
+            }
+
+
+        foreach ($reflection->getMethods() as $method)
+            if ($method instanceof \ReflectionMethod) {
+
+                $visibility = 'public';
+                if ($method->isProtected())
+                    $visibility = 'protected';
+                elseif ($method->isPrivate())
+                    $visibility = 'private';
+
+                $parameter = $this->getParameter($method);
+
+                $methods[] = array(
+                    'class'      => $method->getDeclaringClass()->getName(),
+                    'name'       => $method->getName(),
+                    'visibility' => $visibility,
+                    'isStatic'   => $method->isStatic(),
+                    'isFinal'    => $method->isFinal(),
+                    'isAbstract' => $method->isAbstract(),
+                    'parameter'  => $parameter,
+                    'doc'        => $method->getDocComment()
+                );
+            }
 
         return array(
-            'status' => ''
+            'status'      => 'success',
+            'class'       => $this->formatClassName($class),
+            'isInterface' => $reflection->isInterface(),
+            'isTrait'     => $reflection->isTrait(),
+            'isAbstract'  => $reflection->isAbstract(),
+            'properties'  => $properties,
+            'doc'         => $reflection->getDocComment()
         );
     }
 
-    public function getIgnoreClasses()
+    private function getParameter(\ReflectionMethod $method)
     {
+        $parameters = array();
+
+        foreach ($method->getParameters() as $parameter)
+            if ($parameter instanceof \ReflectionParameter) {
+
+
+                $type = '';
+                if ($parameter->isArray())
+                    $type = 'Array';
+                elseif ($parameter->isCallable())
+                    $type = 'Closure';
+                elseif ($parameter->getClass() instanceof \ReflectionClass) {
+                    $type = $this->formatClassName($parameter->getClass()->getName());
+
+                    $this->exportClass($parameter->getClass()->getName());
+                }
+
+                $value = '';
+                if ($parameter->isDefaultValueAvailable() === true) {
+
+                    if ($parameter->getDefaultValue() === null)
+                        $value = 'null';
+                    else
+                        if (is_array($parameter->getDefaultValue()))
+                            $value = "'" . implode(',', $parameter->getDefaultValue()) . "'";
+                        else
+                            $value = "'" . $parameter->getDefaultValue() . "'";
+                }
+
+                $parameters[] = array(
+                    'name'         => $parameter->getName(),
+                    'type'         => $type,
+                    'isOptionnal'  => $parameter->isOptional(),
+                    'isReference'  => $parameter->isPassedByReference(),
+                    'defaultValue' => $value
+                );
+
+            }
+
+        return $parameters;
     }
+
+
 
 } 
