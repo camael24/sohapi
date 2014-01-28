@@ -85,20 +85,22 @@ class Classes implements IMandataire
     protected function allow($classname)
     {
         $classname = $this->formatClassName($classname);
-
         foreach ($this->_check as $check)
             if ($check instanceof \Closure) {
-                if ($bool = $check($classname) === false)
-                    return false;
+                if ($bool = $check($classname) === true){
+                    return true;
+                }
+
 
 
             } else {
-                if (preg_match($check, $classname) === 0) // TODO make verif
-                    return false;
+                if (preg_match($check, $classname) >= 1){
+                    return true;
+                } // TODO make verif
+
             }
 
-
-        return true;
+        return false;
     }
 
     protected function formatClassName($classname)
@@ -111,23 +113,35 @@ class Classes implements IMandataire
         return $classname;
     }
 
+    protected function loadValidClassname($classname)
+    {
+
+        if ($classname[0] !== '\\')
+            return '\\' . $classname;
+
+        return $classname;
+    }
+
     protected function exportClass($classname = null)
     {
         if ($classname === null)
             return;
 
+        $classname           = $this->loadValidClassname($classname);
         $classname_formatted = $this->formatClassName($classname);
 
         if ($this->isRegister($classname) === true)
             return;
 
-        if (!class_exists($classname, true)) {
-            $this->_register[$classname_formatted] = array(
-                'status' => 'not_exists',
-                'class'  => $classname_formatted
-            );
-            return;
-        }
+        if (class_exists($classname, true) === false)
+            if (interface_exists($classname, true) === false) {
+                $this->_register[$classname_formatted] = array(
+                    'status' => 'not_exists',
+                    'class'  => $classname_formatted
+                );
+                return;
+            }
+
 
         if ($this->allow($classname) === false) {
             $this->_register[$classname_formatted] = array(

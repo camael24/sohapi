@@ -26,7 +26,7 @@ class Cli implements IExport
         $ignore = $mandataire->getIgnoreClasses();
 
         foreach ($ignore as $classname => $data)
-            echo 'IGN ' . $classname . "\n";
+            echo 'IGN ' . $classname . "\t" . $data['status'] . "\n";
 
     }
 
