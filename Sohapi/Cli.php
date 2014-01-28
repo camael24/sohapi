@@ -9,7 +9,7 @@
 namespace Sohapi;
 
 
-class Html implements IExport
+class Cli implements IExport
 {
     public function process(IMandataire $mandataire)
     {

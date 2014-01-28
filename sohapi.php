@@ -10,6 +10,6 @@ $api->classname('\\Sohapi\\Export')
         return false;
     })
     ->mandataire(new \Sohapi\Classes())
-    ->export(new \Sohapi\Html());
+    ->export(new \Sohapi\Cli());
 
 
