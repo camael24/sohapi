@@ -2,12 +2,14 @@
 require 'vendor/autoload.php';
 
 $api = new \Sohapi\Export();
-$api->classname('/Sohapi/Export/')
+$api->classname('\\Sohapi\\Export')
+    ->classname('\\Sohapi\\Classes')
     ->check('#^/Sohapi#')
     ->check(function ($classname) {
 
         return false;
     })
-    ->export();
+    ->mandataire(new \Sohapi\Classes())
+    ->export(new \Sohapi\Html());
 
 

@@ -110,8 +110,10 @@ class Classes implements IMandataire
         return $classname;
     }
 
-    protected function exportClass($classname)
+    protected function exportClass($classname = null)
     {
+        if ($classname === null)
+            return;
 
         $classname_formatted = $this->formatClassName($classname);
 
@@ -140,11 +142,16 @@ class Classes implements IMandataire
 
         $reflection = new \ReflectionClass($class);
         $properties = array();
-        $extends    = $reflection->getParentClass()->getName();
+        $extends    = null;
         $implements = array();
         $methods    = array();
 
-        $this->exportClass($extends);
+        if ($reflection->getParentClass() instanceof \ReflectionClass) {
+
+            $extends = $reflection->getParentClass()->getName();
+            $this->exportClass($extends);
+        }
+
 
         foreach ($reflection->getInterfaces() as $interface)
             if ($interface instanceof \ReflectionClass) {
@@ -201,8 +208,10 @@ class Classes implements IMandataire
             'isInterface' => $reflection->isInterface(),
             'isTrait'     => $reflection->isTrait(),
             'isAbstract'  => $reflection->isAbstract(),
+            'isInternal'  => $reflection->isInternal(),
+            'doc'         => $reflection->getDocComment(),
             'properties'  => $properties,
-            'doc'         => $reflection->getDocComment()
+            'methods'     => $methods,
         );
     }
 
@@ -251,5 +260,4 @@ class Classes implements IMandataire
     }
 
 
-
-} 
+}

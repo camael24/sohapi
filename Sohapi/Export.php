@@ -47,6 +47,7 @@ namespace Sohapi {
             $object->process();
             $this->_mandataire = $object;
 
+            return $this;
         }
 
         public function export(IExport $object = null)

@@ -13,6 +13,16 @@ class Html implements IExport
 {
     public function process(IMandataire $mandataire)
     {
+        $classes = $mandataire->getValidClasses();
+
+        foreach($classes as $classname => $data){
+            echo $classname."\n";
+
+            echo "\t".'Properties: '.count($data['properties'])."\n";
+            echo "\t".'Methods: '.count($data['methods'])."\n";
+
+        }
+
 
     }
 

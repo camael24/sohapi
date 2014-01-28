@@ -22,4 +22,6 @@ interface IMandataire {
 
     public function getClasses();
 
+    public function getValidClasses();
+
 }
