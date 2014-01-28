@@ -84,28 +84,29 @@ class Classes implements IMandataire
 
     protected function allow($classname)
     {
+        $classname = $this->formatClassName($classname);
 
         foreach ($this->_check as $check)
             if ($check instanceof \Closure) {
-                if ($bool = $check($classname) === true)
-                    return true;
+                if ($bool = $check($classname) === false)
+                    return false;
 
 
             } else {
-                if (preg_match($check, $classname) === true)
-                    return true;
+                if (preg_match($check, $classname) === 0) // TODO make verif
+                    return false;
             }
 
 
-        return false;
+        return true;
     }
 
     protected function formatClassName($classname)
     {
 
         $classname = str_replace('\\', '/', $classname);
-        if ($classname[0] === '/')
-            $classname = substr($classname, 1);
+        if ($classname[0] !== '/')
+            $classname = '/' . $classname;
 
         return $classname;
     }
@@ -120,18 +121,21 @@ class Classes implements IMandataire
         if ($this->isRegister($classname) === true)
             return;
 
-        if (!class_exists($classname, true))
+        if (!class_exists($classname, true)) {
             $this->_register[$classname_formatted] = array(
                 'status' => 'not_exists',
                 'class'  => $classname_formatted
             );
+            return;
+        }
 
-
-        if ($this->allow($classname) === false)
+        if ($this->allow($classname) === false) {
             $this->_register[$classname_formatted] = array(
                 'status' => 'ignored',
                 'class'  => $classname_formatted
             );
+            return;
+        }
 
 
         $this->_register[$classname_formatted] = $this->export($classname);

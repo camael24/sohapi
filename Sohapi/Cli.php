@@ -15,14 +15,18 @@ class Cli implements IExport
     {
         $classes = $mandataire->getValidClasses();
 
-        foreach($classes as $classname => $data){
-            echo $classname."\n";
+        foreach ($classes as $classname => $data) {
+            echo 'EXE ' . $classname . "\n";
 
-            echo "\t".'Properties: '.count($data['properties'])."\n";
-            echo "\t".'Methods: '.count($data['methods'])."\n";
+            echo "\t" . 'Properties: ' . count($data['properties']) . "\n";
+            echo "\t" . 'Methods: ' . count($data['methods']) . "\n";
 
         }
 
+        $ignore = $mandataire->getIgnoreClasses();
+
+        foreach ($ignore as $classname => $data)
+            echo 'IGN ' . $classname . "\n";
 
     }
 

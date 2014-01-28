@@ -7,7 +7,10 @@ $api->classname('\\Sohapi\\Export')
     ->check('#^/Sohapi#')
     ->check(function ($classname) {
 
-        return false;
+        if (preg_match('#^/Reflector#', $classname) > 0)
+            return false;
+
+        return true;
     })
     ->mandataire(new \Sohapi\Classes())
     ->export(new \Sohapi\Cli());
