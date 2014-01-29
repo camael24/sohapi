@@ -251,6 +251,9 @@ class Html implements IExport
     public function resolve($class)
     {
         $class     = $this->formatClassname($class);
+        $reserved  = array(
+            'stdClass'
+        );
         $realClass = '/' . $class;
 
         if (array_key_exists($realClass, $this->_allclass)) {
@@ -266,6 +269,9 @@ class Html implements IExport
         foreach ($this->_resolve as $regex => $route) {
 
             if ($regex !== 'internal' && preg_match($regex, $class)) {
+
+                if(in_array($class , $reserved))
+                    return 'http://www.php.net/manual/fr/reserved.classes.php';
 
                 return $this->_unroute($route, array('classname' => $class));
             }
