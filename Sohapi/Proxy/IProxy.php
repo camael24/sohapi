@@ -6,15 +6,14 @@
  * Time: 10:54
  */
 
-namespace Sohapi;
+namespace Sohapi\Proxy;
 
 
-interface IMandataire {
+interface IProxy
+{
     public function setClassname(Array $classname);
 
-    public function setCheck(Array $check);
-
-    public function setResolve(Array $resolve);
+    public function setCheck($check);
 
     public function process();
 
@@ -22,6 +21,13 @@ interface IMandataire {
 
     public function getClasses();
 
+    public function getAllClasses();
+
     public function getValidClasses();
 
+    public function getAllClassname();
+
+    public function getAllValidClassname();
+
+    public function getAllValidClassnameWithoutInternal();
 }

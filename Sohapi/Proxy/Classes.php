@@ -6,31 +6,29 @@
  * Time: 15:37
  */
 
-namespace Sohapi;
+namespace Sohapi\Proxy;
 
 
-class Classes implements IMandataire
+class Classes implements IProxy
 {
 
     private $_class = array();
     private $_check = array();
     private $_register = array();
-    private $_resolve = array();
 
     public function setClassname(Array $classname)
     {
         $this->_class = array_merge($this->_class, $classname);
     }
 
-    public function setCheck(Array $check)
+    public function setCheck($check)
     {
+        if (is_bool($check))
+            return $this->_check = $check;
+
         $this->_check = array_merge($this->_check, $check);
     }
 
-    public function setResolve(Array $resolve)
-    {
-        $this->_resolve = array_merge($this->_resolve, $resolve);
-    }
 
     public function process()
     {
@@ -81,20 +79,31 @@ class Classes implements IMandataire
         return array_keys($this->_register);
     }
 
+    public function getAllValidClassname()
+    {
+
+        $class = $this->getValidClasses();
+
+        return array_keys($class);
+    }
+
 
     protected function allow($classname)
     {
         $classname = $this->formatClassName($classname);
+
+        if (is_bool($this->_check))
+            return $this->_check;
+
         foreach ($this->_check as $check)
             if ($check instanceof \Closure) {
-                if ($bool = $check($classname) === true){
+                if ($bool = $check($classname) === true) {
                     return true;
                 }
 
 
-
             } else {
-                if (preg_match($check, $classname) >= 1){
+                if (preg_match($check, $classname) >= 1) {
                     return true;
                 } // TODO make verif
 
@@ -223,6 +232,8 @@ class Classes implements IMandataire
         return array(
             'status'      => 'success',
             'class'       => $this->formatClassName($class),
+            'extends'     => $extends,
+            'implements'  => $implements,
             'isInterface' => $reflection->isInterface(),
             'isTrait'     => $reflection->isTrait(),
             'isAbstract'  => $reflection->isAbstract(),
@@ -240,15 +251,15 @@ class Classes implements IMandataire
         foreach ($method->getParameters() as $parameter)
             if ($parameter instanceof \ReflectionParameter) {
 
-
-                $type = '';
+                $isObject = false;
+                $type     = '';
                 if ($parameter->isArray())
                     $type = 'Array';
                 elseif ($parameter->isCallable())
                     $type = 'Closure';
                 elseif ($parameter->getClass() instanceof \ReflectionClass) {
-                    $type = $this->formatClassName($parameter->getClass()->getName());
-
+                    $type     = $this->formatClassName($parameter->getClass()->getName());
+                    $isObject = true;
                     $this->exportClass($parameter->getClass()->getName());
                 }
 
@@ -267,6 +278,7 @@ class Classes implements IMandataire
                 $parameters[] = array(
                     'name'         => $parameter->getName(),
                     'type'         => $type,
+                    'isObject'     => $isObject,
                     'isOptionnal'  => $parameter->isOptional(),
                     'isReference'  => $parameter->isPassedByReference(),
                     'defaultValue' => $value
@@ -275,6 +287,19 @@ class Classes implements IMandataire
             }
 
         return $parameters;
+    }
+
+    public function getAllValidClassnameWithoutInternal()
+    {
+        $class  = $this->getClasses();
+        $result = array();
+
+        foreach ($class as $n => $c)
+            if ($c['isInternal'] === false)
+                $result[] = $n;
+
+
+        return $result;
     }
 
 

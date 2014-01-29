@@ -1,21 +1,20 @@
 <?php
 /**
+ * @var Array $class
+ * @var String $classname
+ * @var String $branch
+ * @var String $commitUrl
+ * @var String $commit
+ * @var Array $classnameUrl
+ * @var \Sohapi\Formatter\Html $html
  * @var \Sohapi\Greut $this
  */
 
 $this->inherits('layout.tpl.php');
 $this->block('container');
 
-/**
- * @var \ReflectionClass $reflection
- * @var \Sohapi\Export $api
- */
+$cname = array_pop($classnameUrl);
 
-
-$name = $reflection->getName();
-$name = $api->formatClassName($name);
-$name = explode('_', $name);
-$cname = array_pop($name);
 ?>
 
 
@@ -23,323 +22,235 @@ $cname = array_pop($name);
         <li><a href="index.html"><i class="fa fa-home"></i> </a></li>
         <?php
         $s = array();
-        foreach ($name as $n) {
+        foreach ($classnameUrl as $n) {
             $s[] = $n;
-            echo '<li><a href="' . $api->formatClassName('/' . implode('/', $s)) . '.html">' . $n . '</a></li>';
+            $i   = implode('/', $s);
+            echo '<li><a href="' . $html->resolve($i) . '">' . $n . ' </a></li> ';
         }
 
-        echo '<li class="active">' . $cname . '</li>';
+        echo '<li class="active"> ' . $cname . '</li> ';
         ?>
     </ol>
 
     <div class="row row-offcanvas row-offcanvas-right">
 
     <div class="col-xs-12 col-sm-9">
-    <p class="pull-right visible-xs">
-        <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-    </p>
-    <div class="jumbotron">
-        <?php
-        $type = 'Class';
-        if ($reflection->isInterface())
-            $type = 'Interface';
-        if ($reflection->isTrait())
-            $type = 'Trait';
-        if ($reflection->isAbstract())
-            $type = 'Abstract class'
-        ?>
-        <h2><?php echo $type . ' : ' . $classname; ?></h2>
-        <?php
-        $extends = $reflection->getParentClass();
-        if ($extends instanceof \ReflectionClass) {
-            echo '<p>Extends :';
-            $parentName = '\\' . $extends->getName();
-            $api->exportClass($parentName);
-            $uri = $api->resolve($parentName);
+        <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+        </p>
+        <div class="jumbotron">
 
-            echo '<a href="' . $uri . '">' . $extends->name . '</a></p>';
-        }
-        $implements = $reflection->getInterfaces();
-        if (count($implements) > 0) {
-            echo '<div>Implements: <div class="list-group">';
-            foreach ($implements as $implement)
-                if ($implement instanceof \ReflectionClass) {
+            <?php
+            $type = 'Class';
+            if ($class['isAbstract'] === true)
+                $type = 'Abstract';
+            if ($class['isTrait'] === true)
+                $type = 'Trait';
+            if ($class['isInterface'] === true)
+                $type = 'Interface';
+            ?>
 
-                    $parentName = '\\' . $implement->getName();
-                    $api->exportClass($parentName);
-                    $uri = $api->resolve($parentName);
+            <h2><?php echo $type . ': ' . $classname ?></h2>
 
-                    echo '<a href="' . $uri . '" class="list-group-item">' . $implement->name . '</a>';
-                }
+            <?php
+            if ($class['extends'] !== null)
+                echo ' <p><a href = "' . $html->resolve($class['extends']) . '">' . $class['extends'] . ' </a></p> ';
+            ?>
 
-            echo '</div></div>';
-        }
+            <?php if (count($class['implements']) > 0) { ?>
+                <div>Implements:
+                    <div class="list-group">
+                        <?php foreach ($class['implements'] as $implement)
+                            echo ' <a href = "' . $html->resolve($implement) . '" class="list-group-item"> ' . $implement . '</a> '
+                        ?>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
 
-        ?>
-    </div>
+        <h4>Properties</h4>
 
-    <h4>Properies</h4>
+        <?php foreach ($class['properties'] as $property) {
+            ?>
+            <div class="panel-group" id="accordion">
+                <a name="p-<?php echo $property['name']; ?>"></a>
 
-    <div class="panel-group" id="accordion">
-        <?php
-        foreach ($reflection->getProperties() as $property)
-            if ($property instanceof \ReflectionProperty) {
-                $visibilty = 'default';
-                $color     = 'info';
-                if ($property->isPrivate()) {
-                    $visibilty = 'private';
-                    $color     = 'danger';
-                }
-                if ($property->isProtected()) {
-                    $visibilty = 'protected';
-                    $color     = 'warning';
-                }
-                if ($property->isPublic()) {
-                    $visibilty = 'public';
-                    $color     = 'success';
-                }
-
-
-                $out = '<a name="ap-' . $property->getName() . '"></a>
-                    <div class="panel panel-default">
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#p-' . $property->getName() . '">
-                           <div class="input-group">';
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#ap-<?php echo $property['name']; ?>">
+                                <div class="input-group">
 
-                $out .= '<span class="input-group-addon label-' . $color . '" >' . $visibilty . '</span>';
+                                    <?php
+                                    if ($property['visibility'] === 'private')
+                                        echo ' <span class="input-group-addon label-danger">Private</span> ';
+
+                                    if ($property['visibility'] === 'protected')
+                                        echo ' <span class="input-group-addon label-warning">Protected</span> ';
+
+                                    if ($property['visibility'] === 'public')
+                                        echo ' <span class="input-group-addon label-success">Public</span> ';
+
+                                    if ($property['isStatic'] === true)
+                                        echo ' <span class="input-group-addon label-default">Static</span> ';
+
+                                    ?>
 
 
-                if ($property->isStatic())
-                    $out .= '<span class="input-group-addon label-default" >Static</span>';
-
-
-                $out .= '<div class="form-control">' . $property->getName() . '</div></div>
+                                    <div class="form-control"><?php echo $property['name']; ?></div>
+                                </div>
                             </a>
                         </h4>
                     </div>
-                    <div id="p-' . $property->getName() . '" class="panel-collapse collapse">
-                        <div class="panel-body">' . highlight_string($property->getDocComment(), true) . '
+                    <div id="ap-<?php echo $property['name']; ?>" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <?php if ($property['doc'] !== false)
+                                echo ' <pre>' . highlight_string($property['doc'], true) . ' </pre> '; ?>
                         </div>
                     </div>
-                </div>';
+                </div>
+            </div>
 
-                echo $out;
-            }
-        ?>
-    </div>
-
-
-    <h4>Methods</h4>
-
-    <div class="panel-group" id="methods">
         <?php
-        foreach ($reflection->getMethods() as $method)
-            if ($method instanceof \ReflectionMethod) {
-                $visibilty = 'default';
-                $color     = 'info';
-                if ($method->isPrivate()) {
-                    $visibilty = 'private';
-                    $color     = 'danger';
-                }
-                if ($method->isProtected()) {
-                    $visibilty = 'protected';
-                    $color     = 'warning';
-                }
-                if ($method->isPublic()) {
-                    $visibilty = 'public';
-                    $color     = 'success';
-                }
+        }
+        ?>
 
+        <h4>Methods</h4>
+        <?php foreach ($class['methods'] as $method) {
+            ?>
+            <div class="panel-group" id="methods">
+                <a name="m-<?php echo $method['name']; ?>"></a>
 
-                $out = '<a name="am-' . $method->getName() . '"></a>
-                    <div class="panel panel-default">
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#methods" href="#m-' . $method->getName() . '">
-                           <div class="input-group">';
+                            <a data-toggle="collapse" data-parent="#methods"
+                               href="#am-<?php echo $method['name']; ?>">
+                                <div class="input-group">
 
-                $out .= '<span class="input-group-addon label-' . $color . '" >' . $visibilty . '</span>';
+                                    <?php
+                                    if ($method['visibility'] === 'private')
+                                        echo ' <span class="input-group-addon label-danger">Private</span> ';
 
-                if ($method->getDeclaringClass()->getName() !== substr($classname, 1))
-                    $out .= '<span class="input-group-addon label-info" >Inherit</span>';
+                                    if ($method['visibility'] === 'protected')
+                                        echo ' <span class="input-group-addon label-warning">Protected</span> ';
 
-                if ($method->isFinal())
-                    $out .= '<span class="input-group-addon label-warning" >Final</span>';
+                                    if ($method['visibility'] === 'public')
+                                        echo ' <span class="input-group-addon label-success">Public</span> ';
 
-                if ($method->isStatic())
-                    $out .= '<span class="input-group-addon label-default" >Static</span>';
+                                    if ($method['isStatic'] === true)
+                                        echo ' <span class="input-group-addon label-default">Static</span> ';
 
+                                    if ($method['isAbstract'] === true)
+                                        echo ' <span class="input-group-addon label-primary">Abstract</span> ';
 
-                $param = function (Array $parameters) use (&$api) {
-                    if (count($parameters) === 0)
-                        return ' ( <i>void</i> ) ';
+                                    ?>
 
-                    $out = array();
-
-                    foreach ($parameters as $parameter)
-                        if ($parameter instanceof \ReflectionParameter) {
-                            $prefix = '';
-                            $suffix = '';
-                            $type   = '';
-                            $ref    = '';
-                            $value  = '';
-
-                            if ($parameter->isArray())
-                                $type = 'Array ';
-                            elseif ($parameter->isCallable())
-                                $type = 'Closure ';
-
-                            elseif ($parameter->getClass() instanceof \ReflectionClass) {
-                                $type = '\\' . $parameter->getClass()->name;
-
-                            }
-
-
-                            if ($parameter->isPassedByReference())
-                                $ref = '&';
-
-
-                            if ($parameter->isOptional()) {
-                                $prefix = '<i>[';
-                                $value  = '';
-                                $suffix = ']</i>';
-
-                                if ($parameter->isDefaultValueAvailable() === true)
-                                    if ($parameter->getDefaultValue() === null)
-                                        $value = 'null';
-                                    else
-                                        if (is_array($parameter->getDefaultValue()))
-                                            $value = "'" . implode(',', $parameter->getDefaultValue()) . "'";
-                                        else
-                                            $value = "'" . $parameter->getDefaultValue() . "'";
-
-                                $value = ' = ' . $value;
-                            }
-
-                            $out[] = $prefix . $type . ' ' . $ref . '$' . $parameter->getName() . $value . $suffix;
-                        }
-
-                    return ' ( ' . implode(' , ', $out) . ' )';
-
-                };
-
-                $parameters = $method->getParameters();
-                $comment    = $method->getDocComment();
-                $out .= '<div class="form-control">' . $method->getName() . $param($parameters) . '</div></div>
+                                    <div
+                                        class="form-control"><?php echo $method['name'] . ' ' . $method['signature'] ?></div>
+                                </div>
                             </a>
                         </h4>
                     </div>
-                    <div id="m-' . $method->getName() . '" class="panel-collapse collapse ' . (($comment === false) ? '' : 'in') . '">
-                        <div class="panel-body">';
-                if (!empty($parameters)) {
-                    $out .= '<table class="table table-hover"><tr><th>Name</th><th>Type</th><th>Required</th><th>Default Value</th></tr>';
-                    foreach ($parameters as $parameter)
-                        if ($parameter instanceof \ReflectionParameter) {
+                    <div id="am-<?php echo $method['name']; ?>" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Default Value</th>
+                                </tr>
+                                <?php foreach ($method['parameter'] as $parameter) {
 
-                            if ($parameter->isArray())
-                                $type = 'Array ';
-                            elseif ($parameter->isCallable())
-                                $type = 'Closure ';
-
-                            elseif ($parameter->getClass() instanceof \ReflectionClass) {
-                                $type    = '\\' . $parameter->getClass()->name;
-                                $resolve = $api->resolve($type);
-                                $api->exportClass($type);
-                                if ($resolve !== '')
-                                    $type = '<a href="' . $resolve . '">' . $type . '</a>';
-                            }
-
-                            $required = '<button class="btn btn-primary">yes</button>';
-                            if ($parameter->isOptional() === true)
-                                $required = '<button class="btn btn-default">no</button>';
-
-                            $value = '';
-                            if ($parameter->isDefaultValueAvailable() === true)
-                                if ($parameter->getDefaultValue() === null)
-                                    $value = 'null';
-                                else
-                                    if (is_array($parameter->getDefaultValue()))
-                                        $value = "'" . implode(',', $parameter->getDefaultValue()) . "'";
+                                    echo ' <tr><td> ' . $parameter['name'] . ' </td><td> ';
+                                    if ($parameter['isObject'] === true)
+                                        echo ' <a href = "' . $html->resolve($parameter['type']) . '">' . $parameter['type'] . ' </a> ';
                                     else
-                                        $value = "'" . $parameter->getDefaultValue() . "'";
+                                        echo $parameter['type'];
 
+                                    echo ' </td><td> ';
 
-                            $out .= '<tr><td>$' . $parameter->getName() . '</td><td>' . $type . '</td><td>' . $required . '</td><td>' . $value . '</td></tr>';
+                                    if ($parameter['isOptionnal'] === false)
+                                        echo ' <button class="btn btn-primary"> yes</button> ';
+                                    else
+                                        echo '<button class="btn btn-default"> no</button> ';
 
-                        }
+                                    echo '</td><td> ';
 
-                    $out .= '</table>';
-                }
+                                    $value = '';
+                                    if ($parameter['defaultValue'] !== '')
+                                        if ($parameter['defaultValue'] === null or $parameter['defaultValue'] === 'null')
+                                            $value = 'null';
+                                        else
+                                            $value = '"' . $parameter['defaultValue'] . '"';
 
+                                    echo $value . ' </td></tr> ';
+                                }
+                                ?>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                $out .= '<pre>' . highlight_string($comment, true) . '</pre></div></div></div>';
-
-                echo $out;
-
-
-            }
-        ?>
-    </div>
-
-
+        <?php } ?>
     </div>
     <!--/span-->
-    <?php
-    $formatItem = function ($href, $visibilty, $label, $isStatic, $isFinal = false) {
 
-        switch ($visibilty) {
-            case 'private':
-                $visibilty = 'danger';
-                break;
-            case 'protected':
-                $visibilty = 'warning';
-                break;
-            case 'public':
-                $visibilty = 'success';
-                break;
-            default:
-                $visibilty = 'info';
-        }
-
-        return '<a href="' . $href . '-' . $label . '" class="list-group-item"><span class="label label-' . $visibilty . '">&nbsp;</span> ' . $label . '</a>';
-    }
-    ?>
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <?php
+        if (isset($branch) && isset($commit) && isset($commitUrl)) {
+            ?>
+            <p class="btn-group">
+                <a href="<?php echo $commitUrl; ?>" class="btn btn-success"><?php echo $branch; ?></a>
+                <a href="<?php echo $commitUrl; ?>" class="btn btn-default"><?php echo $commit; ?></a>
+            </p>
+
+        <?php
+        }
+        ?>
         <div class="list-group">
             <a href="#" class="list-group-item active"><?php echo $classname; ?></a>
             <li class="list-group-item">Properties</li>
             <?php
-            foreach ($reflection->getProperties() as $property)
-                if ($property instanceof \ReflectionProperty) {
-                    $visibilty = 'default';
-                    if ($property->isPrivate())
-                        $visibilty = 'private';
-                    if ($property->isProtected())
-                        $visibilty = 'protected';
-                    if ($property->isPublic())
-                        $visibilty = 'public';
+            foreach ($class['properties'] as $property) {
 
-                    echo $formatItem('#ap', $visibilty, $property->getName(), $property->isStatic());
-                }
+                echo ' <a href = "#p-' . $property['name'] . '" class="list-group-item"> ';
 
-            echo '<li class="list-group-item">Methods</li>';
-            foreach ($reflection->getMethods() as $method)
-                if ($method instanceof \ReflectionMethod) {
-                    $visibilty = 'default';
-                    if ($method->isPrivate())
-                        $visibilty = 'private';
-                    if ($method->isProtected())
-                        $visibilty = 'protected';
-                    if ($method->isPublic())
-                        $visibilty = 'public';
+                if ($property['visibility'] === 'private')
+                    echo ' <span class="label label-danger">&nbsp;</span> ';
 
-                    echo $formatItem('#am', $visibilty, $method->name, $method->isStatic(), $method->isFinal());
+                if ($property['visibility'] === 'protected')
+                    echo ' <span class="label label-warning">&nbsp;</span> ';
+
+                if ($property['visibility'] === 'public')
+                    echo ' <span class="label label-success">&nbsp;</span> ';
 
 
-                }
+                echo '$' . $property['name'] . ' </a> ';
+            }
+
             ?>
+            <li class="list-group-item">Methods</li>
+            <?php
+            foreach ($class['methods'] as $method) {
 
+                echo ' <a href = "#m-' . $method['name'] . '" class="list-group-item"> ';
+
+                if ($method['visibility'] === 'private')
+                    echo ' <span class="label label-danger">&nbsp;</span> ';
+
+                if ($method['visibility'] === 'protected')
+                    echo ' <span class="label label-warning">&nbsp;</span> ';
+
+                if ($method['visibility'] === 'public')
+                    echo ' <span class="label label-success">&nbsp;</span> ';
+
+                echo $method['name'] . '() </a> ';
+            }
+            ?>
         </div>
     </div>
     <!--/span-->

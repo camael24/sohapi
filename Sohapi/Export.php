@@ -8,6 +8,9 @@
 
 namespace Sohapi {
 
+    use Sohapi\Formatter\IExport;
+    use Sohapi\Proxy\IProxy;
+
     class Export
     {
         private $_class = array();
@@ -25,7 +28,16 @@ namespace Sohapi {
 
         public function check($chekable)
         {
-            $this->_check[] = $chekable;
+            if (!is_bool($this->_check))
+                $this->_check[] = $chekable;
+
+            return $this;
+        }
+
+        public function all()
+        {
+
+            $this->_check = true;
 
             return $this;
         }
@@ -38,21 +50,28 @@ namespace Sohapi {
             return $this;
         }
 
-        public function mandataire(IMandataire $object)
+        public function proxy(IProxy $object)
         {
             $object->setCheck($this->_check);
             $object->setClassname($this->_class);
-            $object->setResolve($this->_resolve);
-
             $object->process();
+
             $this->_mandataire = $object;
 
             return $this;
         }
 
+        public function internal($lang = 'en', $server = 'fr')
+        {
+
+            return $this->resolution('internal', 'http://' . $server . '.php.net/manual/' . $lang . '/class.(?<classname>[^\\.]).php');
+        }
+
         public function export(IExport $object = null)
         {
-            $object->process($this->_mandataire);
+            $object->setResolve($this->_resolve);
+
+            return $object->process($this->_mandataire);
         }
     }
 }

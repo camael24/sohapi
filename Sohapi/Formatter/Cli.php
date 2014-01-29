@@ -6,12 +6,14 @@
  * Time: 15:38
  */
 
-namespace Sohapi;
+namespace Sohapi\Formatter;
 
+
+use Sohapi\Proxy\IProxy;
 
 class Cli implements IExport
 {
-    public function process(IMandataire $mandataire)
+    public function process(IProxy $mandataire)
     {
         $classes = $mandataire->getValidClasses();
 
@@ -29,5 +31,11 @@ class Cli implements IExport
             echo 'IGN ' . $classname . "\t" . $data['status'] . "\n";
 
     }
+
+    public function setResolve(Array $resolve)
+    {
+
+    }
+
 
 } 

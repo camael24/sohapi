@@ -1,5 +1,6 @@
 <?php
 /**
+ * @var String $classname
  * @var \Sohapi\Greut $this
  */
 
@@ -13,14 +14,22 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Sohapi | <?php echo $classname; ?></title>
+    <?php
+    if (isset($classname))
+        if ($classname !== '')
+            echo '<title>Sohapi | ' . $classname . '</title>';
+        else
+            echo '<title>Sohapi</title>';
+    ?>
+
+
 
     <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/font-awesome.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="/css/offcanvas.css" rel="stylesheet">
+    <link href="css/offcanvas.css" rel="stylesheet">
 
 </head>
 
@@ -46,7 +55,7 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/offcanvas.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/offcanvas.js"></script>
 </body>
 </html>

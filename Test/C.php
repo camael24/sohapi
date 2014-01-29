@@ -26,6 +26,7 @@ namespace Test {
         {
 
         }
+
     }
 
     interface I
@@ -72,7 +73,7 @@ namespace Test {
 
         }
 
-        private function b(Gordon $d = null)
+        private function b($a, Gordon $d = null)
         {
 
         }

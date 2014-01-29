@@ -1,8 +1,6 @@
 {
     "require": {
-        "hoa/file": "dev-master",
-        "hoa/console": "dev-master",
-        "sohoa/framework": "dev-master"
+        "hoa/console": "dev-master"
     },
     "autoload": {
         "classmap": [
