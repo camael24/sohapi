@@ -190,6 +190,8 @@ $cname = array_pop($classnameUrl);
                                 }
                                 ?>
                             </table>
+                            <?php if ($method['doc'] !== false)
+                                echo ' <pre>' . highlight_string($method['doc'], true) . ' </pre> '; ?>
                         </div>
                     </div>
                 </div>
@@ -202,8 +204,12 @@ $cname = array_pop($classnameUrl);
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
         <?php
         if (isset($branch) && isset($commit) && isset($commitUrl)) {
+
+            $commitUrl .= $classname . '.php';
+
             ?>
             <p class="btn-group">
+                <a href="<?php echo $commitUrl; ?>" class="btn btn-info"><i class="fa fa-github"></i></a>
                 <a href="<?php echo $commitUrl; ?>" class="btn btn-success"><?php echo $branch; ?></a>
                 <a href="<?php echo $commitUrl; ?>" class="btn btn-default"><?php echo $commit; ?></a>
             </p>

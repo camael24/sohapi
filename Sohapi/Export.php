@@ -20,6 +20,10 @@ namespace Sohapi {
 
         public function classname($classname)
         {
+            $classname = str_replace('/', '\\', $classname);
+            if ($classname[0] !== '\\')
+                $classname = '\\' . $classname;
+
             if (!in_array($classname, $this->_class))
                 $this->_class[] = $classname;
 
@@ -69,6 +73,7 @@ namespace Sohapi {
 
         public function export(IExport $object = null)
         {
+
             $object->setResolve($this->_resolve);
 
             return $object->process($this->_mandataire);

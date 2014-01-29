@@ -172,7 +172,21 @@ class Html implements IExport
         foreach ($this->_argument as $key => $value)
             $data->{$key} = $value;
 
-        $data->all    = $mandataire->getAllClasses();
+
+        $all     = $mandataire->getAllClasses();
+        $valid   = array();
+        $errored = array();
+
+        foreach ($all as $c)
+            if ($c['status'] === 'success')
+                $valid[] = $c;
+            else
+                $errored[] = $c;
+
+
+        $data->valid  = count($valid);
+        $data->error  = count($errored);
+        $data->all    = array_merge($valid, $errored);
         $data->html   = $this;
         $greut        = new Greut($this->_theme);
         $greut->_data = $data;

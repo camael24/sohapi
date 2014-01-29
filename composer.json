@@ -1,7 +1,4 @@
 {
-    "require": {
-        "hoa/console": "dev-master"
-    },
     "autoload": {
         "classmap": [
             {

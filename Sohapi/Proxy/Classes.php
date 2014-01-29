@@ -38,9 +38,6 @@ class Classes implements IProxy
 
     public function isRegister($classname)
     {
-
-        $classname = $this->formatClassName($classname);
-
         return array_key_exists($classname, $this->_register);
     }
 
@@ -125,6 +122,8 @@ class Classes implements IProxy
     protected function loadValidClassname($classname)
     {
 
+        $classname = str_replace('/', '\\', $classname);
+
         if ($classname[0] !== '\\')
             return '\\' . $classname;
 
@@ -133,23 +132,15 @@ class Classes implements IProxy
 
     protected function exportClass($classname = null)
     {
+
         if ($classname === null)
             return;
 
         $classname           = $this->loadValidClassname($classname);
         $classname_formatted = $this->formatClassName($classname);
 
-        if ($this->isRegister($classname) === true)
+        if ($this->isRegister($classname_formatted) === true)
             return;
-
-        if (class_exists($classname, true) === false)
-            if (interface_exists($classname, true) === false) {
-                $this->_register[$classname_formatted] = array(
-                    'status' => 'not_exists',
-                    'class'  => $classname_formatted
-                );
-                return;
-            }
 
 
         if ($this->allow($classname) === false) {
@@ -160,6 +151,15 @@ class Classes implements IProxy
             return;
         }
 
+        if (class_exists($classname) === false)
+            if (interface_exists($classname) === false) {
+                $this->_register[$classname_formatted] = array(
+                    'status' => 'not_exists',
+                    'class'  => $classname_formatted
+                );
+                return;
+            }
+
 
         $this->_register[$classname_formatted] = $this->export($classname);
     }
@@ -167,11 +167,12 @@ class Classes implements IProxy
     private function export($class)
     {
 
-        $reflection = new \ReflectionClass($class);
-        $properties = array();
-        $extends    = null;
-        $implements = array();
-        $methods    = array();
+        $this->_register[$this->formatClassName($class)] = array();
+        $reflection                                      = new \ReflectionClass($class);
+        $properties                                      = array();
+        $extends                                         = null;
+        $implements                                      = array();
+        $methods                                         = array();
 
         if ($reflection->getParentClass() instanceof \ReflectionClass) {
 

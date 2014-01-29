@@ -1,12 +1,17 @@
 <?php
 /**
  * @var Array $all
+ * @var Int $valid
+ * @var Int $error
  * @var \Sohapi\Formatter\Html $html
  * @var \Sohapi\Greut $this
  */
 
 $this->inherits('layout.tpl.php');
 $this->block('container');
+
+echo '<div class="alert alert-success">We have parse <span class="label label-success">' . $valid . ' valid</span> files and <span class="label label-danger">' . $error . ' error</span>  files</div>';
+
 
 ?>
 
@@ -28,22 +33,15 @@ $this->block('container');
             if ($c['status'] === 'success') {
                 $class = 'success';
                 $icon  = '<i class="fa fa-check"></i>';
-            }
-
-            if ($c['status'] === 'not_exists') {
+            } else {
                 $class = 'danger';
-                $icon  = '<i class="fa fa-exclamation-triangle"></i>';
-            }
-
-            if ($c['status'] === 'ignored') {
-                $class = 'warning';
-                $icon  = '<i class="fa fa-exclamation-circle"></i>';
+                $icon  = '<i class="fa fa-exclamation-circle"></i> ' . $c['status'];
             }
 
 
             echo '<tr class="' . $class . '"><td>' . $icon . '</td>
             <td>' . $c['class'] . '</td>
-            <td>' . $html->resolve($c['class']) . '</td>';
+            <td><a href="' . $html->resolve($c['class']) . '">' . $html->resolve($c['class']) . '</a></td>';
             if (array_key_exists('methods', $c))
                 echo '<td><span class="badge">' . count($c['methods']) . '</span></td>';
             else
