@@ -49,7 +49,7 @@ namespace {
         'mainUrl'     => 'https://github.com/hoaproject/Central/tree/(?<commitlong>)/(?<file>)',
         'alt'         => array(
             'Gitweb' => 'http://git.hoa-project.net/Central.git/tree/(?<file>)\?id=(?<commitlong>)',
-            'Pickacode' => 'https://pikacode.com/hoaproject/Central/files/(?<commitlong>)/(?<file>)'
+            'Pickacode' => 'https://pikacode.com/hoaproject/Central/file/(?<commitlong>)/(?<file>)'
         )
     ));
     $api  = new Export();
