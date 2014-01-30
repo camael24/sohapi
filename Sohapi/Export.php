@@ -18,6 +18,12 @@ namespace Sohapi {
         private $_resolve = array();
         private $_mandataire = null;
 
+        /**
+         * Add an class to the Engine parser
+         *
+         * @param $classname
+         * @return \Sohapi\Export
+         */
         public function classname($classname)
         {
             $classname = str_replace('/', '\\', $classname);
@@ -30,6 +36,13 @@ namespace Sohapi {
                 return $this;
         }
 
+        /**
+         * Add an condition to parse the class (use for the dependancy)
+         *
+         * @param $chekable
+         * @return $this
+         */
+
         public function check($chekable)
         {
             if (!is_bool($this->_check))
@@ -37,6 +50,12 @@ namespace Sohapi {
 
             return $this;
         }
+
+        /**
+         * By pass all verification
+         *
+         * @return $this
+         */
 
         public function all()
         {
@@ -46,6 +65,14 @@ namespace Sohapi {
             return $this;
         }
 
+        /**
+         * Route an class to the local system or distant , as you want
+         * http://google.fr/(?<classname>) are possible :p
+         *
+         * @param $regex
+         * @param $unroute
+         * @return $this
+         */
         public function resolution($regex, $unroute)
         {
             if (!array_key_exists($regex, $this->_resolve))
@@ -53,6 +80,13 @@ namespace Sohapi {
 
             return $this;
         }
+
+        /**
+         * Use an Parser Engine
+         *
+         * @param IProxy $object
+         * @return $this
+         */
 
         public function proxy(IProxy $object)
         {
@@ -65,11 +99,26 @@ namespace Sohapi {
             return $this;
         }
 
+        /**
+         * An shortcut for Export::Resolution for internal Classes
+         *
+         * @param string $lang
+         * @param string $server
+         * @return $this
+         */
+
         public function internal($lang = 'en', $server = 'fr')
         {
 
             return $this->resolution('internal', 'http://' . $server . '.php.net/manual/' . $lang . '/class.(?<classname>[^\\.]).php');
         }
+
+        /**
+         * Use an Formatter Engine (by default Html or Cli)
+         *
+         * @param IExport $object
+         * @return mixed
+         */
 
         public function export(IExport $object = null)
         {
