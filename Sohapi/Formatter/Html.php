@@ -110,10 +110,12 @@ class Html implements IExport
 
     protected function _ns(Array $tree, $parent = '')
     {
-        foreach ($tree as $ns => $sub) {
+        foreach ($tree as $ns => $sub)
             if (count($sub) > 0) {
 
-                $data = new \Stdclass();
+                $data   = new \Stdclass();
+                $folder = array();
+                $file   = array();
 
                 foreach ($this->_argument as $key => $value)
                     $data->{$key} = $value;
@@ -122,15 +124,26 @@ class Html implements IExport
                 $ns                 = $parent . '/' . $ns;
                 $data->classname    = $this->formatClassname($ns);
                 $data->classnameUrl = explode('/', $this->formatClassname($ns));
-                $data->content      = array_keys($sub);
-                $data->all          = $this->_allclass;
-                $data->html         = $this;
-                $greut              = new Greut($this->_theme);
-                $greut->_data       = $data;
-                $content            = $greut->renderFile('ns.tpl.php');
-                $filename           = $this->resolve($ns);
-                $file               = $this->_output . '/' . $filename;
-                $bytes              = file_put_contents($file, $content);
+                $s                  = array_keys($sub);
+
+                foreach ($s as $class) {
+                    $real = $ns . '/' . $class;
+                    if (array_key_exists($real, $this->_allclass))
+                        $file[] = $real;
+                    else
+                        $folder[] = $real;
+                }
+
+
+                $data->folder = $folder;
+                $data->file   = $file;
+                $data->html   = $this;
+                $greut        = new Greut($this->_theme);
+                $greut->_data = $data;
+                $content      = $greut->renderFile('ns.tpl.php');
+                $filename     = $this->resolve($ns);
+                $file         = $this->_output . '/' . $filename;
+                $bytes        = file_put_contents($file, $content);
 
 
                 $classnameFormat = $this->formatClassname($ns);
@@ -139,7 +152,7 @@ class Html implements IExport
 
                 $this->_ns($sub, $ns);
             }
-        }
+
     }
 
     protected function index($list)
@@ -151,8 +164,7 @@ class Html implements IExport
 
         $data->classname    = $this->formatClassname('/');
         $data->classnameUrl = array();
-        $data->content      = $list;
-        $data->all          = $this->_allclass;
+        $data->folder       = $list;
         $data->html         = $this;
         $greut              = new Greut($this->_theme);
         $greut->_data       = $data;
@@ -230,7 +242,7 @@ class Html implements IExport
             if ($parameter['defaultValue'] === null or $parameter['defaultValue'] === 'null')
                 $value = ' = null';
             else
-                $value = ' = "' . $parameter['defaultValue'] . '"';
+                $value = ' = ' . $parameter['defaultValue'];
 
 
         return $prefix . $type . ' ' . $name . $value . $suffix;
@@ -262,7 +274,7 @@ class Html implements IExport
             if (array_key_exists('isInternal', $c) && $c['isInternal'] === true)
                 if (array_key_exists('internal', $this->_resolve)) {
                     $route = $this->_resolve['internal'];
-                    return $this->_unroute($route, array('classname' => strtolower($class)));
+                    return $this->unroute($route, array('classname' => strtolower($class)));
                 }
         }
 
@@ -270,10 +282,10 @@ class Html implements IExport
 
             if ($regex !== 'internal' && preg_match($regex, $class)) {
 
-                if(in_array($class , $reserved))
+                if (in_array($class, $reserved))
                     return 'http://www.php.net/manual/fr/reserved.classes.php';
 
-                return $this->_unroute($route, array('classname' => $class));
+                return $this->unroute($route, array('classname' => $class));
             }
 
         }
@@ -290,8 +302,8 @@ class Html implements IExport
      * @param bool $allowEmpty
      * @return mixed
      */
-    protected function _unroute($pattern, Array $variables,
-                                $allowEmpty = true)
+    public function unroute($pattern, Array $variables,
+                            $allowEmpty = true)
     {
 
         // (?<named>…)

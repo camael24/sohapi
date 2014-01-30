@@ -1,7 +1,8 @@
 <?php
 /**
  * @var Array $class
- * @var Array $all
+ * @var Array $folder
+ * @var Array $file
  * @var String $classname
  * @var Array $classnameUrl
  * @var \Sohapi\Formatter\Html $html
@@ -39,18 +40,27 @@ $cname = array_pop($classnameUrl);
             <div class="list-group">
                 <?php
 
-                if (!empty($content)) {
-                    sort($content);
-                    foreach ($content as $elment) {
-                        $href = $classname . '/' . $elment;
-                        $real = '/' . $href;
+                if (!empty($folder)) {
 
-                        if (array_key_exists($real, $all))
-                            echo '<a href="' . $html->resolve($href) . '" class="list-group-item"><i class="fa fa-angle-right"></i> ' . $elment . '</a>';
-                        else
-                            echo '<a href="' . $html->resolve($href) . '" class="list-group-item"><i class="fa fa-folder-o"></i> ' . $elment . '</a>';
+                    foreach ($folder as $element){
+                        $cf = explode('/' , $element);
+                        $cf = array_pop($cf);
+                        echo '<a href="' . $html->resolve($element) . '" class="list-group-item"><i class="fa fa-folder-o"></i> ' . $cf . '</a>';
                     }
+
                 }
+                if (!empty($file)) {
+
+                    foreach ($file as $element){
+                        $cf = explode('/' , $element);
+                        $cf = array_pop($cf);
+                        echo '<a href="' . $html->resolve($element) . '" class="list-group-item"><i class="fa fa-angle-right"></i> ' . $cf . '</a>';
+                    }
+
+                }
+
+
+
                 ?>
             </div>
 

@@ -2,9 +2,6 @@
 /**
  * @var Array $class
  * @var String $classname
- * @var String $branch
- * @var String $commitUrl
- * @var String $commit
  * @var Array $classnameUrl
  * @var \Sohapi\Formatter\Html $html
  * @var \Sohapi\Greut $this
@@ -155,42 +152,46 @@ $cname = array_pop($classnameUrl);
                     </div>
                     <div id="am-<?php echo $method['name']; ?>" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <table class="table table-hover">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                    <th>Required</th>
-                                    <th>Default Value</th>
-                                </tr>
-                                <?php foreach ($method['parameter'] as $parameter) {
+                            <!--  TODO : Exception  -->
+                            <?php if (count($method['parameter']) > 0) { ?>
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Required</th>
+                                        <th>Default Value</th>
+                                    </tr>
+                                    <?php foreach ($method['parameter'] as $parameter) {
 
-                                    echo ' <tr><td> ' . $parameter['name'] . ' </td><td> ';
-                                    if ($parameter['isObject'] === true)
-                                        echo ' <a href = "' . $html->resolve($parameter['type']) . '">' . $parameter['type'] . ' </a> ';
-                                    else
-                                        echo $parameter['type'];
-
-                                    echo ' </td><td> ';
-
-                                    if ($parameter['isOptionnal'] === false)
-                                        echo ' <button class="btn btn-primary"> yes</button> ';
-                                    else
-                                        echo '<button class="btn btn-default"> no</button> ';
-
-                                    echo '</td><td> ';
-
-                                    $value = '';
-                                    if ($parameter['defaultValue'] !== '')
-                                        if ($parameter['defaultValue'] === null or $parameter['defaultValue'] === 'null')
-                                            $value = 'null';
+                                        echo ' <tr><td><code>$' . $parameter['name'] . '</code></td><td> ';
+                                        if ($parameter['isObject'] === true)
+                                            echo ' <a href = "' . $html->resolve($parameter['type']) . '">' . $parameter['type'] . ' </a> ';
                                         else
-                                            $value = '"' . $parameter['defaultValue'] . '"';
+                                            echo $parameter['type'];
 
-                                    echo $value . ' </td></tr> ';
-                                }
-                                ?>
-                            </table>
-                            <?php if ($method['doc'] !== false)
+                                        echo ' </td><td> ';
+
+                                        if ($parameter['isOptionnal'] === false)
+                                            echo ' <button class="btn btn-primary"> yes</button> ';
+                                        else
+                                            echo '<button class="btn btn-default"> no</button> ';
+
+                                        echo '</td><td><code>';
+
+                                        $value = '';
+                                        if ($parameter['defaultValue'] !== '')
+                                            if ($parameter['defaultValue'] === null or $parameter['defaultValue'] === 'null')
+                                                $value = 'null';
+                                            else
+                                                $value = $parameter['defaultValue'];
+
+                                        echo $value . ' </code></td></tr> ';
+                                    }
+                                    ?>
+                                </table>
+                            <?php
+                            }
+                            if ($method['doc'] !== false)
                                 echo ' <pre>' . highlight_string($method['doc'], true) . ' </pre> '; ?>
                         </div>
                     </div>
@@ -203,15 +204,52 @@ $cname = array_pop($classnameUrl);
 
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
         <?php
-        if (isset($branch) && isset($commit) && isset($commitUrl)) {
+        /**
+         * @var String $branch
+         * @var String $commitshort
+         * @var String $commitlong
+         * @var String $mainUrl
+         * @var Array $alt
+         *
+         */
+        if (isset($branch) && isset($mainUrl) && isset($commitshort) && isset($commitlong)) {
 
-            $commitUrl .= $classname . '.php';
+            $arg = array(
+                'branch'      => $branch,
+                'commitlong'  => $commitlong,
+                'commitshort' => $commitshort,
+                'file'        => str_replace('\\', '/', $classname . '.php')
+
+            );
+
+            $mainUrl = $html->unroute($mainUrl, $arg);
 
             ?>
-            <p class="btn-group">
-                <a href="<?php echo $commitUrl; ?>" class="btn btn-info"><i class="fa fa-github"></i></a>
-                <a href="<?php echo $commitUrl; ?>" class="btn btn-success"><?php echo $branch; ?></a>
-                <a href="<?php echo $commitUrl; ?>" class="btn btn-default"><?php echo $commit; ?></a>
+
+            <p>
+            <div class="btn-group">
+                <a href="<?php echo $mainUrl; ?>" class="btn btn-success"><i class="fa fa-github"></i></a>
+                <button class="btn btn-default"><?php echo trim($branch) . '  ' . trim($commitshort); ?></button>
+
+                <?php
+                if (isset($alt) and !empty($alt) and is_array($alt) === true) {
+                    ?>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+
+                    <ul class="dropdown-menu" role="menu">
+                        <?php foreach ($alt as $label => $href) {
+var_dump($html->unroute($href , $arg));
+                            echo '<li><a href="' . $html->unroute($href, $arg) . '">' . $label . '</a></li>';
+                        }
+                        ?>
+                    </ul>
+                <?php
+                }
+                ?>
+            </div>
             </p>
 
         <?php

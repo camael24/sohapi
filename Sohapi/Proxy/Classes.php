@@ -111,6 +111,9 @@ class Classes implements IProxy
 
     protected function formatClassName($classname)
     {
+        if ($classname === '' or $classname === null)
+            return;
+
 
         $classname = str_replace('\\', '/', $classname);
         if ($classname[0] !== '/')
@@ -121,6 +124,9 @@ class Classes implements IProxy
 
     protected function loadValidClassname($classname)
     {
+
+        if ($classname === '')
+            return;
 
         $classname = str_replace('/', '\\', $classname);
 
@@ -216,9 +222,9 @@ class Classes implements IProxy
                 elseif ($method->isPrivate())
                     $visibility = 'private';
 
-                $parameter = $this->getParameter($method);
-
-                $methods[] = array(
+                $parameter  = $this->getParameter($method);
+                $annotation = $this->parseAnnotation($method->getDocComment());
+                $methods[]  = array(
                     'class'      => $method->getDeclaringClass()->getName(),
                     'name'       => $method->getName(),
                     'visibility' => $visibility,
@@ -226,6 +232,7 @@ class Classes implements IProxy
                     'isFinal'    => $method->isFinal(),
                     'isAbstract' => $method->isAbstract(),
                     'parameter'  => $parameter,
+                    'annotation' => $annotation,
                     'doc'        => $method->getDocComment()
                 );
             }
@@ -244,6 +251,36 @@ class Classes implements IProxy
             'methods'     => $methods,
         );
     }
+
+    private function parseAnnotation($doc)
+    {
+
+        $line  = explode("\n", $doc);
+        $annot = array();
+        foreach ($line as $l) {
+
+            $l = str_replace(array('*', '/'), '', $l);
+            $l = trim($l);
+
+            preg_match('#^@([a-z^\S]+)\s+([a-z]*)#', $l, $m);
+
+            if (!empty($m)) {
+                if ($m[1] === 'throw')
+                    $this->exportClass($m[2]);
+
+
+                $annot[] = array(
+                    'param' => $m[1],
+                    'type'  => $m[2]
+                );
+            }
+
+
+        }
+
+        return $annot;
+    }
+
 
     private function getParameter(\ReflectionMethod $method)
     {

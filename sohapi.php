@@ -43,9 +43,14 @@ namespace {
 
 
     $html = new Html(__DIR__ . '/html', __DIR__ . '/Output/Bootstrap/', array(
-        'branch'    => $branch,
-        'commit'    => $commit,
-        'commitUrl' => 'https://github.com/hoaproject/Central/tree/' . $commitLong . '/'
+        'branch'      => $branch,
+        'commitshort' => $commit,
+        'commitlong'  => $commitLong,
+        'mainUrl'     => 'https://github.com/hoaproject/Central/tree/(?<commitlong>)/(?<file>)',
+        'alt'         => array(
+            'Gitweb' => 'http://git.hoa-project.net/Central.git/tree/(?<file>)\?id=(?<commitlong>)',
+            'Pickacode' => 'https://pikacode.com/hoaproject/Central/files/(?<commitlong>)/(?<file>)'
+        )
     ));
     $api  = new Export();
 
