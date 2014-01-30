@@ -1,4 +1,14 @@
 {
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "camael24",
+            "email": "thehawk@hoa-project.net"
+        }
+    ],
+
+    "name": "camael24/sohapi",
+    "description": "Api Generator",
     "autoload": {
         "classmap": [
             {
@@ -7,5 +17,4 @@
         ]
     },
     "minimum-stability": "dev"
-
 }

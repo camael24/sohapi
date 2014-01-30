@@ -27,7 +27,7 @@ namespace Sohapi {
             if (!in_array($classname, $this->_class))
                 $this->_class[] = $classname;
 
-            return $this;
+                return $this;
         }
 
         public function check($chekable)

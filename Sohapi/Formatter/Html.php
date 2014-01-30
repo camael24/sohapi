@@ -21,27 +21,75 @@ class Html implements IExport
     private $_allclass = array();
     private $_stack = array();
 
-    public function __construct($outputDirectory, $themeDirectory, Array $argument = array())
+    public function __construct($outputDirectory, Array $argument = array(), $themeDirectory = null)
     {
+
+        if ($themeDirectory === null)
+            $themeDirectory = __DIR__ . '/../Bootstrap';
+
+
         $realpath = realpath($outputDirectory);
         if ($realpath !== false)
             $this->_output = $realpath;
         else
-            throw new \Exception('Can not find path ' . $outputDirectory);
+            throw new \Exception('Can not find output path ' . $outputDirectory);
 
         $realpath = realpath($themeDirectory);
         if ($realpath !== false)
             $this->_theme = $realpath;
         else
-            throw new \Exception('Can not find path ' . $themeDirectory);
+            throw new \Exception('Can not find theme path ' . $themeDirectory);
 
         $this->_argument = array_merge($this->_argument, $argument);
 
+        $this->install();
     }
 
     public function setResolve(Array $resolve)
     {
         $this->_resolve = $resolve;
+    }
+
+    protected function install()
+    {
+        $res = $this->_theme . '/Resource';
+
+        if (!is_dir($res))
+            throw new \Exception('Your theme are not valid');
+
+
+        foreach (scandir($res) as $d)
+            if ($d[0] !== '.') {
+                $source = $res . '/' . $d;
+                $this->copy_r($source, $this->_output . '/' . $d);
+            }
+
+
+    }
+
+    protected function copy_r($path, $dest)
+    {
+        if (is_dir($path)) {
+            @mkdir($dest);
+            $objects = scandir($path);
+            if (sizeof($objects) > 0) {
+                foreach ($objects as $file) {
+                    if ($file == "." || $file == "..")
+                        continue;
+                    // go on
+                    if (is_dir($path . DS . $file)) {
+                        $this->copy_r($path . DS . $file, $dest . DS . $file);
+                    } else {
+                        copy($path . DS . $file, $dest . DS . $file);
+                    }
+                }
+            }
+            return true;
+        } elseif (is_file($path)) {
+            return copy($path, $dest);
+        } else {
+            return false;
+        }
     }
 
     public function process(IProxy $mandataire)
