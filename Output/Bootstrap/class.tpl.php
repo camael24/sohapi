@@ -32,173 +32,230 @@ $cname = array_pop($classnameUrl);
     <div class="row row-offcanvas row-offcanvas-right">
 
     <div class="col-xs-12 col-sm-9">
-        <p class="pull-right visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-        </p>
-        <div class="jumbotron">
+    <p class="pull-right visible-xs">
+        <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+    </p>
+    <div class="jumbotron">
 
-            <?php
-            $type = 'Class';
-            if ($class['isAbstract'] === true)
-                $type = 'Abstract';
-            if ($class['isTrait'] === true)
-                $type = 'Trait';
-            if ($class['isInterface'] === true)
-                $type = 'Interface';
-            ?>
+        <?php
+        $type = 'Class';
+        if ($class['isAbstract'] === true)
+            $type = 'Abstract';
+        if ($class['isTrait'] === true)
+            $type = 'Trait';
+        if ($class['isInterface'] === true)
+            $type = 'Interface';
+        ?>
 
-            <h2><?php echo $type . ': ' . $classname ?></h2>
+        <h2><?php echo $type . ': ' . $classname ?></h2>
 
-            <?php
-            if ($class['extends'] !== null)
-                echo ' <p><a href = "' . $html->resolve($class['extends']) . '">' . $class['extends'] . ' </a></p> ';
-            ?>
+        <?php
+        if ($class['extends'] !== null)
+            echo ' <p><a href = "' . $html->resolve($class['extends']) . '">' . $class['extends'] . ' </a></p> ';
+        ?>
 
-            <?php if (count($class['implements']) > 0) { ?>
-                <div>Implements:
-                    <div class="list-group">
-                        <?php foreach ($class['implements'] as $implement)
-                            echo ' <a href = "' . $html->resolve($implement) . '" class="list-group-item"> ' . $implement . '</a> '
-                        ?>
-                    </div>
+        <?php if (count($class['implements']) > 0) { ?>
+            <div>Implements:
+                <div class="list-group">
+                    <?php foreach ($class['implements'] as $implement)
+                        echo ' <a href = "' . $html->resolve($implement) . '" class="list-group-item"> ' . $implement . '</a> '
+                    ?>
                 </div>
-            <?php } ?>
-        </div>
+            </div>
+        <?php } ?>
+    </div>
 
-        <h4>Properties</h4>
+    <h4>Properties</h4>
 
-        <?php foreach ($class['properties'] as $property) {
-            ?>
-            <div class="panel-group" id="accordion">
-                <a name="p-<?php echo $property['name']; ?>"></a>
+    <?php foreach ($class['properties'] as $property) {
+        ?>
+        <div class="panel-group" id="accordion">
+            <a name="p-<?php echo $property['name']; ?>"></a>
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion"
-                               href="#ap-<?php echo $property['name']; ?>">
-                                <div class="input-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#ap-<?php echo $property['name']; ?>">
+                            <div class="input-group">
 
-                                    <?php
-                                    if ($property['visibility'] === 'private')
-                                        echo ' <span class="input-group-addon label-danger">Private</span> ';
+                                <?php
+                                if ($property['visibility'] === 'private')
+                                    echo ' <span class="input-group-addon label-danger">Private</span> ';
 
-                                    if ($property['visibility'] === 'protected')
-                                        echo ' <span class="input-group-addon label-warning">Protected</span> ';
+                                if ($property['visibility'] === 'protected')
+                                    echo ' <span class="input-group-addon label-warning">Protected</span> ';
 
-                                    if ($property['visibility'] === 'public')
-                                        echo ' <span class="input-group-addon label-success">Public</span> ';
+                                if ($property['visibility'] === 'public')
+                                    echo ' <span class="input-group-addon label-success">Public</span> ';
 
-                                    if ($property['isStatic'] === true)
-                                        echo ' <span class="input-group-addon label-default">Static</span> ';
+                                if ($property['isStatic'] === true)
+                                    echo ' <span class="input-group-addon label-default">Static</span> ';
 
-                                    ?>
+                                ?>
 
 
-                                    <div class="form-control"><?php echo $property['name']; ?></div>
-                                </div>
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="ap-<?php echo $property['name']; ?>" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <?php if ($property['doc'] !== false)
-                                echo ' <pre>' . highlight_string($property['doc'], true) . ' </pre> '; ?>
-                        </div>
+                                <div class="form-control"><?php echo $property['name']; ?></div>
+                            </div>
+                        </a>
+                    </h4>
+                </div>
+                <div id="ap-<?php echo $property['name']; ?>" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <?php if ($property['doc'] !== false)
+                            echo ' <pre>' . highlight_string($property['doc'], true) . ' </pre> '; ?>
                     </div>
                 </div>
             </div>
+        </div>
 
-        <?php
-        }
+    <?php
+    }
+    ?>
+
+    <h4>Methods</h4>
+    <?php foreach ($class['methods'] as $method) {
         ?>
+        <div class="panel-group" id="methods">
+            <a name="m-<?php echo $method['name']; ?>"></a>
 
-        <h4>Methods</h4>
-        <?php foreach ($class['methods'] as $method) {
-            ?>
-            <div class="panel-group" id="methods">
-                <a name="m-<?php echo $method['name']; ?>"></a>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#methods"
+                           href="#am-<?php echo $method['name']; ?>">
+                            <div class="input-group">
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#methods"
-                               href="#am-<?php echo $method['name']; ?>">
-                                <div class="input-group">
+                                <?php
+                                if ($method['visibility'] === 'private')
+                                    echo ' <span class="input-group-addon label-danger">Private</span> ';
 
-                                    <?php
-                                    if ($method['visibility'] === 'private')
-                                        echo ' <span class="input-group-addon label-danger">Private</span> ';
+                                if ($method['visibility'] === 'protected')
+                                    echo ' <span class="input-group-addon label-warning">Protected</span> ';
 
-                                    if ($method['visibility'] === 'protected')
-                                        echo ' <span class="input-group-addon label-warning">Protected</span> ';
+                                if ($method['visibility'] === 'public')
+                                    echo ' <span class="input-group-addon label-success">Public</span> ';
 
-                                    if ($method['visibility'] === 'public')
-                                        echo ' <span class="input-group-addon label-success">Public</span> ';
+                                if ($method['isStatic'] === true)
+                                    echo ' <span class="input-group-addon label-default">Static</span> ';
 
-                                    if ($method['isStatic'] === true)
-                                        echo ' <span class="input-group-addon label-default">Static</span> ';
+                                if ($method['isAbstract'] === true)
+                                    echo ' <span class="input-group-addon label-primary">Abstract</span> ';
 
-                                    if ($method['isAbstract'] === true)
-                                        echo ' <span class="input-group-addon label-primary">Abstract</span> ';
+                                ?>
 
-                                    ?>
+                                <div
+                                    class="form-control"><?php echo $method['name'] . ' ' . $method['signature'] ?></div>
+                            </div>
+                        </a>
+                    </h4>
+                </div>
+                <div id="am-<?php echo $method['name']; ?>" class="panel-collapse collapse">
+                    <div class="panel-body">
 
-                                    <div
-                                        class="form-control"><?php echo $method['name'] . ' ' . $method['signature'] ?></div>
-                                </div>
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="am-<?php echo $method['name']; ?>" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <!--  TODO : Exception  -->
-                            <?php if (count($method['parameter']) > 0) { ?>
-                                <table class="table table-hover">
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Type</th>
-                                        <th>Required</th>
-                                        <th>Default Value</th>
-                                    </tr>
-                                    <?php foreach ($method['parameter'] as $parameter) {
+                        <?php if (isset($method['annotation']['comment'])) {
+                            echo '<p>' . $method['annotation']['comment'] . '</p>';
 
-                                        echo ' <tr><td><code>$' . $parameter['name'] . '</code></td><td> ';
-                                        if ($parameter['isObject'] === true)
-                                            echo ' <a href = "' . $html->resolve($parameter['type']) . '">' . $parameter['type'] . ' </a> ';
+                        } ?>
+                        <?php if (count($method['parameter']) > 0) { ?>
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Default Value</th>
+                                    <th>Comment</th>
+                                </tr>
+                                <?php foreach ($method['parameter'] as $parameter) {
+
+                                    $name     = '$' . $parameter['name'];
+                                    $aType    = '';
+                                    $aComment = '';
+
+                                    if (isset($method['annotation']['parameter']['param'][$name])) {
+
+                                        $annot    = $method['annotation']['parameter']['param'][$name];
+                                        $aType    = $annot['type'];
+                                        $aComment = $annot['comment'];
+                                    }
+
+                                    echo ' <tr><td><code>' . $name . '</code></td><td> ';
+                                    if ($parameter['isObject'] === true)
+                                        echo ' <a href = "' . $html->resolve($parameter['type']) . '">' . $parameter['type'] . ' </a> ';
+                                    else
+                                        if ($parameter['type'] === '' and $aType !== '')
+                                            if ($aType[0] === '/' or $aType['0'] === '\\')
+                                                echo '<a href="' . $html->resolve($aType) . '">' . $aType . '</a>';
+                                            else
+                                                echo $aType;
                                         else
                                             echo $parameter['type'];
 
-                                        echo ' </td><td> ';
+                                    echo ' </td><td> ';
 
-                                        if ($parameter['isOptionnal'] === false)
-                                            echo ' <button class="btn btn-primary"> yes</button> ';
+                                    if ($parameter['isOptionnal'] === false)
+                                        echo ' <button class="btn btn-primary"> yes</button> ';
+                                    else
+                                        echo '<button class="btn btn-default"> no</button> ';
+
+                                    echo '</td><td><code>';
+
+                                    $value = '';
+                                    if ($parameter['defaultValue'] !== '')
+                                        if ($parameter['defaultValue'] === null or $parameter['defaultValue'] === 'null')
+                                            $value = 'null';
                                         else
-                                            echo '<button class="btn btn-default"> no</button> ';
+                                            $value = $parameter['defaultValue'];
 
-                                        echo '</td><td><code>';
+                                    echo $value . ' </code></td>
+                                    <td>' . $aComment . '</td></tr> ';
+                                }
+                                ?>
+                            </table>
+                        <?php
+                        }
+                        //                        echo '<pre>' . print_r($method['annotation']['parameter'], true) . '</pre>';
+                        if (isset($method['annotation']['parameter']['throw'])) {
+                            $throw = $method['annotation']['parameter']['throw'];
 
-                                        $value = '';
-                                        if ($parameter['defaultValue'] !== '')
-                                            if ($parameter['defaultValue'] === null or $parameter['defaultValue'] === 'null')
-                                                $value = 'null';
-                                            else
-                                                $value = $parameter['defaultValue'];
+                            foreach ($throw as $t) {
+                                echo '<div class="alert alert-info"><strong>Exception : </strong>';
+                                if ($t['type'] !== '')
+                                    echo '<a href="' . $html->resolve($t['type']) . '">' . $t['type'] . '</a>';
+                                if ($t['variable'] !== '')
+                                    echo '<a href="' . $html->resolve($t['variable']) . '">' . $t['variable'] . '</a>';
 
-                                        echo $value . ' </code></td></tr> ';
-                                    }
-                                    ?>
-                                </table>
-                            <?php
+                                echo '</div>';
                             }
-                            if ($method['doc'] !== false)
-                                echo ' <pre>' . highlight_string($method['doc'], true) . ' </pre> '; ?>
-                        </div>
+                        }
+                        if (isset($method['annotation']['parameter']['return'])) {
+                            $return = $method['annotation']['parameter']['return'];
+
+                            foreach ($return as $r) {
+                                echo '<div class="alert alert-success"><strong>Return : </strong>';
+                                $v = '';
+                                if ($r['type'] !== '')
+                                    $v = $r['type'];
+                                if ($r['variable'] !== '')
+                                    $v = $r['variable'];
+
+                                if ($v[0] === '/' or $v['0'] === '\\')
+                                    $v = '<a href="' . $html->resolve($v) . '">' . $v . '</a>';
+
+                                echo $v;
+
+                                echo '</div>';
+                            }
+                        }
+
+
+                        ?>
                     </div>
                 </div>
             </div>
+        </div>
 
-        <?php } ?>
+    <?php } ?>
     </div>
     <!--/span-->
 

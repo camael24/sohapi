@@ -41,25 +41,23 @@ $cname = array_pop($classnameUrl);
                 <?php
 
                 if (!empty($folder)) {
-
-                    foreach ($folder as $element){
-                        $cf = explode('/' , $element);
+                    sort($folder);
+                    foreach ($folder as $element) {
+                        $cf = explode('/', $element);
                         $cf = array_pop($cf);
                         echo '<a href="' . $html->resolve($element) . '" class="list-group-item"><i class="fa fa-folder-o"></i> ' . $cf . '</a>';
                     }
 
                 }
                 if (!empty($file)) {
-
-                    foreach ($file as $element){
-                        $cf = explode('/' , $element);
+                    sort($file);
+                    foreach ($file as $element) {
+                        $cf = explode('/', $element);
                         $cf = array_pop($cf);
                         echo '<a href="' . $html->resolve($element) . '" class="list-group-item"><i class="fa fa-angle-right"></i> ' . $cf . '</a>';
                     }
 
                 }
-
-
 
                 ?>
             </div>

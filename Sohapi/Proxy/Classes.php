@@ -252,33 +252,76 @@ class Classes implements IProxy
         );
     }
 
-    private function parseAnnotation($doc)
+    private function parseAnnotation($comment)
     {
+        $comment   = $this->_extractAnnotation($comment);
+        $text      = array();
+        $parameter = array();
+        $isParam   = false;
+        $comment   = explode("\n", $comment);
 
-        $line  = explode("\n", $doc);
-        $annot = array();
-        foreach ($line as $l) {
+        foreach ($comment as $line) {
 
-            $l = str_replace(array('*', '/'), '', $l);
-            $l = trim($l);
+            $line = trim($line);
+            if (strlen($line) > 0) {
+                if ($line[0] === '@')
+                    $isParam = true;
 
-            preg_match('#^@([a-z^\S]+)\s+([a-z]*)#', $l, $m);
+                if ($isParam === false) {
+                    $text[] = $line;
+                } else {
 
-            if (!empty($m)) {
-                if ($m[1] === 'throw')
-                    $this->exportClass($m[2]);
+                    if ($line[0] !== '@') {
 
+                        $last = count($parameter) - 1;
+                        if (array_key_exists($last, $parameter))
+                            $parameter[$last]['comment'] .= ' ' . $line;
+                        else
+                            $text[] = $line;
 
-                $annot[] = array(
-                    'param' => $m[1],
-                    'type'  => $m[2]
-                );
+                    } else {
+                        preg_match('#^@([a-z^\S]+)\s+([a-z]*)\s*([^\s]*)\s*(.*)#', $line, $m);
+                        if (count($m) === 5)
+                            if ($m[1] === 'param')
+                                $parameter[$m[1]][$m[3]] = array(
+                                    'type'     => $m[2],
+                                    'variable' => $m[3],
+                                    'comment'  => $m[4]
+                                );
+                            else
+                                $parameter[$m[1]][] = array(
+                                    'type'     => $m[2],
+                                    'variable' => $m[3],
+                                    'comment'  => $m[4]
+                                );
+
+                    }
+                }
             }
-
-
         }
 
-        return $annot;
+
+        return array(
+            'comment'   => implode("\n", $text),
+            'parameter' => $parameter
+        );
+
+    }
+
+    private function _extractAnnotation($comment)
+    {
+        $i = preg_match('#/\*(.*?)\*/#s', $comment, $matches);
+
+        if (0 === $i)
+            return '';
+
+        $i = preg_match_all('#^[\s\*]*\s*\*\s?([^\n]*)$#m', $matches[1], $maatches);
+
+        if (0 === $i)
+            return '';
+
+
+        return trim(implode("\n", $maatches[1]));
     }
 
 
