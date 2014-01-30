@@ -26,4 +26,4 @@ $api
 Demo
 -----
 
-See an demo (here)[http://camael24.github.io/sohapi/]
+See an demo [here](http://camael24.github.io/sohapi/)
