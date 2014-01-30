@@ -241,7 +241,7 @@ $cname = array_pop($classnameUrl);
 
                     <ul class="dropdown-menu" role="menu">
                         <?php foreach ($alt as $label => $href) {
-var_dump($html->unroute($href , $arg));
+
                             echo '<li><a href="' . $html->unroute($href, $arg) . '">' . $label . '</a></li>';
                         }
                         ?>
