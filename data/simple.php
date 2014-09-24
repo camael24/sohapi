@@ -1,7 +1,8 @@
 <?php
-namespace Foo  {
+namespace Foo\Bar  {
+    use \Bar;
     class Nar {
-        public function foo() {
+        public function foo(Bar $e) {
 
         }
     }

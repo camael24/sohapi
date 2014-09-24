@@ -29,18 +29,12 @@ namespace Sohapi\Parser {
         }
 
         public function build() {
-            //$this->dump();
-            foreach ($this->_token as $key => $value) {
-                switch($value[0]) {
-                    case 'T_NAMESPACE':
-                        new Php\Ns($this->_token, $value, $key);
-                        break;
-                    case 'T_OPEN_TAG':
-                    case 'T_WHITSPACE':
-                    default:
-                }
-            }
 
+            $token = $this->getTokens();
+            $root = new Php\Root();
+            $root->visit($this, $token);
+
+            var_dump(key($token));
 
         }
 
