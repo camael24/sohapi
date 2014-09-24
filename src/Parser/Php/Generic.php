@@ -2,7 +2,7 @@
 namespace Sohapi\Parser\Php {
     class Generic implements Element
     {
-        public function getUntilValue(\SplQueue &$handle, $value)
+        public function getUntilValue(\SplQueue &$handle, $value, &$type = null)
         {
             if (is_string($value)) {
                 $value = array($value);
@@ -13,6 +13,8 @@ namespace Sohapi\Parser\Php {
                     if (isset($v[1]) === true && in_array($v[1], $value) !== true) {
                         $return->enqueue($handle->dequeue());
                     } else {
+                        $type = $v[1];
+
                         return $return;
                     }
                 } else {

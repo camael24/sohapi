@@ -1,5 +1,5 @@
 <?php
-namespace Foo\Bar  {
+namespace Foo\Bar;
     class Foobar extends Bar implements A,B,C
     {
         private static $_foo = array();
@@ -12,4 +12,3 @@ namespace Foo\Bar  {
         public static function bar() {}
         public function oooo() {}
     }
-}

@@ -42,7 +42,7 @@ namespace Sohapi\Parser\Php {
                     case 'T_FUNCTION':
                         $func = new Method();
                         $func->visit($this, $child, $previous);
-
+                        $previous = new \SplQueue();
                         break;
                     case 'T_STATIC':
                     case 'T_PUBLIC':
