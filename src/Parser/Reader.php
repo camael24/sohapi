@@ -1,44 +1,48 @@
 <?php
 namespace Sohapi\Parser {
-    class Reader {
-
+    class Reader implements Php\Element
+    {
         private $_filename = null;
         private $_source   = '';
         private $_token    = null;
 
-        public function __construct($filename) {
-            $this->_filename = $filename;
+        public function __construct($filename)
+        {
+            $this->_filename = realpath($filename);
             $this->_source   = file_get_contents($filename);
-            $this->_token    = token_get_all($this->_source);
+            $token           = token_get_all($this->_source);
+            $this->_token    = new \SplQueue();
 
-           foreach ($this->_token as $i => $token) {
-                if(is_string($token)) {
-                    $token = array('T_STRUCTURAL',trim($token));
-                }
-                else {
-                    $token[0]  = (is_int($token[0])) ? token_name($token[0]) : $token[0];
+           foreach ($token as $i => $t) {
+                if (is_string($t)) {
+                    $t = array('T_STRUCTURAL',trim($t));
+                } else {
+                    $t[0]  = (is_int($t[0])) ? token_name($t[0]) : $t[0];
                 }
 
-                $this->_token[$i]   = $token;
+                $this->_token->enqueue($t);
             }
 
         }
 
-        public function getTokens() {
+        public function getTokens()
+        {
             return $this->_token;
         }
 
-        public function build() {
-
+        public function build()
+        {
             $token = $this->getTokens();
-            $root = new Php\Root();
+            $root  = new Php\Root();
+
+            echo 'Total token ('.count($token).')'."\n";
+
             $root->visit($this, $token);
-
-            var_dump(key($token));
-
+            echo "\n".'Left token in stack ('.count($token).')'."\n";
         }
 
-        public function dump() {
+        public function dump()
+        {
             foreach ($this->_token as $i => $token) {
                 echo $token[0];
 
