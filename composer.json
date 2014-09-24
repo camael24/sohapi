@@ -1,4 +1,13 @@
 {
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "camael24",
+            "email": "thehawk@hoa-project.net"
+        }
+    ],
+    "name": "camael24/sohapi",
+    "description": "Api Generator",
     "require" :  {
         "php"          : ">=5.4.0",
         "hoa/compiler" : "~2.0",
