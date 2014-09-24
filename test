@@ -1,0 +1,1190 @@
+                So H API            
+
+T_OPEN_TAG: "<?php
+T_NEW_LINE: "
+
+T_DOC_COMMENT: "/**
+ * Created by PhpStorm.
+ * User: Camael24
+ * Date: 24/01/14
+ * Time: 09:02
+ */
+T_NEW_LINE: "
+
+T_NAMESPACE: "namespace
+T_WHITESPACE: " 
+T_STRING: "Sohapi
+T_WHITESPACE: " 
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "    
+T_CLASS: "class
+T_WHITESPACE: " 
+T_STRING: "Greut
+T_NEW_LINE: "
+
+T_WHITESPACE: "    
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PUBLIC: "public
+T_WHITESPACE: " 
+T_VARIABLE: "$_data
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_STRING: "null
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PRIVATE: "private
+T_WHITESPACE: " 
+T_VARIABLE: "$_paths
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_STRING: "null
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PRIVATE: "private
+T_WHITESPACE: " 
+T_VARIABLE: "$_inherits
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_ARRAY: "array
+"(
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PRIVATE: "private
+T_WHITESPACE: " 
+T_VARIABLE: "$_blocks
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_ARRAY: "array
+"(
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PRIVATE: "private
+T_WHITESPACE: " 
+T_VARIABLE: "$_blocknames
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_ARRAY: "array
+"(
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PRIVATE: "private
+T_WHITESPACE: " 
+T_VARIABLE: "$_file
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "''
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PRIVATE: "private
+T_WHITESPACE: " 
+T_VARIABLE: "$_headers
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_ARRAY: "array
+"(
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PROTECTED: "protected
+T_WHITESPACE: " 
+T_VARIABLE: "$_helpers
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_ARRAY: "array
+"(
+")
+";
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PUBLIC: "public
+T_WHITESPACE: " 
+T_FUNCTION: "function
+T_WHITESPACE: " 
+T_STRING: "__construct
+"(
+T_VARIABLE: "$path
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_STRING: "null
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "setPath
+"(
+T_VARIABLE: "$path
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "setData
+"(
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"}
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PUBLIC: "public
+T_WHITESPACE: " 
+T_FUNCTION: "function
+T_WHITESPACE: " 
+T_STRING: "getData
+"(
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_RETURN: "return
+T_WHITESPACE: " 
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_data
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"}
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PUBLIC: "public
+T_WHITESPACE: " 
+T_FUNCTION: "function
+T_WHITESPACE: " 
+T_STRING: "setData
+"(
+T_VARIABLE: "$object
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_STRING: "null
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_IF: "if
+T_WHITESPACE: " 
+"(
+T_VARIABLE: "$object
+T_WHITESPACE: " 
+T_IS_IDENTICAL: "===
+T_WHITESPACE: " 
+T_STRING: "null
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_data
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_NEW: "new
+T_WHITESPACE: " 
+T_NS_SEPARATOR: "\
+T_STRING: "Stdclass
+"(
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_ELSE: "else
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_data
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_VARIABLE: "$object
+";
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_RETURN: "return
+T_WHITESPACE: " 
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "getData
+"(
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"}
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PUBLIC: "public
+T_WHITESPACE: " 
+T_FUNCTION: "function
+T_WHITESPACE: " 
+T_STRING: "setPath
+"(
+T_VARIABLE: "$path
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_STRING: "null
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_IF: "if
+T_WHITESPACE: " 
+"(
+T_VARIABLE: "$path
+T_WHITESPACE: " 
+T_IS_IDENTICAL: "===
+T_WHITESPACE: " 
+T_STRING: "null
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+T_RETURN: "return
+";
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_IF: "if
+T_WHITESPACE: " 
+"(
+T_VARIABLE: "$path
+"[
+T_STRING: "strlen
+"(
+T_VARIABLE: "$path
+")
+T_WHITESPACE: " 
+"-
+T_WHITESPACE: " 
+T_LNUMBER: "1
+"]
+T_WHITESPACE: " 
+T_IS_NOT_IDENTICAL: "!==
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "'/'
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+T_VARIABLE: "$path
+T_WHITESPACE: " 
+T_CONCAT_EQUAL: ".=
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "'/'
+";
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_paths
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_VARIABLE: "$path
+T_WHITESPACE: " 
+".
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "'/'
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"}
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PUBLIC: "public
+T_WHITESPACE: " 
+T_FUNCTION: "function
+T_WHITESPACE: " 
+T_STRING: "inherits
+"(
+T_VARIABLE: "$path
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_inherits
+"[
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_file
+"]
+"[
+"]
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_VARIABLE: "$path
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"}
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_FUNCTION: "function
+T_WHITESPACE: " 
+T_STRING: "block
+"(
+T_VARIABLE: "$blockname
+",
+T_WHITESPACE: " 
+T_VARIABLE: "$mode
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "'replace'
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_blocknames
+"[
+"]
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_ARRAY: "array
+"(
+T_VARIABLE: "$blockname
+",
+T_WHITESPACE: " 
+T_VARIABLE: "$mode
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_STRING: "ob_start
+"(
+T_CONSTANT_ENCAPSED_STRING: "'mb_output_handler'
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"}
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_FUNCTION: "function
+T_WHITESPACE: " 
+T_STRING: "endblock
+"(
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_LIST: "list
+"(
+T_VARIABLE: "$blockname
+",
+T_WHITESPACE: " 
+T_VARIABLE: "$mode
+")
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_STRING: "array_pop
+"(
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_blocknames
+")
+";
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_IF: "if
+T_WHITESPACE: " 
+"(
+"!
+T_ISSET: "isset
+"(
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_blocks
+"[
+T_VARIABLE: "$blockname
+"]
+")
+T_WHITESPACE: " 
+T_BOOLEAN_AND: "&&
+T_WHITESPACE: " 
+T_VARIABLE: "$mode
+T_WHITESPACE: " 
+T_IS_NOT_IDENTICAL: "!==
+T_WHITESPACE: " 
+T_STRING: "false
+")
+T_WHITESPACE: " 
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_blocks
+"[
+T_VARIABLE: "$blockname
+"]
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_ARRAY: "array
+"(
+T_CONSTANT_ENCAPSED_STRING: "'content'
+T_WHITESPACE: " 
+T_DOUBLE_ARROW: "=>
+T_WHITESPACE: " 
+T_STRING: "ob_get_contents
+"(
+")
+",
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "'mode'
+T_WHITESPACE: " 
+T_DOUBLE_ARROW: "=>
+T_WHITESPACE: " 
+T_VARIABLE: "$mode
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+"}
+T_WHITESPACE: " 
+T_ELSE: "else
+T_WHITESPACE: " 
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+T_SWITCH: "switch
+T_WHITESPACE: " 
+"(
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_blocks
+"[
+T_VARIABLE: "$blockname
+"]
+"[
+T_CONSTANT_ENCAPSED_STRING: "'mode'
+"]
+")
+T_WHITESPACE: " 
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "                    
+T_CASE: "case
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "'before'
+":
+T_NEW_LINE: "
+
+T_WHITESPACE: "                    
+T_CASE: "case
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "'prepend'
+":
+T_NEW_LINE: "
+
+T_WHITESPACE: "                        
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_blocks
+"[
+T_VARIABLE: "$blockname
+"]
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_ARRAY: "array
+"(
+T_NEW_LINE: "
+
+T_WHITESPACE: "                            
+T_CONSTANT_ENCAPSED_STRING: "'content'
+T_WHITESPACE: " 
+T_DOUBLE_ARROW: "=>
+T_WHITESPACE: " 
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_blocks
+"[
+T_VARIABLE: "$blockname
+"]
+"[
+T_CONSTANT_ENCAPSED_STRING: "'content'
+"]
+T_WHITESPACE: " 
+".
+T_WHITESPACE: " 
+T_STRING: "ob_get_contents
+"(
+")
+",
+T_NEW_LINE: "
+
+T_WHITESPACE: "                            
+T_CONSTANT_ENCAPSED_STRING: "'mode'
+T_WHITESPACE: "    
+T_DOUBLE_ARROW: "=>
+T_WHITESPACE: " 
+T_VARIABLE: "$mode
+T_NEW_LINE: "
+
+T_WHITESPACE: "                        
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "                        
+T_BREAK: "break
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "                    
+T_CASE: "case
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "'after'
+":
+T_NEW_LINE: "
+
+T_WHITESPACE: "                    
+T_CASE: "case
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "'append'
+":
+T_NEW_LINE: "
+
+T_WHITESPACE: "                        
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_blocks
+"[
+T_VARIABLE: "$blockname
+"]
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_ARRAY: "array
+"(
+T_NEW_LINE: "
+
+T_WHITESPACE: "                            
+T_CONSTANT_ENCAPSED_STRING: "'content'
+T_WHITESPACE: " 
+T_DOUBLE_ARROW: "=>
+T_WHITESPACE: " 
+T_STRING: "ob_get_contents
+"(
+")
+T_WHITESPACE: " 
+".
+T_WHITESPACE: " 
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_blocks
+"[
+T_VARIABLE: "$blockname
+"]
+"[
+T_CONSTANT_ENCAPSED_STRING: "'content'
+"]
+",
+T_NEW_LINE: "
+
+T_WHITESPACE: "                            
+T_CONSTANT_ENCAPSED_STRING: "'mode'
+T_WHITESPACE: "    
+T_DOUBLE_ARROW: "=>
+T_WHITESPACE: " 
+T_VARIABLE: "$mode
+T_NEW_LINE: "
+
+T_WHITESPACE: "                        
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "                        
+T_BREAK: "break
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+"}
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+"}
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_STRING: "ob_end_clean
+"(
+")
+";
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_IF: "if
+T_WHITESPACE: " 
+"(
+T_VARIABLE: "$mode
+T_WHITESPACE: " 
+T_IS_IDENTICAL: "===
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "'replace'
+")
+T_WHITESPACE: " 
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+T_ECHO: "echo
+T_WHITESPACE: " 
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_blocks
+"[
+T_VARIABLE: "$blockname
+"]
+"[
+T_CONSTANT_ENCAPSED_STRING: "'content'
+"]
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+"}
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"}
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PROTECTED: "protected
+T_WHITESPACE: " 
+T_FUNCTION: "function
+T_WHITESPACE: " 
+T_STRING: "getFilenamePath
+"(
+T_VARIABLE: "$filename
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_VARIABLE: "$path
+T_WHITESPACE: "     
+"=
+T_WHITESPACE: " 
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_paths
+T_WHITESPACE: " 
+".
+T_WHITESPACE: " 
+T_VARIABLE: "$filename
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_VARIABLE: "$realpath
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_STRING: "realpath
+"(
+T_VARIABLE: "$path
+")
+";
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_IF: "if
+T_WHITESPACE: " 
+"(
+"(
+T_STRING: "false
+T_WHITESPACE: " 
+T_IS_IDENTICAL: "===
+T_WHITESPACE: " 
+T_VARIABLE: "$realpath
+")
+T_WHITESPACE: " 
+T_BOOLEAN_OR: "||
+T_WHITESPACE: " 
+"!
+"(
+T_STRING: "file_exists
+"(
+T_VARIABLE: "$realpath
+")
+")
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+T_THROW: "throw
+T_WHITESPACE: " 
+T_NEW: "new
+T_WHITESPACE: " 
+T_NS_SEPARATOR: "\
+T_STRING: "Exception
+"(
+T_CONSTANT_ENCAPSED_STRING: "'Path '
+T_WHITESPACE: " 
+".
+T_WHITESPACE: " 
+T_VARIABLE: "$path
+T_WHITESPACE: " 
+".
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "' ('
+T_WHITESPACE: " 
+".
+T_WHITESPACE: " 
+"(
+"(
+T_VARIABLE: "$realpath
+T_WHITESPACE: " 
+T_IS_IDENTICAL: "===
+T_WHITESPACE: " 
+T_STRING: "false
+")
+T_WHITESPACE: " 
+"?
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "'false'
+T_WHITESPACE: " 
+":
+T_WHITESPACE: " 
+T_VARIABLE: "$realpath
+")
+T_WHITESPACE: " 
+".
+T_WHITESPACE: " 
+T_CONSTANT_ENCAPSED_STRING: "') not found!'
+")
+";
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_RETURN: "return
+T_WHITESPACE: " 
+T_VARIABLE: "$realpath
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"}
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PUBLIC: "public
+T_WHITESPACE: " 
+T_FUNCTION: "function
+T_WHITESPACE: " 
+T_STRING: "getHeaders
+"(
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_RETURN: "return
+T_WHITESPACE: " 
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_headers
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"}
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PUBLIC: "public
+T_WHITESPACE: " 
+T_FUNCTION: "function
+T_WHITESPACE: " 
+T_STRING: "httpHeader
+"(
+T_VARIABLE: "$hName
+",
+T_WHITESPACE: " 
+T_VARIABLE: "$hValue
+",
+T_WHITESPACE: " 
+T_VARIABLE: "$force
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_STRING: "true
+",
+T_WHITESPACE: " 
+T_VARIABLE: "$status
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_STRING: "null
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"{
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_headers
+"[
+"]
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_ARRAY: "array
+"(
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+T_VARIABLE: "$hName
+",
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+T_VARIABLE: "$hValue
+",
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+T_VARIABLE: "$force
+",
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+T_VARIABLE: "$status
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"}
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+T_PUBLIC: "public
+T_WHITESPACE: " 
+T_FUNCTION: "function
+T_WHITESPACE: " 
+T_STRING: "renderFile
+"(
+T_VARIABLE: "$filename
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"{
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_VARIABLE: "$filename
+T_WHITESPACE: "                   
+"=
+T_WHITESPACE: " 
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "getFilenamePath
+"(
+T_VARIABLE: "$filename
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_file
+T_WHITESPACE: "                
+"=
+T_WHITESPACE: " 
+T_VARIABLE: "$filename
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_inherits
+"[
+T_VARIABLE: "$filename
+"]
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_ARRAY: "array
+"(
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_COMMENT: "// used by the placeholder
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_STRING: "ob_start
+"(
+T_CONSTANT_ENCAPSED_STRING: "'mb_output_handler'
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_STRING: "extract
+"(
+T_ARRAY_CAST: "(array)
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_data
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_INCLUDE: "include
+"(
+T_VARIABLE: "$filename
+")
+";
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_COMMENT: "// restore args
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_VARIABLE: "$content
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_STRING: "ob_get_contents
+"(
+")
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_STRING: "ob_end_clean
+"(
+")
+";
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_WHILE: "while
+T_WHITESPACE: " 
+"(
+T_VARIABLE: "$inherit
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_STRING: "array_pop
+"(
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "_inherits
+"[
+T_VARIABLE: "$filename
+"]
+")
+")
+T_NEW_LINE: "
+
+T_WHITESPACE: "                
+T_VARIABLE: "$content
+T_WHITESPACE: " 
+"=
+T_WHITESPACE: " 
+T_VARIABLE: "$this
+T_OBJECT_OPERATOR: "->
+T_STRING: "renderFile
+"(
+T_VARIABLE: "$inherit
+")
+";
+T_NEW_LINE: "
+
+T_NEW_LINE: "
+
+T_WHITESPACE: "            
+T_RETURN: "return
+T_WHITESPACE: " 
+T_VARIABLE: "$content
+";
+T_NEW_LINE: "
+
+T_WHITESPACE: "        
+"}
+T_NEW_LINE: "
+
+T_WHITESPACE: "    
+"}
+T_NEW_LINE: "
+
+"}
+T_NEW_LINE: "
+

@@ -1,20 +1,17 @@
 {
-    "license": "GPL",
-    "authors": [
-        {
-            "name": "camael24",
-            "email": "thehawk@hoa-project.net"
-        }
-    ],
-
-    "name": "camael24/sohapi",
-    "description": "Api Generator",
-    "autoload": {
-        "classmap": [
-            {
-                "Sohapi": "./Sohapi/"
-            }
-        ]
+    "require" :  {
+        "php"          : ">=5.4.0",
+        "hoa/compiler" : "~2.0",
+        "hoa/file"     : "~0.0",
+        "hoa/router": "~2.0",
+        "hoa/dispatcher": "~0.0",
+        "hoa/console": "~2.0"
     },
-    "minimum-stability": "dev"
-}
+     "autoload": {
+        "psr-4": { "Sohapi\\": "src/" }
+    },
+    "bin": ["src/bin/sohapi"],
+    "config": {
+        "bin-dir": "bin/"
+    }
+ }

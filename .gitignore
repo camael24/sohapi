@@ -1,6 +1,3 @@
-vendor/*
-.idea/*
-composer.lock
-html/*.html
-Central/*
-Central
+vendor/
+bin/
+*.lock
