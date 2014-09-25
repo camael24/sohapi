@@ -5,16 +5,16 @@ namespace Sohapi\Parser\Php {
 
         public function visit(Element $element, \SplQueue &$handle = null, $eldnah = null)
         {
-            $type   = null;
-            $nodes  = $this->getUntilValue($handle, [';','{'], $type);
-            $ns     = $this->concatNodes($nodes);
+            $type = null;
+            $nodes = $this->getUntilValue($handle, [';', '{'], $type);
+            $ns = $this->concatNodes($nodes);
 
             if ($type === '{') {
 
-                $child  = $this->getNodeBetween($handle, '{' , '}');
+                $child = $this->getNodeBetween($handle, '{', '}');
                 $before = array();
 
-                echo 'Namespace: '.$ns."\n";
+                echo 'Namespace: ' . $ns . "\n";
 
                 foreach ($child as $key => $value) {
                     switch ($value[0]) {
@@ -39,7 +39,7 @@ namespace Sohapi\Parser\Php {
         {
             $previous = new \SplQueue();
 
-            if(count($child) === 0)
+            if (count($child) === 0)
                 return;
 
             foreach ($child as $key => $value) {

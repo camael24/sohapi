@@ -7,7 +7,7 @@ namespace Sohapi\Parser\Php {
             if (is_string($value)) {
                 $value = array($value);
             }
-            $return   = new \SplQueue();
+            $return = new \SplQueue();
             foreach ($handle as $k => $v) {
                 if (isset($v[0]) === true && $v[0] !== 'T_WHITESPACE') {
                     if (isset($v[1]) === true && in_array($v[1], $value) !== true) {
@@ -31,7 +31,7 @@ namespace Sohapi\Parser\Php {
             if (is_string($value)) {
                 $value = array($value);
             }
-            $return   = new \SplQueue();
+            $return = new \SplQueue();
             foreach ($handle as $k => $v) {
                 if (isset($v[0]) === true && $v[0] !== 'T_WHITESPACE') {
                     if (isset($v[0]) === true && in_array($v[0], $value) !== true) {
@@ -55,7 +55,7 @@ namespace Sohapi\Parser\Php {
                 $value = array($value);
             }
 
-            $return  = array();
+            $return = array();
             $current = '';
 
             foreach ($value as $a) {
@@ -104,12 +104,12 @@ namespace Sohapi\Parser\Php {
 
         public function getNodeBetween($handle, $start, $end)
         {
-            $return   = new \SplQueue();
-            $count    = 0;
+            $return = new \SplQueue();
+            $count = 0;
 
             foreach ($handle as $item) {
-                $item      = $handle->dequeue();
-                $value     = (isset($item[1])) ? $item[1] : '';
+                $item = $handle->dequeue();
+                $value = (isset($item[1])) ? $item[1] : '';
 
                 if ($start === $value) {
                     $count++;
