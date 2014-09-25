@@ -61,7 +61,11 @@ namespace Sohapi\Parser\Php {
                         break;
                 }
             }
-            print_r($child);
+
+            if(empty($child) === true)
+                return null;
+
+            echo 'Whala'."\n";
             return $child;
         }
     }

@@ -11,5 +11,6 @@ namespace Foo\Bar {
 
         public static function bar() {}
         public function oooo() {}
+        private $_a = array('a' , 'b' => array('ab', 'bb'));
     }
 }
