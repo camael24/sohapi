@@ -32,7 +32,31 @@ namespace Sohapi\Parser\Php {
                 throw new \Exception("%namespace foo;% ! Missing yet");
             }
 
-           //var_dump('e'); // TODO : segfault without oO
+
         }
+
+        public function dispatch(\SplQueue $child)
+        {
+            $previous = new \SplQueue();
+
+            if(count($child) === 0)
+                return;
+
+            foreach ($child as $key => $value) {
+                //echo "\t\t\t\t".$value[0]."\n";
+                switch ($value[0]) {
+                    // T_USE
+                    case 'T_CLASS':
+                        (new Classe())->visit($this, $child, $previous);
+                        $previous = new \SplQueue();
+                        break;
+                    default:
+
+                        $child->dequeue();
+                        break;
+                }
+            }
+        }
+
     }
 }

@@ -21,6 +21,6 @@
     },
     "bin": ["src/bin/sohapi"],
     "config": {
-        "bin-dir": "bin/"
+        "bin-dir": "binaries/"
     }
  }

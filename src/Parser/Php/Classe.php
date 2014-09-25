@@ -25,13 +25,19 @@ namespace Sohapi\Parser\Php {
             echo "\n";
             $child    = $this->getNodeBetween($handle, '{' , '}');
 
-            $this->dispatch($child);
+            $left = $this->dispatch($child);
+            echo 'Wouzou ?'."\n";
         }
 
         public function dispatch(\SplQueue $child)
         {
             $previous = new \SplQueue();
-             foreach ($child as $key => $value) {
+
+            if(count($child) === 0)
+                return;
+
+            foreach ($child as $key => $value) {
+                //echo "\t\t\t\t".$value[0]."\n";
                 switch ($value[0]) {
                     // T_USE
                     case 'T_VARIABLE':
@@ -51,11 +57,12 @@ namespace Sohapi\Parser\Php {
                         $previous->enqueue($child->dequeue());
                         break;
                     default:
-
                         $child->dequeue();
                         break;
                 }
             }
+            print_r($child);
+            return $child;
         }
     }
 }
