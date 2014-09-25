@@ -5,12 +5,12 @@ namespace Foo\Bar {
         private static $_foo = array();
         private $_bar = array();
         private $_a = array('a' , 'b' => array('ab', 'bb'));
-        public function foo($a)
+        public function foo()
         {
         }
 
         public static function bar() {}
         public function oooo() {}
-
+        private $_a = array('a' , 'b' => array('ab', 'bb'));
     }
 }

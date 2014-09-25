@@ -24,47 +24,65 @@ namespace Sohapi\Parser\Php {
             }
             echo "\n";
             $child    = $this->getNodeBetween($handle, '{' , '}');
-
+            var_dump(__CLASS__.'#'.__LINE__);
             $left = $this->dispatch($child);
+            var_dump(__CLASS__.'#'.__LINE__);
             echo 'Wouzou ?'."\n";
         }
 
         public function dispatch(\SplQueue $child)
         {
             $previous = new \SplQueue();
-
+            var_dump(__CLASS__.'#'.__LINE__);
             if(count($child) === 0)
                 return;
-
+            var_dump(__CLASS__.'#'.__LINE__);
             foreach ($child as $key => $value) {
                 //echo "\t\t\t\t".$value[0]."\n";
+                var_dump(__CLASS__.'#'.__LINE__."\t".$value[0]);
                 switch ($value[0]) {
                     // T_USE
                     case 'T_VARIABLE':
+                        var_dump(__CLASS__.'#'.__LINE__);
                         $var = new Variable();
                         $var->visit($this, $child, $previous);
+                        var_dump(__CLASS__.'#'.__LINE__);
                         $previous = new \SplQueue();
+                        var_dump(__CLASS__.'#'.__LINE__);
                         break;
                     case 'T_FUNCTION':
+                        var_dump(__CLASS__.'#'.__LINE__);
                         $func = new Method();
                         $func->visit($this, $child, $previous);
+                        var_dump(__CLASS__.'#'.__LINE__);
                         $previous = new \SplQueue();
+                        var_dump(__CLASS__.'#'.__LINE__);
                         break;
                     case 'T_STATIC':
                     case 'T_PUBLIC':
                     case 'T_PROTECTED':
                     case 'T_PRIVATE':
+                    var_dump(__CLASS__.'#'.__LINE__);
                         $previous->enqueue($child->dequeue());
+                    var_dump(__CLASS__.'#'.__LINE__);
                         break;
                     default:
+                        var_dump(__CLASS__.'#'.__LINE__);
                         $child->dequeue();
+                        var_dump(__CLASS__.'#'.__LINE__);
                         break;
                 }
             }
+
+            var_dump(__CLASS__.'#'.__LINE__);
             if(empty($child) === true)
                 return null;
 
+            var_dump(__CLASS__.'#'.__LINE__);
+
             echo 'In Dispatch after treatment'."\n";
+
+            var_dump(__CLASS__.'#'.__LINE__);
         }
     }
 }
