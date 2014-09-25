@@ -64,12 +64,13 @@ namespace Sohapi\Parser\Php {
 
             foreach ($handle as $v) {
                 $item = $handle->dequeue();
+                $current = '';
                 if (isset($item[0])) {
                     $type = $item[0];
                     if (in_array($type, $value)) {
                         $current = $type;
                     } else {
-                        if (is_object($return[$current])) {
+                        if (isset($return[$current]) && is_object($return[$current])) {
                             $return[$current]->enqueue($item);
                         }
                     }

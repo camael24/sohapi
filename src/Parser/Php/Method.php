@@ -10,9 +10,9 @@ namespace Sohapi\Parser\Php {
             $argument = $this->getNodeBetween($handle, '(' , ')');
             $content  = $this->getNodeBetween($handle, '{' , '}'); // This is Drop !!!! TODO : Get the return value !
             $previous = implode(' ',$this->getListData($eldnah));
-            //$argument = $this->readArgument($argument);
+            $argument = $this->concatNodes($argument);
 
-            echo $previous."\t". implode(' ', $name).' ()'."\n";
+            print_r($handle);
 
             $element->dispatch($handle);
         }
@@ -23,11 +23,13 @@ namespace Sohapi\Parser\Php {
 
             if(count($args) > 0){
                 foreach($args as $arg) {
-                    $e[] = $this->getUntilValue($args, ',');
+                    $a = $this->getUntilValue($args, ',');
+
+
                 }
             }
 
-            print_r($e);
+            return $e;
 
         }
 

@@ -4,9 +4,6 @@ namespace Sohapi\Parser\Php {
     {
         public function visit(Element $element, \SplQueue &$handle = null, $eldnah = null)
         {
-
-
-
             $name      = $this->getUntilValue($handle, '=');
             $name      = $this->getListData($name);
             $value     = $this->getUntilValue($handle, ';', $type);

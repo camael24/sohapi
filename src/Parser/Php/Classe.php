@@ -61,12 +61,10 @@ namespace Sohapi\Parser\Php {
                         break;
                 }
             }
-
             if(empty($child) === true)
                 return null;
 
-            echo 'Whala'."\n";
-            return $child;
+            echo 'In Dispatch after treatment'."\n";
         }
     }
 }
