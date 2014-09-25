@@ -51,7 +51,6 @@ namespace Sohapi\Parser\Php {
                         var_dump(__CLASS__ . '#' . __LINE__);
                         break;
                     case 'T_FUNCTION':
-                        var_dump(__CLASS__ . '#' . __LINE__);
                         $func = new Method();
                         $func->visit($this, $child, $previous);
                         var_dump(__CLASS__ . '#' . __LINE__);
