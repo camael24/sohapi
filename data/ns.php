@@ -9,49 +9,45 @@
     }
 
     namespace  {
-        class Foo {
-
+        class Foo
+        {
         }
     }
 
     namespace Bar {
-        class Foo {
-
+        class Foo
+        {
         }
     }
 
     namespace Bar\Qux {
-        class Foo {
-
+        class Foo
+        {
         }
     }
 
     namespace {
-        class Foo extends Bar {
-
+        class Foo extends Bar
+        {
         }
     }
 
     namespace  {
-        class Doo implements Quz {
-
+        class Doo implements Quz
+        {
         }
     }
 
     namespace Doo\aaa {
-        class Doo implements Quz {
-
+        class Doo implements Quz
+        {
         }
     }
     namespace Doo\aaa {
-        class Doo extends foo implements Quz {
-
+        class Doo extends foo implements Quz
+        {
         }
-        class Doo extends foo implements Quz,Babar {
-
+        class Doo extends foo implements Quz,Babar
+        {
         }
     }
-
-
-
-?>

@@ -1,61 +1,21 @@
 <?php
 namespace Sohapi\Parser\Php {
-    class Ns extends Generic
+    class Ns extends Generic implements IParser
     {
-
-        public function visit(Element $element, \SplQueue &$handle = null, $eldnah = null)
+        public function visit($parent, &$tokens, $handle = array(), $eldnah = null)
         {
-            $type = null;
-            $nodes = $this->getUntilValue($handle, [';', '{'], $type);
-            $ns = $this->concatNodes($nodes);
+            $buffer     = $this->getUntilValue($tokens, ['{', ';']);
+            $separator  = array_pop($buffer);
+            $ns         = trim($this->concat($buffer));
 
-            if ($type === '{') {
+            echo 'Namespace :'.$ns."\n";
 
-                $child = $this->getNodeBetween($handle, '{', '}');
-                $before = array();
-
-                echo 'Namespace: ' . $ns . "\n";
-
-                foreach ($child as $key => $value) {
-                    switch ($value[0]) {
-                        // T_USE
-                        case 'T_CLASS':
-                            (new Classe())->visit($this, $child);
-                            break;
-                        default:
-                            $child->dequeue();
-                            break;
-                    }
-                }
-
-            } else {
-                throw new \Exception("%namespace foo;% ! Missing yet");
+            if ($separator[1] === '{') {
+                array_unshift($tokens, $separator);
+                $content = $this->getTokensBetweenValue($tokens, '{' , '}');
+                $parent->dispatch($content);
             }
 
-
-        }
-
-        public function dispatch(\SplQueue $child)
-        {
-            $previous = new \SplQueue();
-
-            if (count($child) === 0)
-                return;
-
-            foreach ($child as $key => $value) {
-                //echo "\t\t\t\t".$value[0]."\n";
-                switch ($value[0]) {
-                    // T_USE
-                    case 'T_CLASS':
-                        (new Classe())->visit($this, $child, $previous);
-                        $previous = new \SplQueue();
-                        break;
-                    default:
-
-                        $child->dequeue();
-                        break;
-                }
-            }
         }
 
     }

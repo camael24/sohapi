@@ -1,45 +1,23 @@
 <?php
 namespace Sohapi\Parser\Php {
-    class Method extends Generic
+    class Method extends Generic implements IParser
     {
-        public function visit(Element $element, \SplQueue &$handle = null, $eldnah = null)
+        public function visit($parent, &$tokens, $handle = array(), $eldnah = null)
         {
+            $visibilty  = $handle;
+            $value      = $this->getUntilValue($tokens, '{');
+            $c          = array_pop($value);
 
-            var_dump(__CLASS__ . '#' . __LINE__);
-            $name = $this->getUntilValue($handle, '(');
-            var_dump(__CLASS__ . '#' . __LINE__);
-            $name = $this->getListData($name);
-            $argument = $this->getNodeBetween($handle, '(', ')');
-            var_dump(__CLASS__ . '#' . __LINE__);
-            $content = $this->getNodeBetween($handle, '{', '}'); // This is Drop !!!! TODO : Get the return value !
-            var_dump(__CLASS__ . '#' . __LINE__);
-            $previous = implode(' ', $this->getListData($eldnah));
-            $argument = $this->concatNodes($argument);
+            array_unshift($tokens, $c);
 
-            echo "\t\t\t\t\t\t" . implode(' ', $name) . "\n";
+            $content = $this->getTokensBetweenValue($tokens, '{' , '}');
 
-            //print_r($handle);
-            var_dump(__CLASS__ . '#' . __LINE__);
-            $element->dispatch($handle);
-            var_dump(__CLASS__ . '#' . __LINE__);
+            //$this->dump($content); // TODO : Detect throw, return
+
+            echo 'Function : '.$this->concat($visibilty).' '.$this->concat($value)."\n";
         }
 
-        public function readArgument($args)
-        {
 
-            $e[] = array();
-
-            if (count($args) > 0) {
-                foreach ($args as $arg) {
-                    $a = $this->getUntilValue($args, ',');
-
-
-                }
-            }
-
-            return $e;
-
-        }
 
     }
 }

@@ -1,56 +1,37 @@
 <?php
 namespace Sohapi\Parser {
-    class Reader implements Php\Element
+
+    class Reader
     {
-        private $_filename = null;
-        private $_source   = '';
-        private $_token    = null;
+        protected $_token = array();
 
-        public function __construct($filename)
+        public function __construct($uri)
         {
-            $this->_filename = realpath($filename);
-            $this->_source   = file_get_contents($filename);
-            $token           = token_get_all($this->_source);
-            $this->_token    = new \SplQueue();
+            $file           = file_get_contents($uri);
+            $this->_token   = token_get_all($file);
 
-           foreach ($token as $i => $t) {
-                if (is_string($t)) {
-                    $t = array('T_STRUCTURAL',trim($t));
+            foreach ($this->_token as $key => $value) {
+                if (is_array($value)) {
+                    $type                   = token_name($value[0]);
+                    $this->_token[$key][0]  = $type;
                 } else {
-                    $t[0]  = (is_int($t[0])) ? token_name($t[0]) : $t[0];
+                    $this->_token[$key] = array(
+                        0 => 'T_STRUCTURE',
+                        1 => trim($value),
+                        2 => 0 // LINE UNKNOW
+                    );
                 }
-
-                $this->_token->enqueue($t);
             }
-
-        }
-
-        public function getTokens()
-        {
-            return $this->_token;
         }
 
         public function build()
         {
-            $token = $this->getTokens();
-            $root  = new Php\Root();
+            echo 'Total token : '.count($this->_token)."\n";
 
-            echo 'Total token ('.count($token).')'."\n";
+            $root = new \Sohapi\Parser\Php\Root();
+            $root->visit(null, $this->_token, '');
 
-            $root->visit($this, $token);
-            echo "\n".'Left token in stack ('.count($token).')'."\n";
-        }
-
-        public function dump()
-        {
-            foreach ($this->_token as $i => $token) {
-                echo $token[0];
-
-                if(isset($token[1]))
-                    echo "\t" . $token[1];
-
-                echo "\n";
-            }
+            echo "\n".'Left token : '.count($this->_token)."\n";
         }
     }
 }

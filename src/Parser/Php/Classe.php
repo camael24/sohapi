@@ -1,87 +1,52 @@
 <?php
 namespace Sohapi\Parser\Php {
-    class Classe extends Generic
+    class Classe extends Generic implements IParser
     {
-        public function visit(Element $element, \SplQueue &$handle = null, $eldnah = null)
+        public function visit($parent, &$tokens, $handle = array(), $eldnah = null)
         {
-            $c = $this->getUntilToken($handle, 'T_CLASS');
-            $nodes = $this->getUntilValue($handle, '{');
-            $classname = array();
-            $extends = array();
-            $implements = array();
-            $classname = $this->getUntilToken($nodes, array('T_EXTENDS', 'T_IMPLEMENTS'));
-            $classname = $this->concatNodes($classname);
-            $rest = $this->extractToken($nodes, array('T_EXTENDS', 'T_IMPLEMENTS'));
+            $deps       = $this->getUntilValue($tokens, '{');
+            $separator  = array_pop($deps);
+            array_unshift($tokens, $separator);
 
-            echo 'Classname: ' . $classname . "\n";
+            $name      = $this->getUntilToken($deps, ['T_EXTENDS' , 'T_IMPLEMENTS']);
+            $a         = array_pop($name);
 
-            foreach ($rest as $key => $value) {
-                if ($key === 'T_EXTENDS') {
-                    echo 'Extends:    ' . implode(',', $this->getListData($value)) . "\n";
-                } elseif ($key === 'T_IMPLEMENTS') {
-                    echo 'Implements: ' . implode(',', $this->getListData($value)) . "\n";
-                }
-            }
-            echo "\n";
-            $child = $this->getNodeBetween($handle, '{', '}');
-            var_dump(__CLASS__ . '#' . __LINE__);
-            $left = $this->dispatch($child);
-            var_dump(__CLASS__ . '#' . __LINE__);
-            echo 'Wouzou ?' . "\n";
+            array_unshift($deps, $a);
+
+            echo 'Classe : '.$this->concat($name)."\t". trim($this->concat($deps))."\n";
+
+            $content    = $this->getTokensBetweenValue($tokens, '{' , '}');
+
+            $this->dispatch($content);
         }
 
-        public function dispatch(\SplQueue $child)
+        public function dispatch(&$tokens,  $handle = array(), $eldnah = null)
         {
-            $previous = new \SplQueue();
-            var_dump(__CLASS__ . '#' . __LINE__);
-            if (count($child) === 0)
-                return;
-            var_dump(__CLASS__ . '#' . __LINE__);
-            foreach ($child as $key => $value) {
-                //echo "\t\t\t\t".$value[0]."\n";
-                var_dump(__CLASS__ . '#' . __LINE__ . "\t" . $value[0]);
-                switch ($value[0]) {
-                    // T_USE
-                    case 'T_VARIABLE':
-                        var_dump(__CLASS__ . '#' . __LINE__);
-                        $var = new Variable();
-                        $var->visit($this, $child, $previous);
-                        var_dump(__CLASS__ . '#' . __LINE__);
-                        $previous = new \SplQueue();
-                        var_dump(__CLASS__ . '#' . __LINE__);
+            $before = array();
+
+            while (($token = $this->consume($tokens)) !== null) {
+                switch ($token[0]) {
+                   case 'T_VARIABLE':
+                        (new Variable())->visit($this, $tokens, $before, $token);
+                        $before = array();
                         break;
                     case 'T_FUNCTION':
-                        $func = new Method();
-                        $func->visit($this, $child, $previous);
-                        var_dump(__CLASS__ . '#' . __LINE__);
-                        $previous = new \SplQueue();
-                        var_dump(__CLASS__ . '#' . __LINE__);
+                        (new Method())->visit($this, $tokens, $before, $token);
+                        $before = array();
                         break;
+                    case 'T_COMMENT':
+                    case 'T_DOC_COMMENT':
+                        (new Comment())->visit($this, $tokens, $before, $token);
                     case 'T_STATIC':
                     case 'T_PUBLIC':
                     case 'T_PROTECTED':
                     case 'T_PRIVATE':
-                        var_dump(__CLASS__ . '#' . __LINE__);
-                        $previous->enqueue($child->dequeue());
-                        var_dump(__CLASS__ . '#' . __LINE__);
-                        break;
                     default:
-                        var_dump(__CLASS__ . '#' . __LINE__);
-                        $child->dequeue();
-                        var_dump(__CLASS__ . '#' . __LINE__);
+                        $before[]  = $token;
                         break;
                 }
             }
-
-            var_dump(__CLASS__ . '#' . __LINE__);
-            if (empty($child) === true)
-                return null;
-
-            var_dump(__CLASS__ . '#' . __LINE__);
-
-            echo 'In Dispatch after treatment' . "\n";
-
-            var_dump(__CLASS__ . '#' . __LINE__);
         }
+
     }
 }

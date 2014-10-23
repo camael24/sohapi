@@ -1,21 +1,35 @@
 <?php
 namespace Sohapi\Parser\Php {
-    class Root extends Generic
+    class Root extends Generic implements IParser
     {
-        public function visit(Element $element, \SplQueue &$handle = null, $eldnah = null)
+        public function visit($parent, &$tokens, $handle = array(), $eldnah = null)
+        {
+            $this->dispatch($tokens, $handle, $eldnah);
+        }
+
+        public function dispatch(&$tokens,  $handle = array(), $eldnah = null)
         {
             $before = array();
 
-            foreach ($handle as $key => $value) {
-
-                switch ($value[0]) {
+            while (($token = $this->consume($tokens)) !== null) {
+                switch ($token[0]) {
+                    case 'T_COMMENT':
+                    case 'T_DOC_COMMENT':
+                        (new Comment())->visit($this, $tokens, $before, $token);
                     case 'T_NAMESPACE':
-                        $handle->dequeue();
-                        (new Ns())->visit($this, $handle);
-                        break;
+                        echo "\n".'------- NS ------'."\n";
+                        (new NS())->visit($this, $tokens, $before, $eldnah);
+                        echo "\n".'------- !NS ------'."\n";
+                        $before = array();
+                    break;
+                    case 'T_CLASS':
+                        echo "\n".'------- CLASS ------'."\n";
+                        (new Classe())->visit($this, $tokens, $before, $eldnah);
+                        echo "\n".'------- !CLASS ------'."\n";
+                        $before = array();
                     default:
-                        $handle->dequeue();
-                        break;
+                        $before[] = $token;
+                    break;
                 }
             }
         }

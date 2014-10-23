@@ -1,26 +1,23 @@
 <?php
 namespace Sohapi\Parser\Php {
-    class Variable extends Generic
+    class Variable extends Generic implements IParser
     {
-        public function visit(Element $element, \SplQueue &$handle = null, $eldnah = null)
+        public function visit($parent, &$tokens, $handle = array(), $eldnah = null)
         {
-            var_dump(__CLASS__ . '#' . __LINE__);
-            $name = $this->getUntilValue($handle, '=');
-            var_dump(__CLASS__ . '#' . __LINE__);
-            $name = $this->getListData($name);
-            var_dump(__CLASS__ . '#' . __LINE__);
-            $value = $this->getUntilValue($handle, ';', $type);
-            var_dump(__CLASS__ . '#' . __LINE__);
-            $semicolon = $handle->dequeue();
-            var_dump(__CLASS__ . '#' . __LINE__);
-            $value = $this->concatNodes($value);
-            var_dump(__CLASS__ . '#' . __LINE__);
-            $previous = implode(' ', $this->getListData($eldnah));
+            $a          = array_shift($handle);
+            $visibilty  = $handle;
+            $name       = strval($eldnah[1]);
+            $value      = $this->getUntilValue($tokens, ';');
 
-            //echo $previous."\t". implode(' ', $name).' '.$value."\n";
-            $element->dispatch($handle);
-            var_dump(__CLASS__ . '#' . __LINE__);
+            echo 'Property : '.$this->concat($visibilty).' '.$name.' '.$this->concat($value)."\n";
+
+
+
+            $parent->dispatch($tokens);
+
         }
+
+
 
     }
 }

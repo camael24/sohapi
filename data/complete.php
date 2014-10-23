@@ -16,7 +16,9 @@ namespace Sohapi {
         private $_file = '';
         private $_headers = array();
         protected $_helpers = array();
-
+/**
+*
+*/
         public function __construct($path = null)
         {
             $this->setPath($path);
@@ -27,7 +29,6 @@ namespace Sohapi {
         {
             return $this->_data;
         }
-
 
         public function setData($object = null)
         {
@@ -104,7 +105,6 @@ namespace Sohapi {
             return $realpath;
         }
 
-
         public function getHeaders()
         {
             return $this->_headers;
@@ -120,7 +120,6 @@ namespace Sohapi {
             );
         }
 
-
         public function renderFile($filename)
         {
 
@@ -130,7 +129,7 @@ namespace Sohapi {
             // used by the placeholder
 
             ob_start('mb_output_handler');
-            extract((array)$this->_data);
+            extract((array) $this->_data);
             include($filename);
 
             // restore args

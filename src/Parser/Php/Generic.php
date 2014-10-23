@@ -1,138 +1,97 @@
 <?php
 namespace Sohapi\Parser\Php {
-    class Generic implements Element
+    class Generic
     {
-        public function getUntilValue(\SplQueue &$handle, $value, &$type = null)
+        protected function consume(&$tokens)
         {
-            if (is_string($value)) {
-                $value = array($value);
-            }
-            $return = new \SplQueue();
-            foreach ($handle as $k => $v) {
-                if (isset($v[0]) === true && $v[0] !== 'T_WHITESPACE') {
-                    if (isset($v[1]) === true && in_array($v[1], $value) !== true) {
-                        $return->enqueue($handle->dequeue());
-                    } else {
-                        $type = $v[1];
-
-                        return $return;
-                    }
-                } else {
-                    $handle->dequeue();
-                }
-            }
-
-            return $return;
-
+            return array_shift($tokens);
         }
 
-        public function getUntilToken(\SplQueue &$handle, $value)
+        public function dump($tokens)
         {
-            if (is_string($value)) {
-                $value = array($value);
-            }
-            $return = new \SplQueue();
-            foreach ($handle as $k => $v) {
-                if (isset($v[0]) === true && $v[0] !== 'T_WHITESPACE') {
-                    if (isset($v[0]) === true && in_array($v[0], $value) !== true) {
-                        $return->enqueue($handle->dequeue());
-                    } else {
-                        $handle->dequeue();
-
-                        return $return;
-                    }
-                } else {
-                    $handle->dequeue();
-                }
-            }
-
-            return $return;
+            echo $this->concat($tokens);
         }
 
-        public function extractToken(\SplQueue $handle, $value)
+        public function concat($tokens)
         {
-            if (is_string($value)) {
-                $value = array($value);
+            $buffer = '';
+            foreach ($tokens as $key => $value) {
+                $buffer .= strval($value[1]);
             }
 
-            $return = array();
-            $current = '';
-
-            foreach ($value as $a) {
-                $return[$a] = new \SplQueue();
-            }
-
-            foreach ($handle as $v) {
-                $item = $handle->dequeue();
-                $current = '';
-                if (isset($item[0])) {
-                    $type = $item[0];
-                    if (in_array($type, $value)) {
-                        $current = $type;
-                    } else {
-                        if (isset($return[$current]) && is_object($return[$current])) {
-                            $return[$current]->enqueue($item);
-                        }
-                    }
-                }
-            }
-
-            return $return;
+            return trim($buffer);
         }
 
-        public function concatNodes($nodes)
+        protected function getTokensBetweenToken(&$tokens, $tStart, $tEnd, $limit = 0)
         {
-            $out = '';
-
-            foreach ($nodes as $node)
-                $out .= strval($node[1]);
-
-            return $out;
+            return $this->_getTokenBetween($tokens, $tStart, $tEnd, $limit, '0');
+        }
+        protected function getTokensBetweenValue(&$tokens, $tStart, $tEnd, $limit = 0)
+        {
+            return $this->_getTokenBetween($tokens, $tStart, $tEnd, $limit, '1');
         }
 
-        public function getListData(\SplQueue $handle)
+        protected function _getTokenBetween(&$tokens, $tStart, $tEnd, $limit, $type)
         {
-            $return = array();
-            foreach ($handle as $key => $value) {
-                if ($value[0] !== 'T_STRUCTURAL') {
-                    $return[] = $value[1];
-                }
-            }
+            $buffer  = array();
+            $process = false;
+            $block   = 0;
+            $count   = 0;
+            while (($token = $this->consume($tokens)) !== null) {
 
-            return $return;
-        }
-
-        public function getNodeBetween($handle, $start, $end)
-        {
-            $return = new \SplQueue();
-            $count = 0;
-
-            foreach ($handle as $item) {
-                $item = $handle->dequeue();
-                $value = (isset($item[1])) ? $item[1] : '';
-
-                if ($start === $value) {
+                if ($tStart === $token[$type]) {
+                    $process = true;
+                    $buffer[] = $token;
                     $count++;
-                } elseif ($end === $value) {
+                } elseif ($tEnd === $token[$type]) {
+                    $process = false;
                     $count--;
+                    $buffer[] = $token;
+                    if ($count == 0) {
+                        return $buffer;
+                    }
+                } else {
+                    $buffer[] = $token;
                 }
 
-                if (isset($item[0]) === true and $item[0] !== 'T_WHITESPACE') {
-                    $return->enqueue($item);
-                }
+            }
 
-                if ($count === 0) {
-                    $fist = $return->shift();
-                    $last = $return->pop();
+            return $buffer;
+        }
 
-                    return $return;
+        protected function getUntilValue(&$tokens, $limit)
+        {
+            return $this->_getUntil($tokens, $limit, '1');
+        }
+
+        protected function getUntilToken(&$tokens, $limit)
+        {
+            return $this->_getUntil($tokens, $limit, '0');
+        }
+
+        protected function _getUntil(&$tokens, $limit, $type)
+        {
+            if (is_string($limit)) {
+                $limit = array($limit);
+            }
+
+            $buffer = array();
+
+            while (($token = $this->consume($tokens)) !== null) {
+
+                $buffer[] = $token;
+
+                if (in_array($token[$type], $limit)) {
+                    return $buffer;
                 }
             }
 
-            $fist = $return->shift();
-            $last = $return->pop();
-
-            return $return; // End of queue
+            return $buffer;
         }
+
+        protected function extractToken(&$tokens, $list)
+        {
+        }
+
     }
 }
