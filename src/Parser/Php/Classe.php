@@ -14,8 +14,9 @@ namespace Sohapi\Parser\Php {
             array_unshift($deps, $a);
 
             echo 'Classe : '.$this->concat($name)."\t". trim($this->concat($deps))."\n";
-
             $content    = $this->getTokensBetweenValue($tokens, '{' , '}');
+
+            array_shift($content);
 
             $this->dispatch($content);
         }

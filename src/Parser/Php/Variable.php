@@ -4,7 +4,7 @@ namespace Sohapi\Parser\Php {
     {
         public function visit($parent, &$tokens, $handle = array(), $eldnah = null)
         {
-            $a          = array_shift($handle);
+
             $visibilty  = $handle;
             $name       = strval($eldnah[1]);
             $value      = $this->getUntilValue($tokens, ';');
