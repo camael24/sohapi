@@ -8,7 +8,7 @@ namespace Sohapi\Parser\Php {
             $separator  = array_pop($buffer);
             $ns         = trim($this->concat($buffer));
 
-            echo 'Namespace :'.$ns."\n";
+            \Sohapi\Parser\Ast::getLastInstance()->setNamespace($ns);
 
             if ($separator[1] === '{') {
                 array_unshift($tokens, $separator);

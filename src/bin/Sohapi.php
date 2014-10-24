@@ -1,9 +1,8 @@
 <?php
 require __DIR__.'/../../vendor/autoload.php';
 
-$file = realpath(__DIR__.'/../../data/simple.php');
+$file = realpath(__DIR__.'/../../data/const.php');
 
-$parser = new \Sohapi\Parser\Reader($file);
+(new \Sohapi\Parser\Reader($file, 'simple'))->build();
 
-$parser->build();
 echo 'EOF';

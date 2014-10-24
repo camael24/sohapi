@@ -7,14 +7,28 @@ namespace Sohapi\Parser\Php {
             $visibilty  = $handle;
             $value      = $this->getUntilValue($tokens, '{');
             $c          = array_pop($value);
+            $name       = $this->getUntilValue($value, '(');
+            $args       = $this->getTokensBetweenValue($value, '(' , ')');
 
+
+            array_pop($args);
+            array_pop($args);
+
+
+
+            array_unshift($value, array_pop($name));
             array_unshift($tokens, $c);
 
             $content = $this->getTokensBetweenValue($tokens, '{' , '}');
 
             //$this->dump($content); // TODO : Detect throw, return
-
-            echo 'Function : '.$this->concat($visibilty).' '.$this->concat($value)."\n";
+            //  public function setMethod($visibility, $isStatic, $name, $arguments) {
+            \Sohapi\Parser\Ast::getLastInstance()->setMethod(
+                $this->concat($visibilty),
+                false,
+                $this->concat($name),
+                (count($args) ===0) ? 'void' : $this->concat($args)
+            );
         }
 
 

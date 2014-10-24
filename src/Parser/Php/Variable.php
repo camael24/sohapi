@@ -9,7 +9,11 @@ namespace Sohapi\Parser\Php {
             $name       = strval($eldnah[1]);
             $value      = $this->getUntilValue($tokens, ';');
 
-            echo 'Property : '.$this->concat($visibilty).' '.$name.' '.$this->concat($value)."\n";
+//setProperty($visibility, $isStatic, $name, $default) {
+
+            \Sohapi\Parser\Ast::getLastInstance()->setProperty($this->concat($visibilty) , false, $name, $this->concat($value));
+
+            //echo 'Property : '.$this->concat($visibilty).' '.$name.' '.$this->concat($value)."\n";
 
 
 

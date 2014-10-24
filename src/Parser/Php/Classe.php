@@ -6,6 +6,7 @@ namespace Sohapi\Parser\Php {
         {
             $deps       = $this->getUntilValue($tokens, '{');
             $separator  = array_pop($deps);
+
             array_unshift($tokens, $separator);
 
             $name      = $this->getUntilToken($deps, ['T_EXTENDS' , 'T_IMPLEMENTS']);
@@ -13,7 +14,8 @@ namespace Sohapi\Parser\Php {
 
             array_unshift($deps, $a);
 
-            echo 'Classe : '.$this->concat($name)."\t". trim($this->concat($deps))."\n";
+            \Sohapi\Parser\Ast::getLastInstance()->setClasse($this->concat($name))->setExtends(trim($this->concat($deps))); // TODO : Différencier le Extends et Implements
+
             $content    = $this->getTokensBetweenValue($tokens, '{' , '}');
 
             array_shift($content);

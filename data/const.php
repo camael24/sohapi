@@ -1,9 +1,10 @@
 <?php
-
+$a  = '';
+function foo() {
+    echo 'bar';
+}
 class MyClass
 {
-    const CONSTANT = 'constant value';
-
     public function showConstant()
     {
     }

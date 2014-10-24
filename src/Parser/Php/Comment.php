@@ -4,12 +4,8 @@ namespace Sohapi\Parser\Php {
     {
         public function visit($parent, &$tokens, $handle = array(), $eldnah = null)
         {
-            echo 'Comment : '.$eldnah[1]."\n";
+            //echo 'Comment  : '.$eldnah[1]."\n";
             $parent->dispatch($tokens);
-
         }
-
-
-
     }
 }

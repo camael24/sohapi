@@ -17,15 +17,11 @@ namespace Sohapi\Parser\Php {
                     case 'T_DOC_COMMENT':
                         (new Comment())->visit($this, $tokens, $before, $token);
                     case 'T_NAMESPACE':
-                        echo "\n".'------- NS ------'."\n";
                         (new NS())->visit($this, $tokens, $before, $eldnah);
-                        echo "\n".'------- !NS ------'."\n";
                         $before = array();
                     break;
                     case 'T_CLASS':
-                        echo "\n".'------- CLASS ------'."\n";
                         (new Classe())->visit($this, $tokens, $before, $eldnah);
-                        echo "\n".'------- !CLASS ------'."\n";
                         $before = array();
                     default:
                         $before[] = $token;
