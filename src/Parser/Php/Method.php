@@ -23,7 +23,7 @@ namespace Sohapi\Parser\Php {
 
             //$this->dump($content); // TODO : Detect throw, return
             //  public function setMethod($visibility, $isStatic, $name, $arguments) {
-            \Sohapi\Parser\Ast::getLastInstance()->setMethod(
+            \Sohapi\Parser\Ast::getInstance()->setMethod(
                 $this->concat($visibilty),
                 false,
                 $this->concat($name),

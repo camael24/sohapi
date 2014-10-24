@@ -11,7 +11,7 @@ namespace Sohapi\Parser\Php {
 
 //setProperty($visibility, $isStatic, $name, $default) {
 
-            \Sohapi\Parser\Ast::getLastInstance()->setProperty($this->concat($visibilty) , false, $name, $this->concat($value));
+            \Sohapi\Parser\Ast::getInstance()->setProperty($this->concat($visibilty) , false, $name, $this->concat($value));
 
             //echo 'Property : '.$this->concat($visibilty).' '.$name.' '.$this->concat($value)."\n";
 

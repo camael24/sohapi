@@ -5,9 +5,9 @@ namespace Sohapi\Parser {
     {
         protected $_token = array();
 
-        public function __construct($uri, $key)
+        public function __construct($uri)
         {
-            $storage        = Ast::getInstance($key);
+            $storage        = Ast::getInstance();
             $file           = file_get_contents($uri);
             $this->_token   = token_get_all($file);
 
@@ -27,14 +27,7 @@ namespace Sohapi\Parser {
 
         public function build()
         {
-            echo 'Total token : '.count($this->_token)."\n\n";
-
-            $root = new \Sohapi\Parser\Php\Root();
-            $root->visit(null, $this->_token, '');
-
-            Ast::getLastInstance()->render();
-
-            echo "\n".'Left token : '.count($this->_token)."\n";
+            (new \Sohapi\Parser\Php\Root())->visit(null, $this->_token, '');
         }
     }
 }

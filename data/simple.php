@@ -23,11 +23,24 @@ namespace Foo\Bar {
 /**
 *
 */
-        public function __construct($path = null)
+        public function __construct($path = null, $a = null)
         {
             $this->setPath($path);
             $this->setData();
         }
 
     }
+}
+namespace {
+      class Hello
+        {
+            public function __construct()
+            {
+            }
+
+            private function myFunctionIsPri()
+            {
+            }
+
+        }
 }
