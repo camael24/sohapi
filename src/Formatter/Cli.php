@@ -1,8 +1,10 @@
+
 <?php
 namespace Sohapi\Formatter {
-    class Cli {
-
-        public function __construct() {
+    class Cli
+    {
+        public function __construct()
+        {
             $ast                = \Sohapi\Parser\Ast::getInstance();
             $this->_namespace   = $ast->getNamespace();
             $this->_classe      = $ast->getClasse();
@@ -10,8 +12,8 @@ namespace Sohapi\Formatter {
             $this->_methods     = $ast->getMethods();
         }
 
-        public function render() {
-
+        public function render()
+        {
             foreach ($this->_namespace as $namespace) {
                 echo '------------- NS -------------'."\n";
                 echo 'Namespace : '.(($namespace === '') ? 'ROOT' : $namespace)."\n";
@@ -24,14 +26,14 @@ namespace Sohapi\Formatter {
 
                     echo 'Properties : '."\n";
                     $classe = $classe['class'];
-                    if(isset($this->_properties[$namespace][$classe])){
+                    if (isset($this->_properties[$namespace][$classe])) {
                         foreach ($this->_properties[$namespace][$classe] as $property) {
                             echo "\t".$property['visibility'].' '.(($property['static'] === true) ? 'static' : '').' '.$property['name'].' '.$property['default']."\n";
                         }
                     }
 
                     echo 'Methods : '."\n";
-                    if(isset($this->_methods[$namespace][$classe])){
+                    if (isset($this->_methods[$namespace][$classe])) {
                         foreach ($this->_methods[$namespace][$classe] as $method) {
                             echo "\t".$method['visibility'].' '.(($method['static'] === true) ? 'static' : '').' '.$method['name'].' ('.$method['arguments'].')'."\n";
                         }

@@ -1,6 +1,7 @@
 <?php
 namespace Sohapi\Parser {
-    class Ast {
+    class Ast
+    {
         private static $_instance = null;
         private static $_last = '';
 
@@ -13,7 +14,7 @@ namespace Sohapi\Parser {
 
         public static function getInstance()
         {
-            if(static::$_instance === null) {
+            if (static::$_instance === null) {
                 static::$_instance = new Ast();
             }
 
@@ -30,10 +31,11 @@ namespace Sohapi\Parser {
             return static::$_instance;
         }
 
-        public function setNamespace ($namespace)
+        public function setNamespace($namespace)
         {
             $this->_namespace[]      = $namespace;
             $this->_currentNamespace = $namespace;
+
             return $this;
         }
 
@@ -45,7 +47,7 @@ namespace Sohapi\Parser {
                 'implements' => $implements
             ];
 
-            if(!in_array($this->_currentNamespace, $this->_namespace)) {
+            if (!in_array($this->_currentNamespace, $this->_namespace)) {
                 $this->_namespace[] = $this->_currentNamespace;
             }
 

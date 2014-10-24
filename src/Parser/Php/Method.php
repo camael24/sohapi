@@ -10,11 +10,8 @@ namespace Sohapi\Parser\Php {
             $name       = $this->getUntilValue($value, '(');
             $args       = $this->getTokensBetweenValue($value, '(' , ')');
 
-
             array_pop($args);
             array_pop($args);
-
-
 
             array_unshift($value, array_pop($name));
             array_unshift($tokens, $c);
@@ -30,8 +27,6 @@ namespace Sohapi\Parser\Php {
                 (count($args) ===0) ? 'void' : $this->concat($args)
             );
         }
-
-
 
     }
 }

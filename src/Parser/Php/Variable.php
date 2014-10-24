@@ -15,13 +15,9 @@ namespace Sohapi\Parser\Php {
 
             //echo 'Property : '.$this->concat($visibilty).' '.$name.' '.$this->concat($value)."\n";
 
-
-
             $parent->dispatch($tokens);
 
         }
-
-
 
     }
 }
