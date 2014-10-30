@@ -15,6 +15,8 @@ namespace Sohapi\Parser\Php {
                 $content = $this->getTokensBetweenValue($tokens, '{' , '}');
                 $parent->dispatch($content);
             }
+            if ($separator[1] === ';')
+                throw new \Exception("Not support yet", 1);
 
         }
 

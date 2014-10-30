@@ -1,8 +1,10 @@
-
 <?php
 namespace Sohapi\Formatter {
-    class Cli
-    {
+    class Formatter {
+        protected $_namespace = array();
+        protected $_classe = array();
+        protected $_properties = array();
+        protected $_methods = array();
         public function __construct()
         {
             $ast                = \Sohapi\Parser\Ast::getInstance();

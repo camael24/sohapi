@@ -2,3 +2,4 @@
 vendor/
 binaries/
 *.lock
+out

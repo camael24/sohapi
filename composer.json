@@ -18,9 +18,5 @@
     },
      "autoload": {
         "psr-4": { "Sohapi\\": "src/" }
-    },
-    "bin": ["src/bin/sohapi"],
-    "config": {
-        "bin-dir": "binaries/"
     }
  }
