@@ -9,14 +9,9 @@ namespace Sohapi\Parser\Php {
             $name       = strval($eldnah[1]);
             $value      = $this->getUntilValue($tokens, ';');
 
-//setProperty($visibility, $isStatic, $name, $default) {
-
             \Sohapi\Parser\Ast::getInstance()->setProperty($this->concat($visibilty) , false, $name, $this->concat($value));
 
-            //echo 'Property : '.$this->concat($visibilty).' '.$name.' '.$this->concat($value)."\n";
-
             $parent->dispatch($tokens);
-
         }
 
     }

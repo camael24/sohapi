@@ -6,6 +6,8 @@ namespace Sohapi\Parser {
         private static $_last = '';
 
         private $_classe = array();
+        private $_interface = array();
+        private $_abstract = array();
         private $_namespace = array();
         private $_properties = array();
         private $_methods = array();
@@ -57,6 +59,40 @@ namespace Sohapi\Parser {
             return $this;
         }
 
+        public function setInterface($classe, $extends = '')
+        {
+            $a = [
+                'interface'  => $classe,
+                'extends'    => $extends
+            ];
+
+            if (!in_array($this->_currentNamespace, $this->_namespace)) {
+                $this->_namespace[] = $this->_currentNamespace;
+            }
+
+            $this->_interface[$this->_currentNamespace][]  = $a;
+            $this->_currentClasse                          = $classe;
+
+            return $this;
+        }
+
+        public function setAbstract($classe, $extends = '')
+        {
+            $a = [
+                'abstract'   => $classe,
+                'extends'    => $extends
+            ];
+
+            if (!in_array($this->_currentNamespace, $this->_namespace)) {
+                $this->_namespace[] = $this->_currentNamespace;
+            }
+
+            $this->_abstract[$this->_currentNamespace][]  = $a;
+            $this->_currentClasse                          = $classe;
+
+            return $this;
+        }
+
         public function setProperty($visibility, $isStatic, $name, $default)
         {
             $a = [
@@ -79,7 +115,6 @@ namespace Sohapi\Parser {
                 'name'          => $name,
                 'arguments'     => $arguments
             ];
-
             $this->_methods[$this->_currentNamespace][$this->_currentClasse][] = $a;
 
             return $this;
@@ -103,6 +138,16 @@ namespace Sohapi\Parser {
         public function getNamespace()
         {
             return $this->_namespace;
+        }
+
+        public function getInterface()
+        {
+            return $this->_interface;
+        }
+
+        public function getAbstract()
+        {
+            return $this->_abstract;
         }
     }
 }

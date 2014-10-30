@@ -20,9 +20,18 @@ namespace Sohapi\Parser\Php {
                         (new NS())->visit($this, $tokens, $before, $eldnah);
                         $before = array();
                     break;
-                    case 'T_CLASS':
+                    case 'T_INTERFACE':
+                        (new Iface())->visit($this, $tokens, $before, $eldnah);
+                        $before = array();
+                    break;
+                    case 'T_ABSTRACT':
+                        (new Abs())->visit($this, $tokens, $before, $eldnah);
+                        $before = array();
+                    break;
+                    case 'T_CLASS': // TODO : Interface Traits Abstract
                         (new Classe())->visit($this, $tokens, $before, $eldnah);
                         $before = array();
+                    break;
                     default:
                         $before[] = $token;
                     break;

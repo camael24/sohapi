@@ -5,7 +5,7 @@ namespace Sohapi\Parser\Php {
         public function visit($parent, &$tokens, $handle = array(), $eldnah = null)
         {
             $visibilty  = $handle;
-            $value      = $this->getUntilValue($tokens, '{');
+            $value      = $this->getUntilValue($tokens, ['{', ';']);
             $c          = array_pop($value);
             $name       = $this->getUntilValue($value, '(');
             $args       = $this->getTokensBetweenValue($value, '(' , ')');
@@ -16,10 +16,9 @@ namespace Sohapi\Parser\Php {
             array_unshift($value, array_pop($name));
             array_unshift($tokens, $c);
 
-            $content = $this->getTokensBetweenValue($tokens, '{' , '}');
 
+            $content = $this->getTokensBetweenValue($tokens, '{' , '}');
             //$this->dump($content); // TODO : Detect throw, return
-            //  public function setMethod($visibility, $isStatic, $name, $arguments) {
             \Sohapi\Parser\Ast::getInstance()->setMethod(
                 $this->concat($visibilty),
                 false,

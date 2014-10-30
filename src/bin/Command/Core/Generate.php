@@ -29,7 +29,7 @@ namespace Sohapi\Bin\Command\Core {
 
             $file               = null;
             $debug              = true;
-            $dry                = true;
+            $dry                = false;
             $directory          = null;
             $output             = 'out/';
             $style_formatter    = 'Cli';
@@ -65,7 +65,7 @@ namespace Sohapi\Bin\Command\Core {
             echo \Hoa\Console\Chrome\Text::colorize('Sohapi', 'fg(yellow)'), "\n\n";
             $root       = realpath(__DIR__.'/../../../../');
             $out        = realpath($root.'/'.$output);
-            $formatter  = 'Sohapi/Formatter/'.ucfirst($style_formatter);
+            $formatter  = '\\Sohapi\\Formatter\\'.ucfirst($style_formatter);
 
             if($file !== null)
                 $file = realpath($root.'/'.$file);
@@ -90,7 +90,6 @@ namespace Sohapi\Bin\Command\Core {
                 echo \Hoa\Console\Chrome\Text::columnize($a);
             }
 
-            // TODO : make option in .sohapi.php
             $files = array();
 
             $this->searchLocalConfig($root, $files);
@@ -125,13 +124,8 @@ namespace Sohapi\Bin\Command\Core {
             }
 
             if($dry === false){
-                (new \Sohapi\Formatter\Cli())->render();
+                dnew($formatter)->render();
             }
-
-
-echo 'EOF';
-
-
 
             return;
         }
