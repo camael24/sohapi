@@ -93,5 +93,25 @@ namespace Sohapi\Parser\Php {
         {
         }
 
+        protected function tokenExists($token, $search)
+        {
+            return $this->_exists($token, $search, 0);
+        }
+
+        protected function valueExists($token, $search)
+        {
+            return $this->_exists($token, $search, 1);
+        }
+
+        protected function _exists($token, $search, $type)
+        {
+            foreach ($token as $t)
+                if($t[$type] === $search)
+
+                    return true;
+
+            return false;
+        }
+
     }
 }

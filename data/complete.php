@@ -5,9 +5,12 @@
  * Date: 24/01/14
  * Time: 09:02
  */
-namespace Sohapi {
-    class Greut
+namespace Sohapi\Foo {
+    class Greut extends Bar implements Foo
     {
+        /**
+        * @Foo:
+        */
         public $_data = null;
         private $_paths = null;
         private $_inherits = array();
@@ -17,7 +20,7 @@ namespace Sohapi {
         private $_headers = array();
         protected $_helpers = array();
 /**
-*
+* aaaaaaaaaaaaaaa
 */
         public function __construct($path = null)
         {

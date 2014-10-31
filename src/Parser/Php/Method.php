@@ -16,14 +16,13 @@ namespace Sohapi\Parser\Php {
             array_unshift($value, array_pop($name));
             array_unshift($tokens, $c);
 
-
             $content = $this->getTokensBetweenValue($tokens, '{' , '}');
             //$this->dump($content); // TODO : Detect throw, return
             \Sohapi\Parser\Ast::getInstance()->setMethod(
                 $this->concat($visibilty),
                 false,
                 $this->concat($name),
-                (count($args) ===0) ? 'void' : $this->concat($args)
+                (count($args) ===0) ? 'void' : $args
             );
         }
 

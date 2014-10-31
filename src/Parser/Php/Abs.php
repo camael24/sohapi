@@ -1,6 +1,6 @@
 <?php
 namespace Sohapi\Parser\Php {
-    class Classe extends Generic implements IParser
+    class Abs extends Generic implements IParser
     {
         public function visit($parent, &$tokens, $handle = array(), $eldnah = null)
         {
@@ -9,33 +9,16 @@ namespace Sohapi\Parser\Php {
 
             array_unshift($tokens, $separator);
 
-            $name       = $this->getUntilToken($deps, ['T_EXTENDS' , 'T_IMPLEMENTS']);
-            $a          = array_pop($name);
-            $extends    = array();
-            $implements = array();
+            $name      = $this->getUntilToken($deps, ['T_EXTENDS' , 'T_IMPLEMENTS']);
+            $a         = array_pop($name);
+            $a         = array_pop($name);
 
-            //array_unshift($deps, $a);
-
-            if ($a[0] === 'T_EXTENDS') {
-                $extends    = $this->getUntilToken($deps, 'T_IMPLEMENTS');
-                if ($this->tokenExists($extends, 'T_IMPLEMENTS') === true) {
-                    array_pop($extends);
-                }
-                $implements = $deps;
-            }
-
-            if ($a[0] === 'T_IMPLEMENTS') {
-                $implements    = $this->getUntilToken($deps, 'T_EXTENDS');
-                if ($this->tokenExists($implements, 'T_EXTENDS') === true) {
-                    array_pop($implements);
-                }
-                $extends = $deps;
-            }
+            array_unshift($deps, $a);
 
             \Sohapi\Parser\Ast::getInstance()
-                ->setClasse($this->concat($name), trim($this->concat($extends)), trim($this->concat($implements)));
+                ->setAbstract($this->concat($name), trim($this->concat($deps))); // TODO : Différencier le Extends et Implements
 
-            $content    = $this->getTokensBetweenValue($tokens, '{' , '}');
+              $content    = $this->getTokensBetweenValue($tokens, '{' , '}');
 
             array_shift($content);
 
@@ -59,6 +42,8 @@ namespace Sohapi\Parser\Php {
                     case 'T_COMMENT':
                     case 'T_DOC_COMMENT':
                         (new Comment())->visit($this, $tokens, $before, $token);
+                        $before = array();
+                        break;
                     case 'T_STATIC':
                     case 'T_PUBLIC':
                     case 'T_PROTECTED':

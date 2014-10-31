@@ -1,7 +1,8 @@
 <?php
-namespace Foo;
-
-class Bar {
+namespace Foo\Babar;
+use Sohoa\Framework\Framework AS OBar;
+use Sohoa\Framework\Greut;
+class OBar extends \SplQueue {
     public function fsoo() {
         exit('f');
     }

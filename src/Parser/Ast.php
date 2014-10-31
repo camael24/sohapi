@@ -11,6 +11,8 @@ namespace Sohapi\Parser {
         private $_namespace = array();
         private $_properties = array();
         private $_methods = array();
+        private $_comment = null;
+        private $_use = array();
         private $_currentClasse = '';
         private $_currentNamespace = '';
 
@@ -33,10 +35,31 @@ namespace Sohapi\Parser {
             return static::$_instance;
         }
 
+        public function setComment($comment)
+        {
+            $this->_comment = $comment;
+        }
+
         public function setNamespace($namespace)
         {
             $this->_namespace[]      = $namespace;
             $this->_currentNamespace = $namespace;
+
+            return $this;
+        }
+
+        public function setUse($classe, $as = '')
+        {
+            $a = [
+                'class'     => $classe,
+                'as'        => $as
+            ];
+
+            if (!in_array($this->_currentNamespace, $this->_namespace)) {
+                $this->_namespace[] = $this->_currentNamespace;
+            }
+
+            $this->_use[$this->_currentNamespace][]  = $a;
 
             return $this;
         }
@@ -46,8 +69,10 @@ namespace Sohapi\Parser {
             $a = [
                 'class'      => $classe,
                 'extends'    => $extends,
-                'implements' => $implements
+                'implements' => $implements,
+                'comment'    => $this->_comment
             ];
+            $this->_comment = null;
 
             if (!in_array($this->_currentNamespace, $this->_namespace)) {
                 $this->_namespace[] = $this->_currentNamespace;
@@ -63,8 +88,11 @@ namespace Sohapi\Parser {
         {
             $a = [
                 'interface'  => $classe,
-                'extends'    => $extends
+                'extends'    => $extends,
+                'comment'    => $this->_comment
             ];
+
+            $this->_comment = null;
 
             if (!in_array($this->_currentNamespace, $this->_namespace)) {
                 $this->_namespace[] = $this->_currentNamespace;
@@ -80,9 +108,10 @@ namespace Sohapi\Parser {
         {
             $a = [
                 'abstract'   => $classe,
-                'extends'    => $extends
+                'extends'    => $extends,
+                'comment'    => $this->_comment
             ];
-
+            $this->_comment = null;
             if (!in_array($this->_currentNamespace, $this->_namespace)) {
                 $this->_namespace[] = $this->_currentNamespace;
             }
@@ -99,9 +128,10 @@ namespace Sohapi\Parser {
                 'visibility'    => $visibility,
                 'static'        => $isStatic,
                 'name'          => $name,
-                'default'       => $default
+                'default'       => $default,
+                'comment'       => $this->_comment
             ];
-
+            $this->_comment = null;
             $this->_properties[$this->_currentNamespace][$this->_currentClasse][] = $a;
 
             return $this;
@@ -113,11 +143,38 @@ namespace Sohapi\Parser {
                 'visibility'    => $visibility,
                 'static'        => $isStatic,
                 'name'          => $name,
-                'arguments'     => $arguments
+                'arguments'     => $arguments,
+                'comment'       => $this->_comment
             ];
+            $this->_comment = null;
             $this->_methods[$this->_currentNamespace][$this->_currentClasse][] = $a;
 
             return $this;
+        }
+
+        public function getNamespace()
+        {
+            return $this->_namespace;
+        }
+
+        public function getUse()
+        {
+            return $this->_use;
+        }
+
+        public function getClasse()
+        {
+            return $this->_classe;
+        }
+
+        public function getInterface()
+        {
+            return $this->_interface;
+        }
+
+        public function getAbstract()
+        {
+            return $this->_abstract;
         }
 
         public function getMethods()
@@ -130,24 +187,5 @@ namespace Sohapi\Parser {
             return $this->_properties;
         }
 
-        public function getClasse()
-        {
-            return $this->_classe;
-        }
-
-        public function getNamespace()
-        {
-            return $this->_namespace;
-        }
-
-        public function getInterface()
-        {
-            return $this->_interface;
-        }
-
-        public function getAbstract()
-        {
-            return $this->_abstract;
-        }
     }
 }

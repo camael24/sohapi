@@ -10,7 +10,7 @@ namespace Sohapi\Bin\Command\Core {
         protected $options = array(
             array('help', \Hoa\Console\GetOption::NO_ARGUMENT, 'h'),
             array('help', \Hoa\Console\GetOption::NO_ARGUMENT, '?'),
-            array('debug', \Hoa\Console\GetOption::NO_ARGUMENT, 'd'),
+            array('debug', \Hoa\Console\GetOption::NO_ARGUMENT, 'v'),
             array('dry-run', \Hoa\Console\GetOption::NO_ARGUMENT, 'p'),
             array('file', \Hoa\Console\GetOption::REQUIRED_ARGUMENT, 'f'),
             array('directory', \Hoa\Console\GetOption::REQUIRED_ARGUMENT, 'd'),
@@ -28,7 +28,7 @@ namespace Sohapi\Bin\Command\Core {
         {
 
             $file               = null;
-            $debug              = true;
+            $debug              = false;
             $dry                = false;
             $directory          = null;
             $output             = 'out/';
@@ -48,7 +48,7 @@ namespace Sohapi\Bin\Command\Core {
                     case 's':
                         $style_formatter = $v;
                         break;
-                    case 'd':
+                    case 'v':
                         $debug = true;
                         break;
                     case 'p':
@@ -64,7 +64,7 @@ namespace Sohapi\Bin\Command\Core {
 
             echo \Hoa\Console\Chrome\Text::colorize('Sohapi', 'fg(yellow)'), "\n\n";
             $root       = realpath(__DIR__.'/../../../../');
-            $out        = realpath($root.'/'.$output);
+            $out        = realpath($root.'/'.$output); // TODO : Detect relative avec absolute path !
             $formatter  = '\\Sohapi\\Formatter\\'.ucfirst($style_formatter);
 
             if($file !== null)
@@ -76,7 +76,7 @@ namespace Sohapi\Bin\Command\Core {
             if($out ===  false)
                 $out = $root;
 
-            if($debug === true) {
+            if ($debug === true) {
                 $a = [
                     ['ROOT', var_export($root, true)],
                     ['Debug', var_export($debug, true)],
@@ -97,9 +97,8 @@ namespace Sohapi\Bin\Command\Core {
             if($file !== null and !in_array($file, $files))
                 $files = array($file);
 
-            if($directory !== null)
-            {
-                if($this->searchLocalConfig($directory, $files) === false){
+            if ($directory !== null) {
+                if ($this->searchLocalConfig($directory, $files) === false) {
                     $finder = new \Hoa\File\Finder();
                     $finder
                         ->in($directory)
@@ -107,7 +106,7 @@ namespace Sohapi\Bin\Command\Core {
                         ->name('#\.php$#');
 
                     foreach ($finder as $f) {
-                        if(!in_array($this->clean($f->getPathName()), $files)){
+                        if (!in_array($this->clean($f->getPathName()), $files)) {
                             $files[] = $this->clean($f->getPathName());
                         }
                     }
@@ -118,25 +117,24 @@ namespace Sohapi\Bin\Command\Core {
 
             foreach ($files as $i => $file) {
                 echo 'Parsing : ['.($i +1).'/'. count($files) .'] '.$file."\n";
-                if($dry === false) {
+                if ($dry === false) {
                     (new \Sohapi\Parser\Reader($file))->build();
                 }
             }
 
-            if($dry === false){
-                dnew($formatter)->render();
-            }
+            dnew($formatter, ['options' => ['output' => $out, 'debug' => $debug, 'dry' => $dry]])->render();
 
             return;
         }
 
-        private function searchLocalConfig($directory, &$store) {
+        private function searchLocalConfig($directory, &$store)
+        {
             $config = $directory.'/.sohapi.php';
-            if(file_exists($config)) {
+            if (file_exists($config)) {
                 echo \Hoa\Console\Chrome\Text::colorize('Read '.$config, 'fg(green)'), "\n";
                 $files = require_once $config;
                 foreach ($files as $f) {
-                    if(!in_array($this->clean($f->getPathName()), $store)){
+                    if (!in_array($this->clean($f->getPathName()), $store)) {
                         $store[] = $this->clean($f->getPathName());
                     }
                 }
@@ -146,7 +144,8 @@ namespace Sohapi\Bin\Command\Core {
             return file_exists($config);
         }
 
-        private function clean($path) {
+        private function clean($path)
+        {
             return str_replace(['/' , '\\'], '\\', $path);
         }
 

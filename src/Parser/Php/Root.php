@@ -10,7 +10,7 @@ namespace Sohapi\Parser\Php {
         public function dispatch(&$tokens,  $handle = array(), $eldnah = null)
         {
             $before = array();
-
+            // TODO : Set USE;
             while (($token = $this->consume($tokens)) !== null) {
                 switch ($token[0]) {
                     case 'T_COMMENT':
@@ -30,6 +30,10 @@ namespace Sohapi\Parser\Php {
                     break;
                     case 'T_CLASS': // TODO : Interface Traits Abstract
                         (new Classe())->visit($this, $tokens, $before, $eldnah);
+                        $before = array();
+                    break;
+                    case 'T_USE':
+                        (new Alias())->visit($this, $tokens, $before, $eldnah);
                         $before = array();
                     break;
                     default:

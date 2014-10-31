@@ -11,6 +11,9 @@
     namespace  {
         class Foo
         {
+            public function g(){
+
+            }
         }
     }
 
@@ -18,10 +21,12 @@
         class Foo
         {
         }
+        class Element
+        {}
     }
 
     namespace Bar\Qux {
-        class Foo
+        class Foo implements Hello
         {
         }
     }
@@ -43,6 +48,13 @@
         {
         }
     }
+
+    namespace Doo    {
+        class SexMachine {
+
+        }
+    }
+
     namespace Doo\aaa {
         class Doo extends foo implements Quz
         {

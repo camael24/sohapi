@@ -14,8 +14,7 @@ namespace Sohapi\Parser\Php {
                 array_unshift($tokens, $separator);
                 $content = $this->getTokensBetweenValue($tokens, '{' , '}');
                 $parent->dispatch($content);
-            }
-            else {
+            } else {
                 $parent->dispatch($tokens);
             }
         }
