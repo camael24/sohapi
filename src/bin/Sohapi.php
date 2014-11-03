@@ -9,12 +9,16 @@ namespace Sohapi\Bin {
     use Hoa\Core\Core;
 
     require __DIR__ . '/../../vendor/autoload.php';
-
     /**
      * Here we go…
      */
     try {
         unset($_SERVER['TERM']);
+
+        ini_set('xdebug.max_nesting_level', '300');
+        ini_set('xdebug.max_nesting_level', '300');
+
+
         $core       = Core::getInstance();
         $parameters = $core->getParameters();
         /**

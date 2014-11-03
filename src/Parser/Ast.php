@@ -15,6 +15,7 @@ namespace Sohapi\Parser {
         private $_use = array();
         private $_currentClasse = '';
         private $_currentNamespace = '';
+        private static $_debug = false;
 
         public static function getInstance()
         {
@@ -23,6 +24,11 @@ namespace Sohapi\Parser {
             }
 
             return static::$_instance;
+        }
+
+        public static function enableDebug()
+        {
+            static::$_debug = true;
         }
 
         public static function getLastInstance()
@@ -44,7 +50,7 @@ namespace Sohapi\Parser {
         {
             $this->_namespace[]      = $namespace;
             $this->_currentNamespace = $namespace;
-
+            $this->dump('> NS '.$namespace);
             return $this;
         }
 
@@ -60,7 +66,7 @@ namespace Sohapi\Parser {
             }
 
             $this->_use[$this->_currentNamespace][]  = $a;
-
+            $this->dump('> Use '.$classe.' AS '.$as);
             return $this;
         }
 
@@ -80,7 +86,7 @@ namespace Sohapi\Parser {
 
             $this->_classe[$this->_currentNamespace][]  = $a;
             $this->_currentClasse                       = $classe;
-
+            $this->dump('> Class '.$classe);
             return $this;
         }
 
@@ -100,7 +106,7 @@ namespace Sohapi\Parser {
 
             $this->_interface[$this->_currentNamespace][]  = $a;
             $this->_currentClasse                          = $classe;
-
+            $this->dump('> Interface '.$classe);
             return $this;
         }
 
@@ -118,7 +124,7 @@ namespace Sohapi\Parser {
 
             $this->_abstract[$this->_currentNamespace][]  = $a;
             $this->_currentClasse                          = $classe;
-
+            $this->dump('> Abstract '.$classe);
             return $this;
         }
 
@@ -133,7 +139,7 @@ namespace Sohapi\Parser {
             ];
             $this->_comment = null;
             $this->_properties[$this->_currentNamespace][$this->_currentClasse][] = $a;
-
+            $this->dump('> Property '.$name);
             return $this;
         }
 
@@ -148,7 +154,7 @@ namespace Sohapi\Parser {
             ];
             $this->_comment = null;
             $this->_methods[$this->_currentNamespace][$this->_currentClasse][] = $a;
-
+            $this->dump('> Method '.$name);
             return $this;
         }
 
@@ -185,6 +191,11 @@ namespace Sohapi\Parser {
         public function getProperties()
         {
             return $this->_properties;
+        }
+
+        public function dump($str){
+            if(static::$_debug === true)
+                echo $str."\n";
         }
 
     }

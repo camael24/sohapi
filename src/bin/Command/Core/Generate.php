@@ -77,9 +77,11 @@ namespace Sohapi\Bin\Command\Core {
                 $out = $root;
 
             if ($debug === true) {
+                //\Sohapi\Parser\Ast::enableDebug();
                 $a = [
                     ['ROOT', var_export($root, true)],
                     ['Debug', var_export($debug, true)],
+                    ['Dry', var_export($dry, true)],
                     ['Formatter', var_export($formatter, true)],
                     ['Output', var_export($out, true)],
                     ['File', var_export($file, true)],
@@ -134,8 +136,11 @@ namespace Sohapi\Bin\Command\Core {
                 echo \Hoa\Console\Chrome\Text::colorize('Read '.$config, 'fg(green)'), "\n";
                 $files = require_once $config;
                 foreach ($files as $f) {
-                    if (!in_array($this->clean($f->getPathName()), $store)) {
+                    if (is_object($f) && !in_array($this->clean($f->getPathName()), $store)) {
                         $store[] = $this->clean($f->getPathName());
+                    }
+                    if(is_string($f)){
+                        $store[] = $this->clean($f);
                     }
                 }
 

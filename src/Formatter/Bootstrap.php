@@ -97,11 +97,18 @@ namespace Sohapi\Formatter {
             $data->fqcn         = $fqcn;
             $data->type         = $type;
 
-            if(isset($this->_properties[$ns][$classname]))
-                $data->properties = $this->_properties[$ns][$classname];
+            if(isset($this->_properties[substr($ns,1)][$classname]))
+                $data->properties = $this->_properties[substr($ns,1)][$classname];
+            else
+                if($this->getArgument('debug') === true)
+                    echo 'NO PROPERTIES on '.$ns.'\\'.$classname."\n";
 
-            if(isset($this->_methods[$ns][$classname]))
-                $data->methods = $this->_methods[$ns][$classname];
+            if(isset($this->_methods[substr($ns,1)][$classname]))
+                $data->methods = $this->_methods[substr($ns,1)][$classname];
+            else
+                if($this->getArgument('debug') === true)
+                    echo 'NO METHODS on '.$ns.'\\'.$classname."\n";
+
 
             $greut->setPath($this->_resource.'/../');
             $greut->setData($data);
@@ -112,8 +119,7 @@ namespace Sohapi\Formatter {
             if($this->getArgument('dry') === false)
                 file_put_contents($uri, $file);
 
-            if($this->getArgument('debug') === true)
-                echo 'CLASS : '.$uri."\n";
+            echo 'FILE : '.$uri."\n";
         }
 
         public function generateNs($list)

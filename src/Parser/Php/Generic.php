@@ -4,7 +4,9 @@ namespace Sohapi\Parser\Php {
     {
         protected function consume(&$tokens)
         {
-            return array_shift($tokens);
+            $token = array_shift($tokens);
+            //echo $token[0] .' '.$token[1]."\n";
+            return $token;
         }
 
         public function dump($tokens)
