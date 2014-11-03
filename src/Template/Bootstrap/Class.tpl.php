@@ -41,12 +41,15 @@ $uri = function ($c) {
         </p>
         <div class="jumbotron">
             <h2><?php echo ucfirst($type) . ': ' . $classname ?></h2>
+            <?php if(!empty($extends)) { ?>
             <div>Extends:
                 <div class="list-group">
                     <?php foreach($extends as $c) ?>
                     <a href = "<?php echo $uri($c); ?>" class="list-group-item"><?php echo $c; ?></a>
                 </div>
             </div>
+            <?php } ?>
+            <?php if(!empty($implements)) { ?>
             <div>Implements:
                 <div class="list-group">
                     <?php foreach ($implements as $iface) { ?>
@@ -54,7 +57,12 @@ $uri = function ($c) {
                     <?php } ?>
                 </div>
             </div>
-            <?php //echo '<p>'.nl2br($classcomm).'</p>'; ?>
+            <?php } ?>
+            <?php
+                if(isset($classcomm)){
+                    echo '<pre>'.$classcomm.'</pre>';
+                }
+            ?>
         </div>
 
         <h4>Properties</h4>
@@ -88,7 +96,7 @@ $uri = function ($c) {
                         </h4>
                     </div>
                     <div id="ap-<?php echo substr(strtolower($property['name']), 1); ?>" class="panel-collapse collapse">
-                        <div class="panel-body"><code><?php echo nl2br($property['comment']); ?></code></div>
+                        <div class="panel-body"><pre><?php if(isset($property['comment']))  echo $property['comment']; ?></pre></div>
                     </div>
                 </div>
             </div>
@@ -131,26 +139,7 @@ $uri = function ($c) {
                         </h4>
                     </div>
                     <div id="am-<?php echo strtolower($method['name']); ?>" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <!-- TODO : Make that -->
-                            <!--table class="table table-hover">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                    <th>Required</th>
-                                    <th>Default Value</th>
-                                    <th>Comment</th>
-                                </tr>
-                                <tr>
-                                    <td><code>$mandataire</code></td>
-                                    <td><a href = "Sohapi_Proxy_IProxy.html">/Sohapi/Proxy/IProxy </a></td>
-                                    <td><button class="btn btn-primary"> yes</button></td>
-                                    <td><code></code></td>
-                                    <td></td>
-                                </tr>
-                            </table-->
-                        </div>
-
+                    <div class="panel-body"><pre><?php if(isset($method['comment'])) echo $method['comment']; ?></pre></div>
                 </div>
             </div>
         </div>

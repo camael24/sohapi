@@ -7,13 +7,17 @@ namespace Sohapi\Parser\Php {
             $deps       = $this->getUntilValue($tokens, '{');
             $separator  = array_pop($deps);
 
+
             array_unshift($tokens, $separator);
 
             $name      = $this->getUntilToken($deps, ['T_EXTENDS' , 'T_IMPLEMENTS']);
             $a         = array_pop($name);
-            $a         = array_pop($name);
 
             array_unshift($deps, $a);
+
+            while($this->tokenExists($name, 'T_CLASS') === true){
+                array_shift($name);
+            }
 
             \Sohapi\Parser\Ast::getInstance()
                 ->setAbstract($this->concat($name), trim($this->concat($deps))); // TODO : Différencier le Extends et Implements

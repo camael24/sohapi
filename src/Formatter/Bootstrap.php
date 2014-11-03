@@ -91,9 +91,9 @@ namespace Sohapi\Formatter {
             $data               = $greut->getData();
             $data->namespace    = $ns;
             $data->classname    = $classname;
-            $data->classcomm    = $element['comment'];
-            $data->extends      = $extends;
-            $data->implements   = $implements;
+            $data->classcomm    = $this->extractFromComment($element['comment']);
+            $data->extends      = $this->clean($extends);
+            $data->implements   = $this->clean($implements);
             $data->fqcn         = $fqcn;
             $data->type         = $type;
 
@@ -216,9 +216,25 @@ namespace Sohapi\Formatter {
 
         }
 
+        protected function clean($array) {
+            $a = array();
+            foreach ($array as $key => $value) {
+                $value = trim($value);
+                if(isset($value) and $value !== '')
+                    $a[] = $value;
+            }
+
+            return $a;
+        }
+
         protected function _uri($classname)
         {
             return $this->getArgument('output').'\\'.str_replace(['/', '\\'], '_', $classname).'.html';
+        }
+
+        public static function extractFromComment($string)
+        {
+            return $string;
         }
 
     }
