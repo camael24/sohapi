@@ -6,3 +6,6 @@ update:
 
 install:
 	$(COMPOSER) install --no-dev
+
+hoa:
+	git clone https://github.com/hoaproject/Central data/Central --depth 1
