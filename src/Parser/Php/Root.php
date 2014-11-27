@@ -4,6 +4,24 @@ namespace Sohapi\Parser\Php {
     {
         public function visit($parent, &$tokens, $handle = array(), $eldnah = null)
         {
+
+            $a = $tokens;
+            $aliased = array();
+
+            while($this->valueExists($a , 'class_alias')) {
+
+                $this->getUntilValue($a, 'class_alias');
+                $b = $this->getUntilValue($a, ';');
+                $alias  = $this->getTokensBetweenValue($b, '(' , ')');
+                $class  = $this->getUntilValue($alias, ',');
+                $class  = substr($this->getToken($class, 'T_CONSTANT_ENCAPSED_STRING'), 1, -1);
+                $alias  = substr($this->getToken($alias, 'T_CONSTANT_ENCAPSED_STRING'), 1, -1);
+
+               \Sohapi\Parser\Model::getInstance()->setAlias($alias, $class);
+            }
+
+            unset($a, $b, $alias, $class);
+
             $this->dispatch($tokens, $handle, $eldnah);
         }
 

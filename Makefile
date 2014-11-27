@@ -9,3 +9,7 @@ install:
 
 hoa:
 	git clone https://github.com/hoaproject/Central data/Central --depth 1
+
+reset:
+	rm -rf out
+	mkdir out

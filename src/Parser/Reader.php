@@ -7,7 +7,7 @@ namespace Sohapi\Parser {
 
         public function __construct($uri)
         {
-            $storage        = Ast::getInstance();
+            $storage        = Model::getInstance();
             $file           = file_get_contents($uri);
             $this->_token   = token_get_all($file);
 

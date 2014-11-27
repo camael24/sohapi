@@ -22,7 +22,7 @@ namespace Sohapi\Foo {
 /**
 * aaaaaaaaaaaaaaa
 */
-        public function __construct($path = null)
+        public function __construct(Array $path = null, Array $a)
         {
             $this->setPath($path);
             $this->setData();
@@ -33,7 +33,7 @@ namespace Sohapi\Foo {
             return $this->_data;
         }
 
-        public function setData($object = null)
+        public function setData(SplQueue $object = null)
         {
             if ($object === null)
                 $this->_data = new \Stdclass();

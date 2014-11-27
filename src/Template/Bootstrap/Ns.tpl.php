@@ -2,7 +2,10 @@
 $this->inherits('Base.tpl.php');
 $this->block('content');
 $uri = function ($c) {
-    return str_replace(['/', '\\'], '_', $c).'.html';
+    if($c[0] === '/' or $c[0] === '\\')
+        $c = substr($c, 1);
+
+    return urlencode(utf8_decode(str_replace(['/', '\\'], '_', $c))).'.html';
 };
 
  $tconcat = function ($tokens) {
@@ -34,18 +37,13 @@ $uri = function ($c) {
         ?>
     </ol>
     <div class="row row-offcanvas row-offcanvas-right">
-
-        <div class="col-xs-12 col-sm-9">
-            <p class="pull-right visible-xs">
-                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-            </p>
-        </div>
         <div class="col-xs-12 col-sm-9">
             <div class="list-group">
                 <?php
                 if (!empty($folder)) {
                     sort($folder);
                     foreach ($folder as $element) {
+                        $element = substr($element, 1);
                         $cf = explode('/', $element);
                         $cf = array_pop($cf);
                         echo '<a href="'.$uri($cf).'" class="list-group-item"><i class="fa fa-folder-o"></i> ' . $cf . '</a>';
@@ -57,7 +55,11 @@ $uri = function ($c) {
                     foreach ($file as $element) {
                         $cf = explode('/', $element);
                         $cf = array_pop($cf);
-                        echo '<a href="'.$uri($cf).'" class="list-group-item"><i class="fa fa-angle-right"></i> ' . $cf . '</a>';
+
+                        if($cf[0] === '/' or $cf[0] === '\\')
+                            $c = substr($cf, 1);
+
+                        echo '<a href="'.$uri($cf).'" class="list-group-item"><i class="fa fa-angle-right"></i> ' . $c . '</a>';
                     }
                 }
                 ?>

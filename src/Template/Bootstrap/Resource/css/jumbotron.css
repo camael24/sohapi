@@ -13,3 +13,7 @@ footer {
 	line-height: 40px;
 	background-color: #fff;
 }
+
+.menu .accordion-heading {  position: relative; }
+.menu .area { border-left: 4px solid #f38787; }
+.menu .collapse.in { overflow: visible; }

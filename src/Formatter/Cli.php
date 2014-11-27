@@ -67,6 +67,19 @@ namespace Sohapi\Formatter {
                     }
                 }
 
+                $tconcat = function ($tokens) {
+                    if(is_array($tokens) === false)
+
+                        return $tokens;
+
+                    $buffer = '';
+                    foreach ($tokens as $key => $value) {
+                        $buffer .= strval($value[1]);
+                    }
+
+                    return trim($buffer);
+                };
+
                 if (isset($this->_abstract[$namespace])) {
                     foreach ($this->_abstract[$namespace] as $classe) {
                         echo '------------- ABSTRACT -------------'."\n";
@@ -77,7 +90,7 @@ namespace Sohapi\Formatter {
                         $classe = $classe['abstract'];
                         if (isset($this->_methods[$namespace][$classe])) {
                             foreach ($this->_methods[$namespace][$classe] as $method) {
-                                echo "\t".$method['visibility'].' '.(($method['static'] === true) ? 'static' : '').' '.$method['name'].' ('.$method['arguments'].')'."\n";
+                                echo "\t".$method['visibility'].' '.(($method['static'] === true) ? 'static' : '').' '.$method['name'].' ('.$tconcat($method['arguments']).')'."\n";
                             }
                         }
 

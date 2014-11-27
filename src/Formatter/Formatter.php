@@ -13,7 +13,7 @@ namespace Sohapi\Formatter {
 
         public function __construct($arguments = array())
         {
-            $ast                = \Sohapi\Parser\Ast::getInstance();
+            $ast                = \Sohapi\Parser\Model::getInstance();
             $this->_namespace   = $ast->getNamespace();
             $this->_classe      = $ast->getClasse();
             $this->_interface   = $ast->getInterface();
@@ -21,6 +21,7 @@ namespace Sohapi\Formatter {
             $this->_properties  = $ast->getProperties();
             $this->_methods     = $ast->getMethods();
             $this->_use         = $ast->getUse();
+            $this->_alias       = $ast->getAlias();
             $this->_arguments   = $arguments;
         }
 
@@ -35,6 +36,9 @@ namespace Sohapi\Formatter {
 
         protected function resolveClass($classe, $ns)
         {
+            $classe = trim($classe);
+            $ns     = trim($ns);
+
             if(strlen($classe) === 0)
 
                 return '';
@@ -58,12 +62,20 @@ namespace Sohapi\Formatter {
 
                         return $this->_gns($u['class']);
 
-            // 3. Ns courant
+            // 3. class_alias
+
+
+
+            // 4. Ns courant
             return $this->_gns($ns.'\\'.$classe);
         }
 
         protected function _gns($ns)
         {
+            if(isset($this->_alias[$ns]))
+                $ns = $this->_alias[$ns];
+
+
             if($ns[0] !== '\\')
 
                 return '\\'.$ns;
@@ -94,9 +106,9 @@ namespace Sohapi\Formatter {
                         if (is_dir($source . DS . $file)) {
                             $this->copyDirectory($source . DS . $file, $destination . DS . $file);
                         } else {
-                            if (!is_file($destination . DS . $file)) {
+                            //if (!is_file($destination . DS . $file)) {
                                 copy($source . DS . $file, $destination . DS . $file);
-                            }
+                            //}
                         }
                     }
                 }

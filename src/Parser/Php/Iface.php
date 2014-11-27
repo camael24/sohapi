@@ -14,7 +14,7 @@ namespace Sohapi\Parser\Php {
 
             array_unshift($deps, $a);
 
-            \Sohapi\Parser\Ast::getInstance()
+            \Sohapi\Parser\Model::getInstance()
                 ->setInterface($this->concat($name), trim($this->concat($deps))); // TODO : Différencier le Extends et Implements
 
               $content    = $this->getTokensBetweenValue($tokens, '{' , '}');

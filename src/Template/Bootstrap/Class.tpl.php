@@ -2,7 +2,10 @@
 $this->inherits('Base.tpl.php');
 $this->block('content');
 $uri = function ($c) {
-    return str_replace(['/', '\\'], '_', $c).'.html';
+    if($c[0] === '/' or $c[0] === '\\')
+        $c = substr($c, 1);
+
+    return urlencode(utf8_decode(str_replace(['/', '\\'], '_', $c))).'.html';
 };
 
  $tconcat = function ($tokens) {
@@ -34,18 +37,16 @@ $uri = function ($c) {
     }
     ?>
 </ol>
- <div class="row row-offcanvas row-offcanvas-right">
-    <div class="col-xs-12 col-sm-9">
-        <p class="pull-right visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-        </p>
+    <?php echo $this->renderFile('Sidebar.tpl.php'); ?>
+    <div class="col-xs-8 col-sm-8">
         <div class="jumbotron">
             <h2><?php echo ucfirst($type) . ': ' . $classname ?></h2>
             <?php if(!empty($extends)) { ?>
             <div>Extends:
                 <div class="list-group">
-                    <?php foreach($extends as $c) ?>
-                    <a href = "<?php echo $uri($c); ?>" class="list-group-item"><?php echo $c; ?></a>
+                    <?php foreach($extends as $c) {?>
+                        <a href = "<?php echo $uri($c); ?>" class="list-group-item"><?php echo $c; ?></a>
+                    <?php } ?>
                 </div>
             </div>
             <?php } ?>
@@ -147,7 +148,7 @@ $uri = function ($c) {
             }
         } ?>
     </div>
-    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+    <div class="col-xs-2 col-sm-2">
 
         <!--p>
         <div class="btn-group">

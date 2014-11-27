@@ -9,7 +9,7 @@ namespace Sohapi\Parser\Php {
             $name       = strval($eldnah[1]);
             $value      = $this->getUntilValue($tokens, ';');
 
-            \Sohapi\Parser\Ast::getInstance()->setProperty($this->concat($visibilty) , false, $name, $this->concat($value));
+            \Sohapi\Parser\Model::getInstance()->setProperty($this->concat($visibilty) , false, $name, $this->concat($value));
 
             $parent->dispatch($tokens);
         }

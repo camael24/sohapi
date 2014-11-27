@@ -2,6 +2,13 @@
 namespace Sohapi\Parser\Php {
     class Classe extends Generic implements IParser
     {
+        private $_abstract = false;
+
+        public function __construct($abstract = false)
+        {
+            $this->_abstract = $abstract;
+        }
+
         public function visit($parent, &$tokens, $handle = array(), $eldnah = null)
         {
             $deps       = $this->getUntilValue($tokens, '{');
@@ -32,8 +39,10 @@ namespace Sohapi\Parser\Php {
                 $extends = $deps;
             }
 
-            \Sohapi\Parser\Ast::getInstance()
-                ->setClasse($this->concat($name), trim($this->concat($extends)), trim($this->concat($implements)));
+            if($this->_abstract === false)
+                \Sohapi\Parser\Model::getInstance()->setClasse($this->concat($name), trim($this->concat($extends)), trim($this->concat($implements)));
+            else
+                \Sohapi\Parser\Model::getInstance()->setAbstract($this->concat($name), trim($this->concat($extends)), trim($this->concat($implements)));
 
             $content    = $this->getTokensBetweenValue($tokens, '{' , '}');
 

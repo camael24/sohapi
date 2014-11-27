@@ -1,10 +1,11 @@
 <?php
 $finder = new \Hoa\File\Finder();
 $finder
-    ->in(__DIR__.'/Central/Hoa/Console')
+    ->in(__DIR__.'/Central/Hoa/')
     ->files()
     ->notIn('#^\.(git|hg)$#')
-    ->notIn('#^(Tests|Command|Bin|Compiler|Console )$#')
+    ->notIn('#^(Tests|Command|Bin)$#')
     ->name('#\.php$#');
 
-return ['C:\www\sohapi\data\Central\Hoa\Console\Processus.php'];
+//return $finder;
+return [];

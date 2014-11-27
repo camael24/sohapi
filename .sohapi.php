@@ -7,4 +7,4 @@ $finder
     ->notIn('#^(Bin|Filter)$#')
     ->name('#\.php$#');
 
-return $finder;
+return ['C:\www\sohapi\data\Central\Hoa\Console\Processus.php', 'C:\www\sohapi\data\Central\Hoa\Stream\Stream.php'];

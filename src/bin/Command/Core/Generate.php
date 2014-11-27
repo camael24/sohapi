@@ -124,7 +124,9 @@ namespace Sohapi\Bin\Command\Core {
                 }
             }
 
-            dnew($formatter, ['options' => ['output' => $out, 'debug' => $debug, 'dry' => $dry]])->render();
+            $options = [];
+
+            dnew($formatter, ['options' => ['output' => $out, 'debug' => $debug, 'dry' => $dry, 'options' => $options]])->render();
 
             return;
         }

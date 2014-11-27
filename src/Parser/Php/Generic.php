@@ -91,6 +91,17 @@ namespace Sohapi\Parser\Php {
             return $buffer;
         }
 
+        protected function getToken(&$tokens, $element)
+        {
+            while (($token = $this->consume($tokens)) !== null) {
+                if ($token[0] === $element) {
+                    return $token[1];
+                }
+            }
+
+            return '';
+        }
+
         protected function extractToken(&$tokens, $list)
         {
         }

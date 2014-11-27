@@ -34,7 +34,7 @@ namespace Sohapi\Parser\Php {
             } else {
                 $name = $this->concat($use);
             }
-            \Sohapi\Parser\Ast::getInstance()->setUse($name, $as);
+            \Sohapi\Parser\Model::getInstance()->setUse($name, $as);
 
         }
 

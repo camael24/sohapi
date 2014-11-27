@@ -4,7 +4,7 @@ namespace Sohapi\Parser\Php {
     {
         public function visit($parent, &$tokens, $handle = array(), $eldnah = null)
         {
-            \Sohapi\Parser\Ast::getInstance()->setComment($eldnah[1]);
+            \Sohapi\Parser\Model::getInstance()->setComment($eldnah[1]);
 
             $parent->dispatch($tokens);
         }

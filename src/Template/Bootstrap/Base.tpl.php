@@ -15,34 +15,33 @@
     <meta name="author" content="">
 
     <?php
-    if (isset($classname))
-        if ($classname !== '')
-            echo '<title>Sohapi | ' . $classname . '</title>';
-        else
-            echo '<title>Sohapi</title>';
+    if (isset($title) and $title !== '')
+        echo '<title>Sohapi | ' . $title . '</title>';
+    else
+        echo '<title>Sohapi</title>';
     ?>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
     <link href="css/font-awesome.css" rel="stylesheet">
     <link href="css/jumbotron.css" rel="stylesheet">
 
 </head>
 
 <body>
-<div class="container">
+<div class="container col-xs-12 col-sm-12">
 
     <?php
     $this->block('content');
     $this->endblock();
     ?>
 
-    <hr>
+
 
     <footer>
         <p>&copy; Sohapi made by Camael24</p>
     </footer>
-
 </div>
 <!--/.container-->
 
@@ -51,6 +50,6 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="js/bootstrap.js"></script>
-<script src="js/offcanvas.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

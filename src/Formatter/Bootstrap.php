@@ -13,15 +13,26 @@ namespace Sohapi\Formatter {
             }
 
             $fqcn = array();
+            $c    = array();
+
+            // TODO : Sidebar pour la navigation
+            // TODO : Arguments, Throw Return cliquable
+            // TODO : Moteur de recherche
+            // TODO : Raccourci clavier
+            // TODO : Vue UML (Graphviz)
+            // TODO : Rebondir sur les découvertes de dépendance (via option)
+            // TODO : Fallback sur les classes (php.net etc ...)
+            // TODO : TU
+            // TODO : Parse option : SourceFile, hash, branch, remote, etc ...
+            // TODO : Parse phpDoc
 
             foreach ($this->_namespace as $namespace) {
-
                  if (isset($this->_classe[$namespace])) {
                     foreach ($this->_classe[$namespace] as $classe) {
                         $f      = $namespace.'\\'.$classe['class'];
                         if (!in_array($f, $fqcn)) {
                             $fqcn[] = $f;
-                            $this->generateClass($namespace, $classe , 'class');
+                            $c[] = [$namespace, $classe , 'class'];
                         }
                     }
                 }
@@ -31,7 +42,7 @@ namespace Sohapi\Formatter {
                         $f      = $namespace.'\\'.$interface['interface'];
                         if (!in_array($f, $fqcn)) {
                             $fqcn[] = $f;
-                            $this->generateClass($namespace, $interface, 'interface');
+                            $c[] = [$namespace, $interface, 'interface'];
                         }
                     }
                 }
@@ -41,13 +52,17 @@ namespace Sohapi\Formatter {
                         $f      = $namespace.'\\'.$abstract['abstract'];
                         if (!in_array($f, $fqcn)) {
                             $fqcn[] = $f;
-                            $this->generateClass($namespace, $abstract, 'abstract');
+                            $c[] = [$namespace, $abstract, 'abstract'];
                         }
                     }
                 }
             }
 
             $this->_allclass = array_merge($this->_allclass, $fqcn);
+
+            foreach ($c as $value) {
+                $this->generateClass($value[0], $value[1], $value[2]);
+            }
 
             $this->generateNs($fqcn);
         }
@@ -89,8 +104,12 @@ namespace Sohapi\Formatter {
 
             $fqcn               = $ns.'\\'.$classname;
             $data               = $greut->getData();
+
+            $data->options      = $this->getArgument('options');
             $data->namespace    = $ns;
+            $data->title        = substr($ns, 1) .'\\'. $classname;
             $data->classname    = $classname;
+            $data->allclass     = $this->_allclass;
             $data->classcomm    = $this->extractFromComment($element['comment']);
             $data->extends      = $this->clean($extends);
             $data->implements   = $this->clean($implements);
@@ -124,6 +143,28 @@ namespace Sohapi\Formatter {
 
         public function generateNs($list)
         {
+            $tree = $this->_tree($list);
+            $this->_ns($tree);
+            $this->index(array_keys($tree));
+        }
+
+        protected function sidebar($tree, $parent, &$file, &$folder)
+        {
+            foreach ($tree as $ns => $sub)
+                if (count($sub) > 0) {
+                    foreach ($s as $class) {
+                        $real = $ns . '\\' . $class;
+                        if (in_array(substr($real, 1), $this->_allclass))
+                            $file[] = $real;
+                        else
+                            $folder[] = $real;
+                    }
+
+                    $this->_ns($sub, $ns, $file, $folder);
+                }
+        }
+
+        protected function _tree($list) {
             $tree = array();
             foreach ($list as $strNamespace) {
                 $current = & $tree;
@@ -136,8 +177,8 @@ namespace Sohapi\Formatter {
                         $current = & $current[$ns];
                 }
             }
-            $this->_ns($tree);
-            $this->index(array_keys($tree));
+
+            return $tree;
         }
 
         protected function _ns(Array $tree, $parent = '')
@@ -161,9 +202,10 @@ namespace Sohapi\Formatter {
                             $folder[] = $real;
                     }
 
-                    $data->file     = $file;
-                    $data->folder   = $folder;
-                    $data->all      = $this->_allclass;
+                    $data->title        = substr($ns,1);
+                    $data->file         = $file;
+                    $data->folder       = $folder;
+                    $data->all          = $this->_allclass;
 
                     $greut->setPath($this->_resource.'/../');
 
@@ -173,7 +215,7 @@ namespace Sohapi\Formatter {
                     if($this->getArgument('dry') === false)
                         file_put_contents($uri, $file);
 
-                    if($this->getArgument('debug') === true)
+                    //if($this->getArgument('debug') === true)
                         echo 'NS : '.$uri."\n";
 
                     $this->_ns($sub, $ns);
@@ -200,9 +242,10 @@ namespace Sohapi\Formatter {
                     $folder[] = $real;
             }
 
-            $data->file     = $file;
-            $data->folder   = $folder;
-            $data->all      = $this->_allclass;
+            $data->file         = $file;
+            $data->title        = '';
+            $data->folder       = $folder;
+            $data->all          = $this->_allclass;
 
             $greut->setPath($this->_resource.'/../');
 
@@ -211,7 +254,8 @@ namespace Sohapi\Formatter {
 
             if($this->getArgument('dry') === false)
                 file_put_contents($uri, $file);
-            if($this->getArgument('debug') === true)
+
+            //if($this->getArgument('debug') === true)
                 echo 'NS : '.$uri."\n";
 
         }
@@ -229,7 +273,9 @@ namespace Sohapi\Formatter {
 
         protected function _uri($classname)
         {
-            return $this->getArgument('output').'\\'.str_replace(['/', '\\'], '_', $classname).'.html';
+            if($classname[0] === '/' or $classname[0] === '\\')
+                $classname = substr($classname, 1);
+            return $this->getArgument('output').'\\'.urlencode(utf8_decode(str_replace(['/', '\\'], '_', $classname))).'.html';
         }
 
         public static function extractFromComment($string)
