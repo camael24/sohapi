@@ -37,7 +37,10 @@ $uri = function ($c) {
     }
     ?>
 </ol>
-    <?php echo $this->renderFile('Sidebar.tpl.php'); ?>
+
+    <div class="col-xs-2 col-sm-2">
+        <div id="tree"></div>
+    </div>
     <div class="col-xs-8 col-sm-8">
         <div class="jumbotron">
             <h2><?php echo ucfirst($type) . ': ' . $classname ?></h2>

@@ -15,7 +15,7 @@ namespace Sohapi\Formatter {
             $fqcn = array();
             $c    = array();
 
-            // TODO : Sidebar pour la navigation
+            // TODO : Parse phpDoc
             // TODO : Arguments, Throw Return cliquable
             // TODO : Moteur de recherche
             // TODO : Raccourci clavier
@@ -24,7 +24,6 @@ namespace Sohapi\Formatter {
             // TODO : Fallback sur les classes (php.net etc ...)
             // TODO : TU
             // TODO : Parse option : SourceFile, hash, branch, remote, etc ...
-            // TODO : Parse phpDoc
 
             foreach ($this->_namespace as $namespace) {
                  if (isset($this->_classe[$namespace])) {
@@ -65,6 +64,7 @@ namespace Sohapi\Formatter {
             }
 
             $this->generateNs($fqcn);
+            $this->generateSidebar();
         }
 
         protected function generateClass($ns, $element, $type)
@@ -139,6 +139,23 @@ namespace Sohapi\Formatter {
                 file_put_contents($uri, $file);
 
             echo 'FILE : '.$uri."\n";
+        }
+        protected function generateSidebar()
+        {
+
+            $greut              = new \Sohoa\Framework\View\Greut();
+            $data               = $greut->getData();
+            $data->allclass     = $this->_allclass;
+
+            $greut->setPath($this->_resource.'/../');
+            $greut->setData($data);
+
+            $file = $greut->renderFile('Appjs.tpl.php')."\n";
+            $uri  =  $this->getArgument('output').'/js/app-treeview.js';
+
+            file_put_contents($uri, $file);
+
+            echo 'JS : '.$uri."\n";
         }
 
         public function generateNs($list)

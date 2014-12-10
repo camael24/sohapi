@@ -14,6 +14,13 @@ footer {
 	background-color: #fff;
 }
 
-.menu .accordion-heading {  position: relative; }
-.menu .area { border-left: 4px solid #f38787; }
-.menu .collapse.in { overflow: visible; }
+.list-group-item {
+    cursor:pointe
+}
+span.indent {
+    margin-left:10px;
+    margin-right:10px
+}
+span.icon {
+    margin-right:5px
+}
