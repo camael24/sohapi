@@ -21,37 +21,82 @@ class Model extends \atoum\asserters\phpArray {
     public function nsExist($ns)
     {
 
-        $element = $this->value;
+         $element = $this->value;
         $name    = $element['namespace'];
 
-        $this->array($name)->contains($ns);
+        if(!is_array($ns))
+            $ns = array($ns);
 
+        foreach ($ns as $n) {
+            $this->array($name)->contains($n);
+        }
 
         return $this;
     }
 
-    public function classExists($ns, $class)
+    public function nsNotExist($ns)
+    {
+        $element = $this->value;
+        $name    = $element['namespace'];
+
+        if(!is_array($ns))
+            $ns = array($ns);
+
+        foreach ($ns as $n) {
+            $this->array($name)->notContains($n);
+        }
+
+        return $this;
+    }
+
+    public function classExist($ns, $class)
     {
         $this->nsExist($ns);
         $element = $this->value['classe'];
         $bool    = false;
 
-        foreach ($element as $key => $v) {
-            foreach ($v as $key => $value) {
-                if($value['class'] === $class){
-                    $bool = true;
+
+        if(!is_array($class))
+            $class = array($class);
+
+        foreach ($class  as $c) {
+            foreach ($element as $key => $v) {
+                foreach ($v as $key => $value) {
+                    if($value['class'] !== $c){
+                        $this->fail(sprintf($this->getLocale()->_('%s not exists in model'), $c));
+                    }
                 }
             }
         }
 
-        if($bool === false) {
-            $this->fail(sprintf($this->getLocale()->_('%s not exists'), $class));
-        }
-        else {
-            $this->pass();
+        return $this;
+    }
+
+    public function classNotExist($ns, $class)
+    {
+        $this->nsExist($ns);
+        $element = $this->value['classe'];
+        $bool    = false;
+
+
+        if(!is_array($class))
+            $class = array($class);
+
+        foreach ($class  as $c) {
+            foreach ($element as $key => $v) {
+                foreach ($v as $key => $value) {
+                    if($value['class'] === $c){
+                        $this->fail(sprintf($this->getLocale()->_('%s exists in model'), $c));
+                    }
+                }
+            }
         }
 
         return $this;
+    }
+
+    public function useExist($ns, $use) {
+
     }
 
 

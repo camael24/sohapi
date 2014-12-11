@@ -32,6 +32,8 @@ class Model extends \atoum\test
 
         $this
             ->model($storage->getAll())
-            ->classExists('', 'Hello');
+            ->nsExist('')
+            ->classExist('', 'Hello')
+            ->classNotExist('' , ['World', 'Bar']);
     }
 }
