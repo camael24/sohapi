@@ -15,7 +15,7 @@ footer {
 }
 
 .list-group-item {
-    cursor:pointe
+    cursor: pointer;
 }
 span.indent {
     margin-left:10px;

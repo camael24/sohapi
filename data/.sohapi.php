@@ -4,8 +4,7 @@ $finder
     ->in(__DIR__.'/Central/Hoa/')
     ->files()
     ->notIn('#^\.(git|hg)$#')
-    ->notIn('#^(Tests|Command|Bin)$#')
+    ->notIn('#(Tests|Command|Bin|Test|Filter)#')
     ->name('#\.php$#');
 
-//return $finder;
-return [];
+return $finder;

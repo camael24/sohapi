@@ -24,6 +24,9 @@ namespace Sohapi\Formatter {
             // TODO : Fallback sur les classes (php.net etc ...)
             // TODO : TU
             // TODO : Parse option : SourceFile, hash, branch, remote, etc ...
+            // TODO : Utilisation des Traits
+            // TODO : Aliasing (class_alias, FlexEntity)
+            // TODO : Functionnal (With and Without Namespace)
 
             foreach ($this->_namespace as $namespace) {
                  if (isset($this->_classe[$namespace])) {
@@ -165,22 +168,6 @@ namespace Sohapi\Formatter {
             $this->index(array_keys($tree));
         }
 
-        protected function sidebar($tree, $parent, &$file, &$folder)
-        {
-            foreach ($tree as $ns => $sub)
-                if (count($sub) > 0) {
-                    foreach ($s as $class) {
-                        $real = $ns . '\\' . $class;
-                        if (in_array(substr($real, 1), $this->_allclass))
-                            $file[] = $real;
-                        else
-                            $folder[] = $real;
-                    }
-
-                    $this->_ns($sub, $ns, $file, $folder);
-                }
-        }
-
         protected function _tree($list) {
             $tree = array();
             foreach ($list as $strNamespace) {
@@ -281,7 +268,7 @@ namespace Sohapi\Formatter {
             $a = array();
             foreach ($array as $key => $value) {
                 $value = trim($value);
-                if(isset($value) and $value !== '')
+                if(isset($value) and $value !== '' and $value !== '\\')
                     $a[] = $value;
             }
 

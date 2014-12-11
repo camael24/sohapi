@@ -120,7 +120,7 @@ namespace Sohapi\Bin\Command\Core {
             foreach ($files as $i => $file) {
                 echo 'Parsing : ['.($i +1).'/'. count($files) .'] '.$file."\n";
                 if ($dry === false) {
-                    (new \Sohapi\Parser\Reader($file))->build();
+                    (new \Sohapi\Parser\Reader(file_get_contents($file)))->build();
                 }
             }
 

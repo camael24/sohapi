@@ -5,11 +5,10 @@ namespace Sohapi\Parser {
     {
         protected $_token = array();
 
-        public function __construct($uri)
+        public function __construct($source)
         {
             $storage        = Model::getInstance();
-            $file           = file_get_contents($uri);
-            $this->_token   = token_get_all($file);
+            $this->_token   = token_get_all($source);
 
             foreach ($this->_token as $key => $value) {
                 if (is_array($value)) {
@@ -28,6 +27,13 @@ namespace Sohapi\Parser {
         public function build()
         {
             (new \Sohapi\Parser\Php\Root())->visit(null, $this->_token, '');
+
+            return count($this->_token);
+        }
+
+        public function getTokens()
+        {
+            return $this->_token;
         }
     }
 }
