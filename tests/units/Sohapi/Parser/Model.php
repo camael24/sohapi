@@ -4,7 +4,7 @@ namespace tests\units\Sohapi\Parser;
 
 use mageekguy\atoum;
 
-class Model extends \atoum\test
+class Model extends \Sohtest\Asserters
 {
 
     public function beforeTestMethod($testMethod)
