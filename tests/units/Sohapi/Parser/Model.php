@@ -23,7 +23,7 @@ class Model extends \Sohtest\Asserters\Test
         $storage = \Sohapi\Parser\Model::getInstance();
 
 
-        $this
-            ->model($storage->getAll());
+        $this->namespace->get()
+            ->contains('');
     }
 }

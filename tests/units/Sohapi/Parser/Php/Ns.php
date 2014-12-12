@@ -14,10 +14,9 @@ class Ns extends \Sohtest\Asserters\Test
             ->integer((new \Sohapi\Parser\Reader($source))->build())
             ->isIdenticalTo(0);
 
-        $this
-            ->model(\Sohapi\Parser\Model::getInstance()->getAll())
-            ->nsExist('')
-            ->nsNotExist('Foo');
+        $this->namespace->get()
+            ->contains('')
+            ->notContains('Foo');
     }
 
     public function testOneLevel()
@@ -28,10 +27,9 @@ class Ns extends \Sohtest\Asserters\Test
             ->integer((new \Sohapi\Parser\Reader($source))->build())
             ->isIdenticalTo(0);
 
-        $this
-            ->model(\Sohapi\Parser\Model::getInstance()->getAll())
-            ->nsExist('Foo')
-            ->nsNotExist('');
+       $this->namespace->get()
+            ->contains('Foo')
+            ->notContains('');
     }
 
     public function testDeepLevel()
@@ -42,10 +40,9 @@ class Ns extends \Sohtest\Asserters\Test
             ->integer((new \Sohapi\Parser\Reader($source))->build())
             ->isIdenticalTo(0);
 
-        $this
-            ->model(\Sohapi\Parser\Model::getInstance()->getAll())
-            ->nsExist('Foo\Bar\Qux')
-            ->nsNotExist('');
+        $this->namespace->get()
+            ->contains('Foo\Bar\Qux')
+            ->notContains('');
     }
 
     public function testMultiLevel()
@@ -53,15 +50,14 @@ class Ns extends \Sohtest\Asserters\Test
            $source = '<?php
            namespace Foo\Bar\Qux; {}
            namespace Foox{ {} }
-           ?>';
+           ';
 
         $this
             ->integer((new \Sohapi\Parser\Reader($source))->build())
             ->isIdenticalTo(0);
 
-        $this
-            ->model(\Sohapi\Parser\Model::getInstance()->getAll())
-            ->nsExist(['Foo\Bar\Qux' , 'Foox'])
-            ->nsNotExist('');
+        $this->namespace->get()
+            ->containsValues(['Foo\Bar\Qux' , 'Foox'])
+            ->notContains('');
     }
 }

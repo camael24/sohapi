@@ -17,10 +17,9 @@ class Alias extends \Sohtest\Asserters\Test
             ->integer((new \Sohapi\Parser\Reader($source))->build())
             ->isIdenticalTo(0);
 
-        $this
-            ->model(\Sohapi\Parser\Model::getInstance()->getAll())
-            ->useExist('' , ['atoum\atoum'])
-            ->useNotExist('' , ['Foo\Bar\Qux' , 'Foox'])
+        $this->alias->get('')
+            ->contains('atoum\atoum')
+            ->notContainsValues(['Foo\Bar\Qux' , 'Foox'])
         ;
     }
 
@@ -35,10 +34,9 @@ class Alias extends \Sohtest\Asserters\Test
             ->integer((new \Sohapi\Parser\Reader($source))->build())
             ->isIdenticalTo(0);
 
-        $this
-            ->model(\Sohapi\Parser\Model::getInstance()->getAll())
-            ->useExist('' , ['atoum\atoum', 'hoa\file', 'foo'])
-            ->useNotExist('' , ['Foo\Bar\Qux' , 'Foox'])
+        $this->alias->get('')
+            ->containsValues(['atoum\atoum', 'hoa\file', 'foo'])
+            ->notContainsValues(['Foo\Bar\Qux' , 'Foox'])
         ;
     }
 
@@ -55,10 +53,9 @@ class Alias extends \Sohtest\Asserters\Test
             ->integer((new \Sohapi\Parser\Reader($source))->build())
             ->isIdenticalTo(0);
 
-        $this
-            ->model(\Sohapi\Parser\Model::getInstance()->getAll())
-            ->useExist('' , ['atoum\atoum', 'hoa\file', 'foo'])
-            ->useNotExist('' , ['Foo\Bar\Qux' , 'Foox'])
+        $this->alias->get('')
+            ->containsValues(['atoum\atoum', 'hoa\file', 'foo'])
+            ->notContainsValues(['Foo\Bar\Qux' , 'Foox'])
         ;
     }
 
@@ -75,10 +72,59 @@ class Alias extends \Sohtest\Asserters\Test
             ->integer((new \Sohapi\Parser\Reader($source))->build())
             ->isIdenticalTo(0);
 
-        $this
-            ->model(\Sohapi\Parser\Model::getInstance()->getAll())
-            ->useExist('' , ['atoum\atoum', 'hoa\file', 'foo', 'babar' , 'Foox'])
-            ->useNotExist('' , ['Foo\Bar\Qux'])
+        $this->alias->get('')
+            ->containsValues(['atoum\atoum', 'hoa\file', 'foo', 'babar' , 'Foox'])
+            ->notContainsValues(['Foo\Bar\Qux'])
         ;
+    }
+
+    public function testNsMultiChainUse()
+    {
+        $source = '<?php
+        namespace Foor\Bar;
+        use atoum\atoum, babar, Foox;
+        use hoa\file;
+        use foo;
+        ';
+
+        $this
+            ->integer((new \Sohapi\Parser\Reader($source))->build())
+            ->isIdenticalTo(0);
+
+        $this->alias->get('Foor\Bar')
+            ->containsValues(['atoum\atoum', 'hoa\file', 'foo', 'babar' , 'Foox'])
+            ->notContainsValues(['Foo\Bar\Qux'])
+        ;
+    }
+
+    public function testUseAs()
+    {
+          $source = '<?php
+        namespace Foor\Bar;
+        use atoum\atoum, babar, Foox;
+        use hoa\file;
+        use foo as baar;
+        ';
+
+        $this
+            ->integer((new \Sohapi\Parser\Reader($source))->build())
+            ->isIdenticalTo(0);
+
+        $this->alias->get('Foor\Bar')
+            ->containsValues(['atoum\atoum', 'hoa\file', 'foo', 'babar' , 'Foox'])
+            ->notContainsValues(['Foo\Bar\Qux'])
+        ;
+
+        $this->alias->hasAlias('Foor\Bar', 'foo')
+            ->isTrue();
+
+        $this->alias->hasAlias('Foor\Bar', 'babar')
+            ->isFalse();
+
+        $this->alias->getAlias('Foor\Bar', 'foo')
+            ->isIdenticalTo('baar');
+
+        $this->alias->getAlias('Foor\Bar', 'babar')
+            ->isIdenticalTo('');
     }
 }
