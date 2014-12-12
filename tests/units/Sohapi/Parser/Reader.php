@@ -4,7 +4,7 @@ namespace tests\units\Sohapi\Parser;
 
 use mageekguy\atoum;
 
-class Reader extends atoum\test
+class Reader extends \Sohtest\Asserters\Test
 {
     public function testClass()
     {

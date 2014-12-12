@@ -4,15 +4,8 @@ namespace tests\units\Sohapi\Parser\Php;
 
 use mageekguy\atoum;
 
-class Ns extends \atoum\test
+class Ns extends \Sohtest\Asserters\Test
 {
-
-    public function beforeTestMethod($testMethod)
-    {
-        $this->define->model = '\Sohtest\Asserters\Model';
-    }
-
-
     public function testRoot()
     {
         $source = '<?php namespace; {}';

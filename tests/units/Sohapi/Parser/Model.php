@@ -4,15 +4,8 @@ namespace tests\units\Sohapi\Parser;
 
 use mageekguy\atoum;
 
-class Model extends \Sohtest\Asserters
+class Model extends \Sohtest\Asserters\Test
 {
-
-    public function beforeTestMethod($testMethod)
-    {
-        $this->define->model = '\Sohtest\Asserters\Model';
-    }
-
-
     public function testClass()
     {
         $source = '<?php class Hello {}';
@@ -31,9 +24,6 @@ class Model extends \Sohtest\Asserters
 
 
         $this
-            ->model($storage->getAll())
-            ->nsExist('')
-            ->classExist('', 'Hello')
-            ->classNotExist('' , ['World', 'Bar']);
+            ->model($storage->getAll());
     }
 }
