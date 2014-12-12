@@ -27,8 +27,6 @@ namespace Sohapi\Formatter {
             // TODO : Utilisation des Traits
             // TODO : Aliasing (class_alias, FlexEntity)
             // TODO : Functionnal (With and Without Namespace)
-            // TODO : Bug when class Foo{}
-            // TODO : abstract & implements
             // TODO : const & co in declaration class
 
             foreach ($this->_namespace as $namespace) {

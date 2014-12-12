@@ -120,13 +120,15 @@ namespace Sohapi\Parser {
             return $this;
         }
 
-        public function setAbstract($classe, $extends = '')
+        public function setAbstract($classe, $extends = '', $implements = '')
         {
             $a = [
                 'abstract'   => $classe,
                 'extends'    => $extends,
+                'implements' => $implements,
                 'comment'    => $this->_comment
             ];
+
             $this->_comment = null;
             if (!in_array($this->_currentNamespace, $this->_namespace)) {
                 $this->_namespace[] = $this->_currentNamespace;

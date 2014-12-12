@@ -28,7 +28,7 @@ class Classe extends Generic {
         $data       = $this->_data[$this->_idData];
 
         if(!isset($data[$ns]))
-            return $this->call('array', array());
+            return $this->call('string', '');
 
         foreach ($data[$ns] as $d) {
             if($d[$this->_idDatabis] === $classname)
@@ -42,11 +42,12 @@ class Classe extends Generic {
         $data       = $this->_data[$this->_idData];
 
         if(!isset($data[$ns]))
-            return $this->call('array', array());
+            return $this->call('string', '');
 
         foreach ($data[$ns] as $d) {
-            if($d[$this->_idDatabis] === $classname)
+            if($d[$this->_idDatabis] === $classname){
                 return $this->call('string', $d['implements']);
+            }
         }
     }
 }

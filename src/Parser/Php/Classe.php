@@ -18,6 +18,10 @@ namespace Sohapi\Parser\Php {
 
             $name       = $this->getUntilToken($deps, ['T_EXTENDS' , 'T_IMPLEMENTS']);
             $a          = array_pop($name);
+
+            if($a[0] === 'T_STRING')
+                $name[] = $a;
+
             $extends    = array();
             $implements = array();
 

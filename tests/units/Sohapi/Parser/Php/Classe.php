@@ -21,6 +21,22 @@ class Classe extends \Sohtest\Asserters\Test
         ;
 
     }
+    
+    public function testClassicNoWithSpaceClass()
+    {
+        $source = '<?php
+        namespace;
+        class Foo{};';
+
+        $this
+            ->integer((new \Sohapi\Parser\Reader($source))->build())
+            ->isIdenticalTo(0);
+
+        $this->class->get('')
+            ->contains('Foo')
+        ;
+
+    }
 
     public function testNsClass()
     {
@@ -195,41 +211,34 @@ class Classe extends \Sohtest\Asserters\Test
 
     }
 
-//    public function testAbstractExtendsImplementsClass()
-//    {
-//         $source = '<?php namespace Foo\Bar;
-//        abstract class Hello extends Foo implements \SPLFileQueue{}';
-//
-//        $this
-//            ->integer((new \Sohapi\Parser\Reader($source))->build())
-//            ->isIdenticalTo(0);
-//
-//         $this->abs->get('Foo\Bar')
-//            ->containsValues(['Hello'])
-//            ->notContainsValues(['Foox']);
-//
-//        $this->abs->getExtends('Foo\Bar', 'Hello')
-//            ->isIdenticalTo('Foo');
-//
-//        $this->abs->getImplements('Foo\Bar', 'Hello')
-//            ->isIdenticalTo('\SPLFileQueue');
-//
-//        $source = '<?php namespace Foo\Bar;
-//        abstract class Hello implements \SPLFileQueue extends Foo {}';
-//
-//        $this
-//            ->integer((new \Sohapi\Parser\Reader($source))->build())
-//            ->isIdenticalTo(0);
-//
-//         $this->abs->get('Foo\Bar')
-//            ->containsValues(['Hello'])
-//            ->notContainsValues(['Foox']);
-//
-//        $this->abs->getExtends('Foo\Bar', 'Hello')
-//            ->isIdenticalTo('Foo');
-//
-//        $this->abs->getImplements('Foo\Bar', 'Hello')
-//            ->isIdenticalTo('\SPLFileQueue');
-//
-//    }
+    public function testAbstractExtendsImplementsClass()
+    {
+         $source = '<?php namespace Foo\Bar;
+        abstract class Hello extends Foo implements \SPLFileQueue{}';
+
+        $this
+            ->integer((new \Sohapi\Parser\Reader($source))->build())
+            ->isIdenticalTo(0);
+
+         $this->abs->get('Foo\Bar')
+            ->containsValues(['Hello'])
+            ->notContainsValues(['Foox']);
+
+        $this->abs->getExtends('Foo\Bar', 'Hello')
+            ->isIdenticalTo('Foo');
+
+        $this->abs->getImplements('Foo\Bar', 'Hello')
+            ->isIdenticalTo('\SPLFileQueue');
+
+        $source = '<?php namespace Foo\Bar;
+        class Bar implements \SPLFileQueue extends Foo {}';
+
+        $this
+            ->integer((new \Sohapi\Parser\Reader($source))->build())
+            ->isIdenticalTo(0);
+
+        $this->class->getImplements('Foo\Bar', 'Bar')
+            ->isIdenticalTo('\SPLFileQueue');
+
+    }
 }
