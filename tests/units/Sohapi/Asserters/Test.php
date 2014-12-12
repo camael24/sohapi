@@ -15,5 +15,6 @@ class Test extends \atoum\test
         $this->define->alias     = '\Sohtest\Asserters\Alias';
         $this->define->iface     = '\Sohtest\Asserters\Iface';
         $this->define->abs       = '\Sohtest\Asserters\Abs';
+        $this->define->property  = '\Sohtest\Asserters\Property';
     }
 }

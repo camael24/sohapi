@@ -29,6 +29,7 @@ namespace Sohapi\Formatter {
             // TODO : Functionnal (With and Without Namespace)
             // TODO : Bug when class Foo{}
             // TODO : abstract & implements
+            // TODO : const & co in declaration class
 
             foreach ($this->_namespace as $namespace) {
                  if (isset($this->_classe[$namespace])) {

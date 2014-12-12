@@ -140,6 +140,7 @@ namespace Sohapi\Parser {
 
         public function setProperty($visibility, $isStatic, $name, $default)
         {
+            $default = trim(substr($default, 1, -1));
             $a = [
                 'visibility'    => $visibility,
                 'static'        => $isStatic,
