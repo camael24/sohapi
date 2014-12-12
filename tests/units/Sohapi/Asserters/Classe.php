@@ -34,6 +34,8 @@ class Classe extends Generic {
             if($d[$this->_idDatabis] === $classname)
                 return $this->call('string', $d['extends']);
         }
+
+        return $this->call('string', '');
     }
 
     public function getImplements($ns, $classname)
@@ -49,5 +51,7 @@ class Classe extends Generic {
                 return $this->call('string', $d['implements']);
             }
         }
+
+        return $this->call('string', '');
     }
 }
