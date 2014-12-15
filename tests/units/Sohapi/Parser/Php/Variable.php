@@ -4,7 +4,7 @@ namespace tests\units\Sohapi\Parser\Php;
 
 use mageekguy\atoum;
 
-class Classe extends \Sohtest\Asserters\Test
+class Variable extends \Sohtest\Asserters\Test
 {
     public function testClassicClass()
     {
