@@ -19,12 +19,17 @@ namespace Sohapi\Parser\Php {
             $this->_parseArgs($args);
 
             $content = $this->getTokensBetweenValue($tokens, '{' , '}');
+            $args    =  explode(',' ,$this->concat($args));
+
+            foreach ($args as $key => $value) {
+                $args[$key] = trim($value);
+            }
             //$this->dump($content); // TODO : Detect throw, return
             \Sohapi\Parser\Model::getInstance()->setMethod(
                 $this->concat($visibilty),
                 false,
                 $this->concat($name),
-                (count($args) ===0) ? 'void' : $args
+                (count($args) ===0) ? array('void') : $args
             );
         }
 
