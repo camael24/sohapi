@@ -6,7 +6,7 @@ use mageekguy\atoum;
 
 class Method extends \Sohtest\Asserters\Test
 {
-    public function testNoArguments()
+    public function testMethod()
     {
         $source = '<?php
         class Foo {
@@ -25,6 +25,10 @@ class Method extends \Sohtest\Asserters\Test
             public static function g() {
 
             }
+
+            static public function b() {
+
+            }
         };';
 
         $this
@@ -32,7 +36,7 @@ class Method extends \Sohtest\Asserters\Test
             ->isIdenticalTo(0);
 
         $this->method->get('', 'Foo')
-            ->containsValues(['get', 'set', 'unset', 'g'])
+            ->containsValues(['get', 'set', 'unset', 'g', 'b'])
             ->notContainsValues(['hello'])
         ;
 
@@ -42,12 +46,12 @@ class Method extends \Sohtest\Asserters\Test
             ->string['unset']['arguments'][0]->isIdenticalTo('$aaa')
             //->string['unset']['arguments'][1]->isIdenticalTo('$a ="aa"') // TODO : Bug
             ->string['g']['arguments'][0]->isIdenticalTo('')
-            //->boolean['g']['static']->isTrue() // TODO : Bug
+            ->boolean['g']['static']->isTrue() // TODO : Bug
             ->boolean['get']['static']->isFalse()
             ->string['get']['visibility']->isIdenticalTo('public')
             ->string['set']['visibility']->isIdenticalTo('protected')
             ->string['unset']['visibility']->isIdenticalTo('private')
-            //->boolean['g']['visibility']->isIdenticalTo('public') // TODO : Bug
+            ->string['g']['visibility']->isIdenticalTo('public')
         ;
 
     }

@@ -24,10 +24,22 @@ namespace Sohapi\Parser\Php {
             foreach ($args as $key => $value) {
                 $args[$key] = trim($value);
             }
-            //$this->dump($content); // TODO : Detect throw, return
+
+            $visibilty = $this->concat($visibilty);
+            $isStatic  = false;
+
+            if(preg_match('#static#', $visibilty)){
+                $isStatic   = true;
+                $visibilty  = str_replace('static', '', $visibilty);
+                $visibilty  = trim($visibilty);
+            }
+
+            if($visibilty === '')
+                $visibilty = 'public';
+
             \Sohapi\Parser\Model::getInstance()->setMethod(
-                $this->concat($visibilty),
-                false,
+                $visibilty,
+                $isStatic, // isStatic
                 $this->concat($name),
                 (count($args) ===0) ? array('void') : $args
             );

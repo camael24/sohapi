@@ -15,20 +15,6 @@ namespace Sohapi\Formatter {
             $fqcn = array();
             $c    = array();
 
-            // TODO : Parse phpDoc
-            // TODO : Arguments, Throw Return cliquable
-            // TODO : Moteur de recherche
-            // TODO : Raccourci clavier
-            // TODO : Vue UML (Graphviz)
-            // TODO : Rebondir sur les découvertes de dépendance (via option)
-            // TODO : Fallback sur les classes (php.net etc ...)
-            // TODO : TU
-            // TODO : Parse option : SourceFile, hash, branch, remote, etc ...
-            // TODO : Utilisation des Traits
-            // TODO : Aliasing (class_alias, FlexEntity)
-            // TODO : Functionnal (With and Without Namespace)
-            // TODO : const & co in declaration class
-
             foreach ($this->_namespace as $namespace) {
                  if (isset($this->_classe[$namespace])) {
                     foreach ($this->_classe[$namespace] as $classe) {

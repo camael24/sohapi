@@ -9,9 +9,19 @@ namespace Sohapi\Parser\Php {
             $name       = strval($eldnah[1]);
             $value      = $this->getUntilValue($tokens, ';');
 
-            // TODO : Static classe
-            \Sohapi\Parser\Model::getInstance()->setProperty($this->concat($visibilty) , false, $name, $this->concat($value));
+            $visibilty = $this->concat($visibilty);
+            $isStatic  = false;
 
+            if(preg_match('#static#', $visibilty)){
+                $isStatic   = true;
+                $visibilty  = str_replace('static', '', $visibilty);
+                $visibilty  = trim($visibilty);
+            }
+
+            if($visibilty === '')
+                $visibilty = 'public';
+
+            \Sohapi\Parser\Model::getInstance()->setProperty($visibilty , $isStatic, $name, $this->concat($value));
             $parent->dispatch($tokens);
         }
 
