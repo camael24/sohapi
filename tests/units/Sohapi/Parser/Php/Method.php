@@ -18,7 +18,11 @@ class Method extends \Sohtest\Asserters\Test
                 return $a;
             }
 
-            private function unset($aaa, $a = "aa"){
+            protected function fppp($a = "babar") {
+                return $a;
+            }
+
+            private function unset($aaa, $a ="ab", $nn = true ){
 
             }
 
@@ -36,22 +40,48 @@ class Method extends \Sohtest\Asserters\Test
             ->isIdenticalTo(0);
 
         $this->method->get('', 'Foo')
-            ->containsValues(['get', 'set', 'unset', 'g', 'b'])
+            ->containsValues(['get', 'set', 'unset', 'g', 'b', 'fppp'])
             ->notContainsValues(['hello'])
         ;
 
         $this->method->args('', 'Foo' , 'get')
             ->string['get']['arguments'][0]->isIdenticalTo('')
-            ->string['set']['arguments'][0]->isIdenticalTo('$a = null')
-            ->string['unset']['arguments'][0]->isIdenticalTo('$aaa')
-            //->string['unset']['arguments'][1]->isIdenticalTo('$a ="aa"') // TODO : Bug
-            ->string['g']['arguments'][0]->isIdenticalTo('')
-            ->boolean['g']['static']->isTrue() // TODO : Bug
             ->boolean['get']['static']->isFalse()
             ->string['get']['visibility']->isIdenticalTo('public')
+
+            ->string['set']['arguments'][0]->isIdenticalTo('$a = null')
             ->string['set']['visibility']->isIdenticalTo('protected')
+
+            ->string['unset']['arguments'][0]->isIdenticalTo('$aaa')
+            ->string['unset']['arguments'][1]->isIdenticalTo('$a ="ab"')
             ->string['unset']['visibility']->isIdenticalTo('private')
+
+            ->string['fppp']['arguments'][0]->isIdenticalTo('$a = "babar"')
+
+            ->string['g']['arguments'][0]->isIdenticalTo('')
+            ->boolean['g']['static']->isTrue()
             ->string['g']['visibility']->isIdenticalTo('public')
+        ;
+
+    }
+
+    public function testMethodWithComma()
+    {
+        $source = '<?php class Foo {protected function fppp($b, $a = "ba,bar") {return $a;}};';
+
+        $this
+            ->integer((new \Sohapi\Parser\Reader($source))->build())
+            ->isIdenticalTo(0);
+
+        $this->method->get('', 'Foo')
+            ->containsValues(['fppp'])
+            ->notContainsValues(['hello'])
+        ;
+
+        $this->method->args('', 'Foo' , 'get')
+            ->string['fppp']['arguments'][0]->isIdenticalTo('$b')
+            ->string['fppp']['arguments'][1]->isIdenticalTo('$a = "ba,bar"')
+            ->string['fppp']['visibility']->isIdenticalTo('protected')
         ;
 
     }

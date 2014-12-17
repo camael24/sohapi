@@ -25,5 +25,7 @@ class Model extends \Sohtest\Asserters\Test
 
         $this->namespace->get()
             ->contains('');
+        $this->class->get('')
+            ->contains('Hello');
     }
 }

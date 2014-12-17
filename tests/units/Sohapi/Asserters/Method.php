@@ -36,7 +36,6 @@ class Method extends Generic {
 
 
         foreach ($data[$ns][$class] as $d) {
-            //var_dump($d);
            $args[$d['name']] = $d;
         }
 

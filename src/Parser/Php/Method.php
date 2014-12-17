@@ -16,10 +16,10 @@ namespace Sohapi\Parser\Php {
             array_unshift($value, array_pop($name));
             array_unshift($tokens, $c);
 
-            $this->_parseArgs($args);
+            //$this->_parseArgs($args);
 
             $content = $this->getTokensBetweenValue($tokens, '{' , '}');
-            $args    =  explode(',' ,$this->concat($args));
+            $args    =  $this->extractArgs($args);
 
             foreach ($args as $key => $value) {
                 $args[$key] = trim($value);
@@ -45,6 +45,28 @@ namespace Sohapi\Parser\Php {
             );
         }
 
+        protected function extractArgs($tokens)
+        {
+            $args = array();
+
+            do {
+                $variable = $this->getUntilValue($tokens, ',');
+
+                $last = count($variable) - 1;
+
+                if(isset($variable[$last]) && $variable[$last][1] === ',')
+                    array_pop($variable);
+
+
+                $args[] = $this->concat($variable);
+
+            }
+            while( count($tokens)  > 0 );
+
+
+            return $args;
+        }
+
         protected function _parseArgs($args)
         {
             $var = array();
@@ -67,7 +89,7 @@ namespace Sohapi\Parser\Php {
             }
             while( count($args)  > 0 );
 
-            //var_dump($var);
+            var_dump($var);
         }
 
     }
