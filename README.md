@@ -1,7 +1,7 @@
 Usage
 =====
     ```
-    λ php src\Bin\sohapi --help
+    λ php src\bin\sohapi --help
     Usage:
        Welcome
 
