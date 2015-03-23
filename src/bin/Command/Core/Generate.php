@@ -1,5 +1,5 @@
 <?php
-namespace Sohapi\Bin\Command\Core {
+namespace Sohapi\Bin\Command\Core;
 
     use Hoa\Console\Chrome\Text;
     use Hoa\File\Finder;
@@ -175,7 +175,6 @@ namespace Sohapi\Bin\Command\Core {
             return;
         }
     }
-}
 
 __halt_compiler();
 Generate an api documentation
